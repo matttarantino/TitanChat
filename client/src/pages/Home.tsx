@@ -3,13 +3,9 @@ import '../App.css';
 
 function Home() {
     return (
-      <div className='card'>
-        <div className='card-body'>
-          <p>
+        <div className="App">
             Our Slack Replica
-          </p>
         </div>
-      </div>
     );
   }
   
