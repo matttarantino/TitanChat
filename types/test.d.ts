@@ -1,0 +1,3 @@
+type Test = {
+  testing: string
+}
