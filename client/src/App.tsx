@@ -1,24 +1,40 @@
-import logo from './logo.svg'
+
+import './App.css';
+
+import React from 'react';
+import {BrowserRouter as Router, Route, Link, Routes, NavLink} from 'react-router-dom';
+
+import Home from './pages/Home';
+import Chat from './pages/Chat';
+import User from './pages/User';
+import SideBar from './components/SideBar';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
+    <>
+      <Router>
+        <div >
+          <header className='App-header'>
+            <div className='App'>
+              <h1 className='App-title'>
+                Welcome to Project Titan
+              </h1>
+            </div>
+              <SideBar />
+          </header>
+          <br />
+          <br />
+          <div className='App-body'>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/user/:id' element={<User />} />
+              <Route path='/chat/:id' element={<Chat />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </>
+  );
 }
 
-export default App
+export default App;
