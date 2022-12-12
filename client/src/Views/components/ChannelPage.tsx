@@ -15,7 +15,7 @@ const ChannelPage = () => {
     try {
       areValidStrings({ channelId })
     } catch (err) {
-      setPageError(httpErrors[400])
+      return setPageError(httpErrors[400])
     }
 
     // request data from server

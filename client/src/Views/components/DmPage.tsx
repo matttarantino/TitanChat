@@ -15,7 +15,7 @@ const DmPage = () => {
     try {
       areValidStrings({ dmId })
     } catch (err) {
-      setPageError(httpErrors[400])
+      return setPageError(httpErrors[400])
     }
 
     // request data from server
