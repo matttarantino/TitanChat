@@ -4,7 +4,8 @@ import { httpErrors } from './utils/errors'
 import ChannelPage from './Views/components/ChannelPage'
 import DmPage from './Views/components/DmPage'
 import LandingPage from './Views/components/LandingPage'
-import SideBar from './Views/components/SideBar'
+import SideBar from './Misc/components/SideBar'
+import LoginPage from './Views/components/LoginPage'
 
 const APP_SPECS: Array<AppSpec> = [
   {
@@ -28,7 +29,7 @@ const APP_SPECS: Array<AppSpec> = [
   {
     name: 'Login',
     path: '/login',
-    element: <>login page</>,
+    element: <LoginPage />,
     ensureAuthenticated: false,
   },
   {

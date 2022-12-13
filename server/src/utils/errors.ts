@@ -28,3 +28,13 @@ export const areValidNumbers = (
         ensurePositive ? 'positive ' : ''
       }number. Received: ${data[k]}`
 }
+
+export const isValidUser = (user: any) => {
+  const { username, password }: UserRegistrationInfo = user
+
+  areValidStrings({ username, password })
+
+  // check if username satifies conditions
+
+  // check if password satifies conditions
+}

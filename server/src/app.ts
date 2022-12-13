@@ -46,8 +46,6 @@ httpServer.listen(4000, () => {
   console.log(`Listening on *:${4000}`)
 })
 
-const PORT = 3001
-
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -59,6 +57,7 @@ app.get('*', (_, res) => {
   res.sendFile(path.resolve('client', 'build', 'index.html'))
 })
 
+const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })
