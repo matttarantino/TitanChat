@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import '../styles/sideBar.scss'
 
 const SideBar = () => {
-  const [channels, setChannels] = useState<Array<string>>([])
-  const [dms, setDms] = useState<Array<string>>([])
+  const [channels, setChannels] = useState<Array<ChannelsResponse>>([])
+  const [dms, setDms] = useState<Array<ChannelsResponse>>([])
 
   useEffect(() => {
     // get channels
