@@ -11,8 +11,6 @@
  */
 type User = {
   _id: string
-  firstName: string
-  lastName: string
   username: string
   password: string
   directMessages: Array<string>
@@ -31,3 +29,12 @@ type UserData = Omit<User, 'password'>
  *              {@link User} for param descriptions.
  */
 type UserRegistrationInfo = Omit<User, '_id' | 'directMessages'>
+
+/**
+ * @author rgorai
+ * @description the data that will be used to log a user in
+ */
+type LoginSpecs = {
+  username: string
+  password: string
+}
