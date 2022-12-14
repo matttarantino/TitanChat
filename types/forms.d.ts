@@ -7,8 +7,8 @@ type FormSpecs = {
   label: string
   type: string
   defaultValue: string | Array<string>
-  required?: boolean
-  options?: Array<InputOption>
+  validation?: (arg: any) => void
+  required?: true
   props?: any
 }
 

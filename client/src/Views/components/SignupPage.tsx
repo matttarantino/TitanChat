@@ -1,28 +1,31 @@
-import { Fragment, useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import styles from '../styles/signup.module.scss'
+import { useState } from 'react'
 import { reduceFormSpecs } from '../../utils/forms'
 import { signup } from '../../services/authService'
+import { isValidPassword, isValidUserName } from '../../utils/errors'
 
 const SIGNUP_SPECS: SignupFormSpecs = {
   username: {
     label: 'Username',
     type: 'text',
     defaultValue: '',
+    validation: isValidUserName,
     required: true,
-    props: { placeholder: 'joedoe1234' },
+    props: { placeholder: 'joedoe123' },
   },
   password: {
     label: 'Password',
     type: 'password',
     defaultValue: '',
+    validation: isValidPassword,
     required: true,
+    props: { placeholder: 'Password' },
   },
   passwordConfirmation: {
     label: 'Confirm Password',
     type: 'password',
     defaultValue: '',
     required: true,
+    props: { placeholder: 'Re-enter Password' },
   },
 }
 
@@ -37,44 +40,53 @@ const DEFAULT_ERROR_STATE = reduceFormSpecs(SIGNUP_KEYS, (c) => [c, false])
 
 const SignupPage = () => {
   const [profileData, setProfileData] = useState(DEFAULT_FORM_STATE)
-  const { state }: any = useLocation()
-  const navigate = useNavigate()
+  const [formErrors, setFormErrors] = useState(DEFAULT_ERROR_STATE)
+  const [signupError, setSignupError] = useState('')
 
-  const onInputChange = (
-    key: keyof SignupFormSpecs,
-    value: string | Array<string>
-  ) => {
-    setProfileData((prev) => ({ ...prev, [key]: value }))
+  // update passwordConfirmation validation to use state
+  SIGNUP_SPECS.passwordConfirmation.validation = () => {
+    if (profileData.password !== profileData.passwordConfirmation)
+      throw 'Passwords must match.'
   }
+
+  const onInputChange = (key: keyof SignupFormSpecs, value: string) =>
+    setProfileData((prev) => ({ ...prev, [key]: value }))
 
   const onFormSubmit = (ev: any) => {
     ev.preventDefault()
 
     // error check
+    setFormErrors(DEFAULT_ERROR_STATE)
+    let formErrorPresent = false
+    for (const key of SIGNUP_KEYS)
+      try {
+        SIGNUP_SPECS[key].validation?.(profileData[key])
+      } catch (err) {
+        setFormErrors((prev) => ({ ...prev, [key]: String(err) }))
+        formErrorPresent = true
+      }
 
-    signup(profileData)
-      .then(() => {
-        // navigate(state?.from ?? '/feed')
-        window.location.reload()
-      })
-      .catch(({ response }) => {
-        console.error('signup error', response)
-      })
+    // send signup request if there are no errors
+    if (!formErrorPresent)
+      signup({ ...profileData, passwordConfirmation: undefined })
+        .then(() => {
+          window.location.reload()
+        })
+        .catch(({ response }) => {
+          console.error('signup error', response)
+          setSignupError(response.data)
+        })
   }
 
   return (
     <div>
-      <form
-        id="signup-form"
-        className={styles.formContainer}
-        onSubmit={onFormSubmit}
-      >
+      <form id="signup-form" onSubmit={onFormSubmit}>
         {SIGNUP_KEYS.map((currKey) => {
           const currSpecs = SIGNUP_SPECS[currKey]
           const inputId = `user-${currKey}`
 
           return (
-            <Fragment key={inputId}>
+            <div key={inputId}>
               <label htmlFor={inputId}>{currSpecs.label}</label>
               <input
                 {...currSpecs.props}
@@ -82,9 +94,11 @@ const SignupPage = () => {
                 type={currSpecs.type}
                 onChange={(ev) => onInputChange(currKey, ev.target.value)}
               />
-            </Fragment>
+              {formErrors[currKey] && <span>{formErrors[currKey]}</span>}
+            </div>
           )
         })}
+        {signupError && <div>{signupError}</div>}
 
         <button type="submit" form="signup-form">
           Submit

@@ -6,7 +6,9 @@ import { getUsersCollection } from './config/mongoCollections'
 
 const SALT_ROUNDS = 8
 
-export const createUser = async (user: UserRegistrationInfo) => {
+export const createUser = async (
+  user: UserRegistrationInfo
+): Promise<UserData> => {
   // error check
   try {
     isValidUser(user)
@@ -15,19 +17,23 @@ export const createUser = async (user: UserRegistrationInfo) => {
   }
 
   // check if username exists
-  // ** make sure to compare them when lowercase **
+  const usernameLower = user.username.toLowerCase()
   const usersCollection = await getUsersCollection()
-  if (await usersCollection.findOne({ username: user.username }))
-    throw 'DB Error: Username is taken.'
+  if (await usersCollection.findOne({ usernameLower }))
+    throw 'Username is taken.'
 
   // hash password
   user.password = bcrypt.hashSync(user.password, SALT_ROUNDS)
 
   // add new entry to db
-  const retval = await usersCollection.insertOne(user)
+  const retval = await usersCollection.insertOne({
+    ...user,
+    usernameLower,
+    directMessages: [],
+  })
   if (!retval.acknowledged)
     throw `DB Error: failed to add user ${String(user)}.`
-  return await getUser(String(retval.insertedId))
+  return (await getUser(String(retval.insertedId))) as UserData
 }
 
 export const getUser = async (userId: string): Promise<UserData | null> => {
@@ -61,14 +67,10 @@ export const validateUser = async (
   loginSpecs: LoginSpecs
 ): Promise<AuthResponse> => {
   const { username, password } = loginSpecs
-  // let { username } = loginSpecs
 
-  // lookup user by username or email
-  // ** make sure to compare them when lowercase **
-  // username = username.toLowerCase()
-
+  const usernameLower = username.toLowerCase()
   const usersCollection = await getUsersCollection()
-  const user = await usersCollection.findOne({ username })
+  const user = await usersCollection.findOne({ usernameLower })
 
   // check password
   if (!user || !bcrypt.compareSync(password, user.password))

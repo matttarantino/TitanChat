@@ -1,6 +1,6 @@
-import { Fragment, useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { login } from '../../services/authService'
+import { isValidPassword, isValidUserName } from '../../utils/errors'
 import { reduceFormSpecs } from '../../utils/forms'
 
 const LOGIN_SPECS: LoginFormSpecs = {
@@ -8,12 +8,14 @@ const LOGIN_SPECS: LoginFormSpecs = {
     label: 'Username or email',
     type: 'text',
     defaultValue: '',
+    validation: isValidUserName,
     required: true,
   },
   password: {
     label: 'Password',
     type: 'password',
     defaultValue: '',
+    validation: isValidPassword,
     required: true,
   },
 }
@@ -27,31 +29,32 @@ const DEFAULT_FORM_STATE = reduceFormSpecs(
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState(DEFAULT_FORM_STATE)
-  // const { state }: any = useLocation()
-  // const navigate = useNavigate()
-
-  // useEffect(() => {
-  //   // console.log('state', state)
-  // }, [state])
+  const [loginError, setLoginError] = useState('')
 
   const onInputChange = (
     key: keyof SignupFormSpecs,
     value: string | Array<string>
-  ) => {
-    setLoginData((prev) => ({ ...prev, [key]: value }))
-  }
+  ) => setLoginData((prev) => ({ ...prev, [key]: value }))
 
   const onFormSubmit = (ev: any) => {
     ev.preventDefault()
+
+    // error check
+    setLoginError('')
+    for (const key of LOGIN_KEYS)
+      try {
+        LOGIN_SPECS[key].validation?.(loginData[key])
+      } catch (err) {
+        return setLoginError('Invalid username or password')
+      }
+
     login(loginData)
       .then(() => {
         window.location.reload()
-        console.log('login success')
-        // navigate(state?.from ?? '/', { replace: true })
-        // navigate(-1)
       })
       .catch(({ response }) => {
         console.error('login error', response)
+        setLoginError('Invalid username or password')
       })
   }
 
@@ -63,7 +66,7 @@ const LoginPage = () => {
           const inputId = `login-${currKey}`
 
           return (
-            <Fragment key={inputId}>
+            <div key={inputId}>
               <label htmlFor={inputId}>{currSpecs.label}</label>
               <input
                 {...currSpecs.props}
@@ -71,9 +74,10 @@ const LoginPage = () => {
                 type={currSpecs.type}
                 onChange={(ev) => onInputChange(currKey, ev.target.value)}
               />
-            </Fragment>
+            </div>
           )
         })}
+        {loginError && <div>{loginError}</div>}
 
         <button type="submit" form="login-form">
           Login

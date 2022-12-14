@@ -1,10 +1,8 @@
 import { MongoClient, Db } from 'mongodb'
-import dotenv from 'dotenv'
-
-dotenv.config()
+import { MONGO_URI } from '../../utils/env'
 
 const mongoConfig = {
-  serverUrl: (process.env.MONGO_URI as string) || 'mongodb://localhost:27017/',
+  serverUrl: MONGO_URI || 'mongodb://localhost:27017/',
   database: 'cs554-project-titan-db',
 }
 
