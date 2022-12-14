@@ -28,3 +28,30 @@ export const areValidNumbers = (
         ensurePositive ? 'positive ' : ''
       }number. Received: ${data[k]}`
 }
+
+export const isValidUserName = (username: any) => {
+  areValidStrings({ username })
+
+  if (username.length < 4) throw 'Username must be at least 4 characters.'
+
+  if (!/^[a-z0-9]+$/gi.test(username)) throw 'Username must be alphanumeric.'
+}
+
+export const isValidPassword = (password: any) => {
+  areValidStrings({ password })
+
+  if (password.length < 8) throw 'Password must be at least 8 characters'
+
+  if (
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-_])[A-Za-z\d@$!%*?&/-_]{8,}$/.test(
+      password
+    )
+  )
+    throw 'Password must have at least one capital letter, one number, and one special character.'
+}
+
+export const isValidUser = (user: any) => {
+  const { username, password }: UserRegistrationInfo = user
+  isValidUserName(username)
+  isValidPassword(password)
+}

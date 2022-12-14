@@ -7,7 +7,7 @@
 export const areValidStrings = (data: { [key: string]: any }) => {
   for (const k in data)
     if (typeof data[k] !== 'string' || data[k].trim().length === 0)
-      throw `${k} must be a non-empty string. Received: ${data[k]}`
+      throw `${k} must be a non-empty string.`
 }
 
 /**
@@ -24,9 +24,7 @@ export const areValidNumbers = (
 ) => {
   for (const k in data)
     if (isNaN(Number(data[k])) || (ensurePositive && Number(data[k]) <= 0))
-      throw `${k} must be a ${
-        ensurePositive ? 'positive ' : ''
-      }number. Received: ${data[k]}`
+      throw `${k} must be a ${ensurePositive ? 'positive ' : ''}number.`
 }
 
 /**
@@ -39,4 +37,25 @@ export const httpErrors = {
   400: { status: '400', statusText: 'Bad Input' },
   404: { status: '404', statusText: 'Not Found' },
   500: { status: '500', statusText: 'Internal Server Error' },
+}
+
+export const isValidUserName = (username: any) => {
+  areValidStrings({ Username: username })
+
+  if (username.length < 4) throw 'Username must be at least 4 characters.'
+
+  if (!/^[a-z0-9]+$/gi.test(username)) throw 'Username must be alphanumeric.'
+}
+
+export const isValidPassword = (password: any) => {
+  areValidStrings({ Password: password })
+
+  if (password.length < 8) throw 'Password must be at least 8 characters'
+
+  if (
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-_])[A-Za-z\d@$!%*?&/-_]{8,}$/.test(
+      password
+    )
+  )
+    throw 'Password must have at least one capital letter, one number, and one special character.'
 }
