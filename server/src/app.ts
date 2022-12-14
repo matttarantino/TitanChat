@@ -12,28 +12,30 @@ const io = new Server(httpServer, {})
 io.on('connection', (socket) => {
   // emit status update
   console.log('new client connected', socket.id)
+  // online/offline indicators
 
   socket.on('join_channel', (username, channel) => {
     console.log(`${username} has joined ${channel}.`)
     socket.join(channel)
+    // call DB function to add to channel members, return current members info
     io.sockets.in(channel).emit('joined_channel', { username: username, channel: channel })
   });
 
   socket.on('message', (username, channel, message) => {
     io.sockets.in(channel).emit('message', { name: username, message: message })
+    // call DB function to add to channel messages 
   });
 
   socket.on('left_channel', (username, channel) => {
     console.log(`${username} has left ${channel}.`)
     socket.leave(channel)
+    // call DB function to remove from channel, return current members info
     io.sockets.in(channel).emit('left_channel', { username: username, channel: channel })
   });
 
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')
   });
-
-
 
   socket.onAny((event, ...args) => {
     console.log(event, args)
