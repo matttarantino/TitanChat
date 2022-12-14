@@ -1,9 +1,9 @@
 import path from 'path'
+import { createServer } from 'http'
 import express from 'express'
 import cors from 'cors'
-import configRoutes from './routes/index'
-import { createServer } from 'http'
 import { Server } from 'socket.io'
+import configRoutes from './routes/index'
 
 const app = express()
 const httpServer = createServer(app)
@@ -17,25 +17,26 @@ io.on('connection', (socket) => {
   socket.on('join_channel', (username, channel) => {
     console.log(`${username} has joined ${channel}.`)
     socket.join(channel)
-    // call DB function to add to channel members, return current members info
-    io.sockets.in(channel).emit('joined_channel', { username: username, channel: channel })
-  });
+    io.sockets
+      .in(channel)
+      .emit('joined_channel', { username: username, channel: channel })
+  })
 
   socket.on('message', (username, channel, message) => {
     io.sockets.in(channel).emit('message', { name: username, message: message })
-    // call DB function to add to channel messages 
-  });
+  })
 
   socket.on('left_channel', (username, channel) => {
     console.log(`${username} has left ${channel}.`)
     socket.leave(channel)
-    // call DB function to remove from channel, return current members info
-    io.sockets.in(channel).emit('left_channel', { username: username, channel: channel })
-  });
+    io.sockets
+      .in(channel)
+      .emit('left_channel', { username: username, channel: channel })
+  })
 
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')
-  });
+  })
 
   socket.onAny((event, ...args) => {
     console.log(event, args)
@@ -43,10 +44,8 @@ io.on('connection', (socket) => {
 })
 
 httpServer.listen(4000, () => {
-  console.log(`Listening on *:${4000}`);
-});
-
-const PORT = 3001
+  console.log(`Listening on *:${4000}`)
+})
 
 app.use(cors())
 app.use(express.json())
@@ -59,6 +58,7 @@ app.get('*', (_, res) => {
   res.sendFile(path.resolve('client', 'build', 'index.html'))
 })
 
+const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })

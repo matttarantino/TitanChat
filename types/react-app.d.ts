@@ -17,7 +17,8 @@ type AppSpec = {
 
 /**
  * @author rgorai
- * @description info for rendering an error UI component
+ * @description info for rendering an error UI component; can be
+ *              spread from an axios error response
  * @param status error status code
  * @param statusText corresponding error status text
  * @param data optional associated error data to view in console
@@ -26,4 +27,13 @@ type RouteError = {
   status: string
   statusText: string
   data?: string
+}
+
+/**
+ * @author rgorai
+ * @description defines the app's Context type
+ * @param authInfo stores the user's authentication info as {@link AuthResponse}
+ */
+type AppState = {
+  authInfo: AuthResponse
 }

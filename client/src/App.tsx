@@ -4,7 +4,11 @@ import { httpErrors } from './utils/errors'
 import ChannelPage from './Views/components/ChannelPage'
 import DmPage from './Views/components/DmPage'
 import LandingPage from './Views/components/LandingPage'
-import SideBar from './Views/components/SideBar'
+import SideBar from './Misc/components/SideBar'
+import LoginPage from './Views/components/LoginPage'
+import SignupPage from './Views/components/SignupPage'
+import Logout from './Misc/components/Logout'
+import AuthWrapper from './services/AuthWrapper'
 
 const APP_SPECS: Array<AppSpec> = [
   {
@@ -28,24 +32,24 @@ const APP_SPECS: Array<AppSpec> = [
   {
     name: 'Login',
     path: '/login',
-    element: <>login page</>,
+    element: <LoginPage />,
     ensureAuthenticated: false,
   },
   {
     name: 'Signup',
     path: '/signup',
-    element: <>signup page</>,
+    element: <SignupPage />,
     ensureAuthenticated: false,
   },
   {
     name: 'Logout',
     path: '/logout',
-    element: <>logout page</>,
-    ensureAuthenticated: true,
+    element: <Logout />,
+    ensureAuthenticated: null,
   },
 ]
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
@@ -57,21 +61,21 @@ function App() {
               const currRoute = (
                 <Route path={e.path} element={e.element} key={e.path} />
               )
-              // auth logic for future pr:
-              // return e.ensureAuthenticated === null ? (
-              //   currRoute
-              // ) : (
-              //   <Route
-              //     element={
-              //       <AuthWrapper
-              //         ensureNotAuthenticated={!e.ensureAuthenticated}
-              //       />
-              //     }
-              //   >
-              //     {currRoute}
-              //   </Route>
-              // )
-              return currRoute
+              return e.ensureAuthenticated === null ? (
+                currRoute
+              ) : (
+                <Route
+                  path={e.path}
+                  element={
+                    <AuthWrapper
+                      ensureNotAuthenticated={!e.ensureAuthenticated}
+                    >
+                      {e.element}
+                    </AuthWrapper>
+                  }
+                  key={e.path}
+                />
+              )
             })}
 
             <Route path="*" element={<ErrorPage {...httpErrors[404]} />} />
