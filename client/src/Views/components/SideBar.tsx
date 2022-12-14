@@ -97,10 +97,10 @@ const SideBar = () => {
     )
   })
 
-  if (loadingChannels && loadingDms) {
-    return <nav> Loading... </nav>
-  } else if (errorChannels && errorDms) {
-    return <nav> Error Loading Data ... </nav>
+  if (loadingChannels || loadingDms) {
+    return <nav>Loading...</nav>
+  } else if (errorChannels || errorDms) {
+    return <nav>Error Loading Data ...</nav>
   } else {
     return (
       <nav>
