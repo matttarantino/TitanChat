@@ -60,8 +60,9 @@ const SideBar = () => {
         setLoadingChannels(false)
       } catch (e) {
         console.log('Error: ', e)
-        setLoadingChannels(false)
-        setErrorChannels(true)
+        // un-comment these when server starts working
+        // setLoadingChannels(false)
+        // setErrorChannels(true)
       }
     }
 
@@ -72,8 +73,9 @@ const SideBar = () => {
         setLoadingDms(false)
       } catch (e) {
         console.log('Error: ', e)
-        setLoadingDms(false)
-        setErrorChannels(true)
+        // un-comment these when server starts working
+        // setLoadingDms(false)
+        // setErrorChannels(true)
       }
     }
 
