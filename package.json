@@ -9,7 +9,7 @@
     "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
     "dev:server": "ts-node-dev --files ./server/src/app.ts",
     "dev:client": "yarn --cwd client start",
-    "build": "build:server && build:client",
+    "build": "build:client && build:server",
     "build:server": "cd server && tsc",
     "build:client": "yarn --cwd client build",
     "lint": "eslint --fix --ext .tsx,.ts,.html,.json && prettier --write \"**/*.{tsx,ts,scss,html,json}\" && stylelint --fix --allow-empty-input **/*.scss",
@@ -30,7 +30,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mongodb": "^4.12.1"
+    "mongodb": "^4.12.1",
+    "socket.io": "^4.5.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
