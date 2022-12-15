@@ -39,6 +39,8 @@ const RightSideBar = () => {
       <nav className="sidebar-container">
         Right SideBar
         <div id="channelSideBar">{usersList}</div>
+        <br />
+        <Link to="/logout">Logout</Link>
       </nav>
     )
   else return <></>
