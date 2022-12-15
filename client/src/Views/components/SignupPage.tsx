@@ -1,7 +1,11 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 import { reduceFormSpecs } from '../../utils/forms'
 import { signup } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
+import '../styles/signupPage.scss'
 
 const SIGNUP_SPECS: SignupFormSpecs = {
   username: {
@@ -79,31 +83,47 @@ const SignupPage = () => {
   }
 
   return (
-    <div>
-      <form id="signup-form" onSubmit={onFormSubmit}>
+    <div className="signup-form-container">
+      <Form id="signup-form" onSubmit={onFormSubmit}>
         {SIGNUP_KEYS.map((currKey) => {
           const currSpecs = SIGNUP_SPECS[currKey]
           const inputId = `user-${currKey}`
 
           return (
-            <div key={inputId}>
-              <label htmlFor={inputId}>{currSpecs.label}</label>
-              <input
+            <Form.Group className="mb-3" key={inputId}>
+              <Form.Label htmlFor={inputId}>{currSpecs.label}</Form.Label>
+              <Form.Control
                 {...currSpecs.props}
                 id={inputId}
                 type={currSpecs.type}
                 onChange={(ev) => onInputChange(currKey, ev.target.value)}
               />
-              {formErrors[currKey] && <span>{formErrors[currKey]}</span>}
-            </div>
+              {formErrors[currKey] && (
+                <span className="signup-field-error">
+                  {formErrors[currKey]}
+                </span>
+              )}
+            </Form.Group>
           )
         })}
-        {signupError && <div>{signupError}</div>}
 
-        <button type="submit" form="signup-form">
+        {signupError && (
+          <Form.Group className="mb-3 signup-form-error">
+            {signupError}
+          </Form.Group>
+        )}
+
+        <Button
+          className="mt-2 mb-4"
+          variant="primary"
+          type="submit"
+          form="signup-form"
+        >
           Submit
-        </button>
-      </form>
+        </Button>
+      </Form>
+
+      <Link to="/login">{'Already have an account? Login here!'}</Link>
     </div>
   )
 }

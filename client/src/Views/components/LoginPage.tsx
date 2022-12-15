@@ -1,15 +1,20 @@
 import { useState } from 'react'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 import { login } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
 import { reduceFormSpecs } from '../../utils/forms'
+import '../styles/loginPage.scss'
+import { Link } from 'react-router-dom'
 
 const LOGIN_SPECS: LoginFormSpecs = {
   username: {
-    label: 'Username or email',
+    label: 'Username',
     type: 'text',
     defaultValue: '',
     validation: isValidUserName,
     required: true,
+    props: { placeholder: 'Enter username' },
   },
   password: {
     label: 'Password',
@@ -17,6 +22,7 @@ const LOGIN_SPECS: LoginFormSpecs = {
     defaultValue: '',
     validation: isValidPassword,
     required: true,
+    props: { placeholder: 'Enter password' },
   },
 }
 
@@ -59,30 +65,42 @@ const LoginPage = () => {
   }
 
   return (
-    <div>
-      <form id="login-form" onSubmit={onFormSubmit}>
+    <div className="login-form-container">
+      <Form id="login-form" onSubmit={onFormSubmit}>
         {LOGIN_KEYS.map((currKey) => {
           const currSpecs = LOGIN_SPECS[currKey]
           const inputId = `login-${currKey}`
 
           return (
-            <div key={inputId}>
-              <label htmlFor={inputId}>{currSpecs.label}</label>
-              <input
+            <Form.Group className="mb-3" key={inputId}>
+              <Form.Label htmlFor={inputId}>{currSpecs.label}</Form.Label>
+              <Form.Control
                 {...currSpecs.props}
                 id={inputId}
                 type={currSpecs.type}
                 onChange={(ev) => onInputChange(currKey, ev.target.value)}
               />
-            </div>
+            </Form.Group>
           )
         })}
-        {loginError && <div>{loginError}</div>}
 
-        <button type="submit" form="login-form">
+        {loginError && (
+          <Form.Group className="mb-3 login-form-error">
+            {loginError}
+          </Form.Group>
+        )}
+
+        <Button
+          className="mt-2 mb-4"
+          variant="primary"
+          type="submit"
+          form="login-form"
+        >
           Login
-        </button>
-      </form>
+        </Button>
+      </Form>
+
+      <Link to="/signup">{`Don't have an account? Sign up here!`}</Link>
     </div>
   )
 }

@@ -24,14 +24,16 @@ export const areValidNumbers = (
 ) => {
   for (const k in data)
     if (isNaN(Number(data[k])) || (ensurePositive && Number(data[k]) <= 0))
-      throw `${k} must be a ${ensurePositive ? 'positive ' : ''
+      throw `${k} must be a ${
+        ensurePositive ? 'positive ' : ''
       }number. Received: ${data[k]}`
 }
 
 export const isValidChannelName = (channelName: any) => {
   areValidStrings({ channelName })
 
-  if (channelName.length < 4) throw 'Channel name must be at least 6 characters.'
+  if (channelName.length < 4)
+    throw 'Channel name must be at least 4 characters.'
 }
 
 export const isValidUserName = (username: any) => {

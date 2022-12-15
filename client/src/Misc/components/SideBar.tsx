@@ -8,16 +8,20 @@ import * as FaIcons from 'react-icons/fa'
 import * as AiIcons from 'react-icons/ai'
 import * as BsIcons from 'react-icons/bs'
 import * as CgIcons from 'react-icons/cg'
+import { useStore } from '../../services/appStore'
 
 const SideBar = () => {
+  const {
+    store: { authInfo },
+  } = useStore()
   const [channels, setChannels] = useState<Array<ChannelsResponse>>([])
   const [dms, setDms] = useState<Array<ChannelsResponse>>([])
 
-  // change initial state of loading to true when server is integrated
+  // change initial state of loading to "true" when server is integrated
   const [loadingChannels, setLoadingChannels] = useState(false)
   const [loadingDms, setLoadingDms] = useState(false)
 
-  // change initial state of error to true when server is integrated
+  // change initial state of error to "true" when server is integrated
   const [errorChannels, setErrorChannels] = useState(false)
   const [errorDms, setErrorDms] = useState(false)
 
@@ -49,15 +53,15 @@ const SideBar = () => {
   ]
 
   useEffect(() => {
-    console.log('Render')
     // get channels
     // get dms
 
     async function fetchChannels() {
       try {
-        const { data } = await axios.get(localChannelUrl)
-        setChannels(data)
+        // const { data } = await axios.get(localChannelUrl)
+        // setChannels(data)
         setLoadingChannels(false)
+        // setErrorChannels(false)
       } catch (e) {
         console.log('Error: ', e)
         // un-comment these when server starts working
@@ -68,9 +72,10 @@ const SideBar = () => {
 
     async function fetchDms() {
       try {
-        const { data } = await axios.get(localDmsUrl)
-        setDms(data)
+        // const { data } = await axios.get(localDmsUrl)
+        // setDms(data)
         setLoadingDms(false)
+        // setErrorDms(false)
       } catch (e) {
         console.log('Error: ', e)
         // un-comment these when server starts working
@@ -85,33 +90,35 @@ const SideBar = () => {
 
   channelList = ChannelSideBarData.map((elem) => {
     return (
-      <Link to={`/channels/${elem.channelId}`}>
-        {<AiIcons.AiFillWechat />} {elem.label}
+      <Link to={`/channels/${elem.channelId}`} key={elem.label}>
+        {elem.icon} {elem.label}
       </Link>
     )
   })
 
   dmsList = DmsSideBarData.map((elem) => {
     return (
-      <Link to={`/dms/${elem.channelId}`}>
-        {<CgIcons.CgProfile />} {elem.label}
+      <Link to={`/dms/${elem.channelId}`} key={elem.label}>
+        {elem.icon} {elem.label}
       </Link>
     )
   })
 
-  if (loadingChannels || loadingDms) {
-    return <nav>Loading...</nav>
-  } else if (errorChannels || errorDms) {
-    return <nav>Error Loading Data ...</nav>
-  } else {
-    return (
-      <nav>
-        Channel SideBar
-        <div id="channelSideBar">{channelList}</div>
-        <div id="dmsSideBar">{dmsList}</div>
-      </nav>
-    )
-  }
+  if (authInfo.authenticated)
+    if (loadingChannels || loadingDms) {
+      return <nav>Loading...</nav>
+    } else if (errorChannels || errorDms) {
+      return <nav>Error Loading Data ...</nav>
+    } else {
+      return (
+        <nav className="sidebar-container">
+          Channel SideBar
+          <div id="channelSideBar">{channelList}</div>
+          <div id="dmsSideBar">{dmsList}</div>
+        </nav>
+      )
+    }
+  else return <></>
 }
 
 export default SideBar

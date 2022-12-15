@@ -26,6 +26,15 @@ type UserData = Omit<User, 'password'>
 
 /**
  * @author rgorai
+ * @description the list of user data returned by the all user's list
+ *              endpoint. See {@link User} for param descriptions.
+ */
+type UserListResponse = Array<
+  Omit<UserData, 'directMessages' | 'usernameLower'>
+>
+
+/**
+ * @author rgorai
  * @description the data that the user will use to sign up. See
  *              {@link User} for param descriptions.
  */

@@ -7,10 +7,10 @@ const routers: Array<{
   route: string
   router: Router
 }> = [
-    { route: 'user', router: userRouter },
-    { route: 'auth', router: authRouter },
-    { route: 'channels', router: channelRouter }
-  ]
+  { route: 'user', router: userRouter },
+  { route: 'auth', router: authRouter },
+  { route: 'channels', router: channelRouter },
+]
 
 const configRoutes = (app: Express) => {
   for (const e of routers) app.use(`/api/${e.route}`, e.router)

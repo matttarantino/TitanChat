@@ -1,0 +1,21 @@
+.signup-form-container {
+  margin: 20vh auto 0;
+  width: 17rem;
+  padding: 2em;
+  border-radius: 0.5em;
+  border: 1px solid var(--bs-border-color-translucent);
+  box-sizing: content-box;
+
+  .signup-field-error {
+    color: #ce1a1a;
+    font-size: 0.8em;
+    margin-left: 0.1em;
+  }
+
+  .signup-form-error {
+    color: #7f1616;
+    background-color: #f0bcbc;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+  }
+}
