@@ -12,6 +12,7 @@ const io = new Server(httpServer, {})
 io.on('connection', (socket) => {
   // emit status update
   console.log('new client connected', socket.id)
+  // online/offline indicators
 
   socket.on('join_channel', (username, channel) => {
     console.log(`${username} has joined ${channel}.`)

@@ -27,6 +27,13 @@ type PublicChannel = {
 }
 
 /**
+ * @author matttarantino
+ * @description the data to create a public channel . See
+ *              {@link PublicChannel} for param descriptions.
+ */
+type ChannelRegistrationInfo = Omit<PublicChannel, '_id' | 'messages'>
+
+/**
  * @author rgorai
  * @description schema for a direct message channel between two users
  * @param userAId id of the first user

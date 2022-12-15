@@ -29,6 +29,13 @@ export const areValidNumbers = (
       }number. Received: ${data[k]}`
 }
 
+export const isValidChannelName = (channelName: any) => {
+  areValidStrings({ channelName })
+
+  if (channelName.length < 4)
+    throw 'Channel name must be at least 6 characters.'
+}
+
 export const isValidUserName = (username: any) => {
   areValidStrings({ username })
 
