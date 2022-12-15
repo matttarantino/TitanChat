@@ -13,11 +13,11 @@ const SideBar = () => {
   const [channels, setChannels] = useState<Array<ChannelsResponse>>([])
   const [dms, setDms] = useState<Array<ChannelsResponse>>([])
 
-  // change initial state of loading to true when server is integrated
+  // change initial state of loading to "true" when server is integrated
   const [loadingChannels, setLoadingChannels] = useState(false)
   const [loadingDms, setLoadingDms] = useState(false)
 
-  // change initial state of error to true when server is integrated
+  // change initial state of error to "true" when server is integrated
   const [errorChannels, setErrorChannels] = useState(false)
   const [errorDms, setErrorDms] = useState(false)
 
@@ -58,6 +58,7 @@ const SideBar = () => {
         const { data } = await axios.get(localChannelUrl)
         setChannels(data)
         setLoadingChannels(false)
+        // setErrorChannels(false)
       } catch (e) {
         console.log('Error: ', e)
         // un-comment these when server starts working
@@ -71,6 +72,7 @@ const SideBar = () => {
         const { data } = await axios.get(localDmsUrl)
         setDms(data)
         setLoadingDms(false)
+        // setErrorDms(false)
       } catch (e) {
         console.log('Error: ', e)
         // un-comment these when server starts working
@@ -86,7 +88,7 @@ const SideBar = () => {
   channelList = ChannelSideBarData.map((elem) => {
     return (
       <Link to={`/channels/${elem.channelId}`}>
-        {<AiIcons.AiFillWechat />} {elem.label}
+        {elem.icon} {elem.label}
       </Link>
     )
   })
@@ -94,7 +96,7 @@ const SideBar = () => {
   dmsList = DmsSideBarData.map((elem) => {
     return (
       <Link to={`/dms/${elem.channelId}`}>
-        {<CgIcons.CgProfile />} {elem.label}
+        {elem.icon} {elem.label}
       </Link>
     )
   })
