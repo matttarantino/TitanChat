@@ -53,5 +53,3 @@ export const getChannelById = async (channelId: string): Promise<PublicChannel |
   const channel = (await channelsCollection.findOne({ _id: channelIdObj })) as any
   return channel ? channel : null
 }
-
-
