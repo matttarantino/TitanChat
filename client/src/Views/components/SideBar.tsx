@@ -10,14 +10,14 @@ import * as BsIcons from 'react-icons/bs'
 import * as CgIcons from 'react-icons/cg'
 
 const SideBar = () => {
-  const [channels, setChannels] = useState([])
-  const [dms, setDms] = useState([])
+  const [channels, setChannels] = useState<Array<ChannelsResponse>>([])
+  const [dms, setDms] = useState<Array<ChannelsResponse>>([])
 
-  // change initial state of loading to true when server is integrated
+  // change initial state of loading to "true" when server is integrated
   const [loadingChannels, setLoadingChannels] = useState(false)
   const [loadingDms, setLoadingDms] = useState(false)
 
-  // change initial state of error to true when server is integrated
+  // change initial state of error to "true" when server is integrated
   const [errorChannels, setErrorChannels] = useState(false)
   const [errorDms, setErrorDms] = useState(false)
 
