@@ -55,12 +55,12 @@ export const getUser = async (userId: string): Promise<UserData | null> => {
   return user ? { ...user, _id: userId, password: undefined } : null
 }
 
-export const getAllUsers = async (): Promise<Array<UserData>> => {
+export const getAllUsers = async (): Promise<UserListResponse> => {
   const usersCollection = await getUsersCollection()
-  return (await usersCollection
+  return await usersCollection
     .find({})
-    .map((e) => ({ ...e, _id: String(e._id) }))
-    .toArray()) as any
+    .map((e) => ({ _id: String(e._id), username: e.username }))
+    .toArray()
 }
 
 export const validateUser = async (
