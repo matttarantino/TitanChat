@@ -5,6 +5,7 @@ import ChannelPage from './Views/components/ChannelPage'
 import DmPage from './Views/components/DmPage'
 import LandingPage from './Views/components/LandingPage'
 import SideBar from './Misc/components/SideBar'
+import RightSideBar from './Misc/components/RightSideBar'
 import LoginPage from './Views/components/LoginPage'
 import SignupPage from './Views/components/SignupPage'
 import Logout from './Misc/components/Logout'
@@ -54,7 +55,6 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <SideBar />
-
         <main>
           <Routes>
             {APP_SPECS.map((e) => {
@@ -81,6 +81,7 @@ const App = () => {
             <Route path="*" element={<ErrorPage {...httpErrors[404]} />} />
           </Routes>
         </main>
+        <RightSideBar />
       </BrowserRouter>
     </div>
   )
