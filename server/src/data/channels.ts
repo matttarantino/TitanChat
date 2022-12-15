@@ -2,6 +2,14 @@ import { getChannelsCollection } from './config/mongoCollections'
 import { ObjectId } from 'mongodb'
 import { areValidStrings } from '../utils/errors'
 
+export const getAllChannels = async (): Promise<Array<ChannelsResponse>> => {
+  const channelsCollection = await getChannelsCollection()
+  return (await channelsCollection
+    .find({})
+    .map((e) => ({ ...e, _id: String(e._id) }))
+    .toArray()) as any
+}
+
 export const getChannelById = async (channelId: string): Promise<PublicChannel | null> => {
   let channelIdObj
 

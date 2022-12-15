@@ -1,16 +1,15 @@
 import { Router } from 'express'
-import { getChannelById } from '../data/channels'
+import { getAllChannels, getChannelById } from '../data/channels'
 import { areValidStrings } from '../utils/errors'
 import { ensureAuthenticated } from '../middleware/auth'
 
 const channelRouter = Router()
 
-channelRouter.get('/', async (req, res) => {
-  return res.status(200).json([]);
+channelRouter.get('/', ensureAuthenticated, async (req, res) => {
+  return res.status(200).json(await getAllChannels());
 })
 
-channelRouter.get('/:channelId', ensureAuthenticated, async (req, res) => {
-  const { channelId } = req.params as any
+channelRouter.get('/:channelId', ensureAuthenticated, async ({ params: { channelId } }, res) => {
 
   // error check
   try {
