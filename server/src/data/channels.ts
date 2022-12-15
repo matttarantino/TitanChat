@@ -1,6 +1,33 @@
 import { getChannelsCollection } from './config/mongoCollections'
 import { ObjectId } from 'mongodb'
-import { areValidStrings } from '../utils/errors'
+import { isValidChannelName, areValidStrings } from '../utils/errors'
+
+export const createChannel = async (
+  channel: ChannelRegistrationInfo
+): Promise<PublicChannel> => {
+  // error check
+  try {
+    isValidChannelName(channel.name)
+  } catch (err) {
+    throw `DB Error: ${String(err)}`
+  }
+
+  // check if username exists
+  const channelNameLower = channel.name.toLowerCase()
+  const channelsCollection = await getChannelsCollection()
+  if (await channelsCollection.findOne({ channelNameLower }))
+    throw 'Channel is already taken.'
+
+  channel.name = channelNameLower;
+  // add new entry to db
+  const retval = await channelsCollection.insertOne({
+    ...channel,
+    messages: [],
+  })
+  if (!retval.acknowledged)
+    throw `DB Error: failed to add channel ${String(channel)}.`
+  return (await getChannelById(String(retval.insertedId))) as PublicChannel
+}
 
 export const getAllChannels = async (): Promise<Array<ChannelsResponse>> => {
   const channelsCollection = await getChannelsCollection()
@@ -26,3 +53,5 @@ export const getChannelById = async (channelId: string): Promise<PublicChannel |
   const channel = (await channelsCollection.findOne({ _id: channelIdObj })) as any
   return channel ? channel : null
 }
+
+
