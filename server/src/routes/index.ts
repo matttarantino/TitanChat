@@ -7,7 +7,7 @@ const routers: Array<{
   route: string
   router: Router
 }> = [
-  { route: 'user', router: userRouter },
+  { route: 'users', router: userRouter },
   { route: 'auth', router: authRouter },
   { route: 'channels', router: channelRouter },
 ]
