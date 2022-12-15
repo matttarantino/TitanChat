@@ -23,10 +23,10 @@ const ChatForm = () => {
             }}
           />
         </label>
+        <button id="ChatFormButton" onClick={sendMessage}>
+          Send
+        </button>
       </div>
-      <button id="ChatFormButton" onClick={sendMessage}>
-        Send
-      </button>
     </form>
   )
 }
