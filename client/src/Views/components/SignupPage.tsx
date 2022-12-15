@@ -1,11 +1,11 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { reduceFormSpecs } from '../../utils/forms'
 import { signup } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
 import '../styles/signupPage.scss'
-import { Link } from 'react-router-dom'
 
 const SIGNUP_SPECS: SignupFormSpecs = {
   username: {
