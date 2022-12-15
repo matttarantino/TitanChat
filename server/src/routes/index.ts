@@ -1,12 +1,13 @@
 import { Express, Router } from 'express'
+import authRouter from './auth'
+import userRouter from './users'
 
 const routers: Array<{
   route: string
   router: Router
 }> = [
-  // { route: 'user', router: userRouter },
-  // { route: 'restaurants', router: restaurantRouter },
-  // { route: 'auth', router: authRouter },
+  { route: 'user', router: userRouter },
+  { route: 'auth', router: authRouter },
 ]
 
 const configRoutes = (app: Express) => {
