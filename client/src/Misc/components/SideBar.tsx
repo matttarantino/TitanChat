@@ -115,6 +115,8 @@ const SideBar = () => {
           Channel SideBar
           <div id="channelSideBar">{channelList}</div>
           <div id="dmsSideBar">{dmsList}</div>
+          <br />
+          <Link to="/logout">Logout</Link>
         </nav>
       )
     }
