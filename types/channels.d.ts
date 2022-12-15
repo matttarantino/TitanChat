@@ -28,13 +28,10 @@ type PublicChannel = {
 
 /**
  * @author matttarantino
- * @description the data to create a public channel . See
+ * @description the data to create a public channel. See
  *              {@link PublicChannel} for param descriptions.
  */
-type ChannelRegistrationInfo = Omit<
-  PublicChannel,
-  '_id' | 'messages'
->
+type ChannelRegistrationInfo = Omit<PublicChannel, '_id' | 'messages'>
 
 /**
  * @author rgorai
