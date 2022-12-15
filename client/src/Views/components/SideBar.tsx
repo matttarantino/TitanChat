@@ -88,7 +88,7 @@ const SideBar = () => {
   channelList = ChannelSideBarData.map((elem) => {
     return (
       <Link to={`/channels/${elem.channelId}`}>
-        {<AiIcons.AiFillWechat />} {elem.label}
+        {elem.icon} {elem.label}
       </Link>
     )
   })
@@ -96,7 +96,7 @@ const SideBar = () => {
   dmsList = DmsSideBarData.map((elem) => {
     return (
       <Link to={`/dms/${elem.channelId}`}>
-        {<CgIcons.CgProfile />} {elem.label}
+        {elem.icon} {elem.label}
       </Link>
     )
   })
