@@ -12,7 +12,7 @@ export const createChannel = async (
     throw `DB Error: ${String(err)}`
   }
 
-  // check if username exists
+  // check if channel name exists
   const channelNameLower = channel.name.toLowerCase()
   const channelsCollection = await getChannelsCollection()
   if (await channelsCollection.findOne({ channelNameLower }))
@@ -29,12 +29,12 @@ export const createChannel = async (
   return (await getChannelById(String(retval.insertedId))) as PublicChannel
 }
 
-export const getAllChannels = async (): Promise<Array<ChannelsResponse>> => {
+export const getAllChannels = async (): Promise<ChannelsResponse> => {
   const channelsCollection = await getChannelsCollection()
-  return (await channelsCollection
+  return await channelsCollection
     .find({})
-    .map((e) => ({ ...e, _id: String(e._id) }))
-    .toArray()) as any
+    .map((e) => ({ label: e.name, channelId: String(e._id) }))
+    .toArray()
 }
 
 export const getChannelById = async (

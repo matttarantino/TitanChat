@@ -25,3 +25,13 @@ code {
     'Courier New',
     monospace;
 }
+
+.App {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+
+  main {
+    flex-grow: 1;
+  }
+}

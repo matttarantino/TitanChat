@@ -33,7 +33,7 @@ export const isValidChannelName = (channelName: any) => {
   areValidStrings({ channelName })
 
   if (channelName.length < 4)
-    throw 'Channel name must be at least 6 characters.'
+    throw 'Channel name must be at least 4 characters.'
 }
 
 export const isValidUserName = (username: any) => {
