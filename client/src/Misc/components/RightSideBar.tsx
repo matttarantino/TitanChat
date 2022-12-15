@@ -24,13 +24,14 @@ const RightSideBar = () => {
   }, [])
 
   usersList = userData.map((user) => {
-    return (
-      <div>
-        <Link to={`/dms/${user.username}`} key={user._id}>
-          {user.username}
-        </Link>
-      </div>
-    )
+    if (authInfo.authenticated && user.username != authInfo.username)
+      return (
+        <div>
+          <Link to={`/dms/${user.username}`} key={user._id}>
+            {user.username}
+          </Link>
+        </div>
+      )
   })
 
   if (authInfo.authenticated)
