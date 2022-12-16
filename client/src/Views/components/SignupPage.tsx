@@ -77,8 +77,8 @@ const SignupPage = () => {
           window.location.reload()
         })
         .catch(({ response }) => {
-          console.error('signup error', response)
-          setSignupError(response.data)
+          if (response.status == 409) setSignupError(response.data)
+          else console.error('signup error', response)
         })
   }
 

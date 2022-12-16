@@ -5,4 +5,9 @@
   width: 15rem;
   background-color: #e7e7e7;
   overflow-y: auto;
+
+  .channel-list {
+    display: flex;
+    flex-direction: column;
+  }
 }

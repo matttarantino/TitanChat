@@ -27,9 +27,9 @@ io.on('connection', (socket) => {
   //       .emit('joined_channel', { username: username, channel: channel })
   //   })
 
-  socket.on('message', (username, channel, message) => {
+  socket.on('message', (messageData: Message) => {
     // in(channel)
-    io.sockets.emit('message', { name: username, message: message })
+    io.sockets.emit('message', { messageData })
   })
 
   //   socket.on('left_channel', (username, channel) => {

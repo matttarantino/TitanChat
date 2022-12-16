@@ -7,6 +7,11 @@ export const getUserProfile = () =>
 export const updateUserProfile = (userData: UserData) =>
   axios.put('/api/user/profile', userData, { headers: authHeader() })
 
-export const GetAllUsers = () =>
+export const getAllUsers = () =>
   axios.get('/api/users', { headers: authHeader() })
-// add other protected endpoints here
+
+export const getPublicChannels = () =>
+  axios.get('/api/channels/public', { headers: authHeader() })
+
+export const getPublicChannelInfo = (channelId: string) =>
+  axios.get('/api/channels/public/' + channelId, { headers: authHeader() })

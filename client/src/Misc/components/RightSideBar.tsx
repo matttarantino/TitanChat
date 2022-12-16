@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useStore } from '../../services/appStore'
-import { GetAllUsers } from '../../services/protectedService'
+import { getAllUsers } from '../../services/privateServices'
 import '../styles/rightSideBar.scss'
 
 const RightSideBar = () => {
@@ -14,7 +14,7 @@ const RightSideBar = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data } = await GetAllUsers()
+        const { data } = await getAllUsers()
         setUserData(data)
       } catch (e) {
         console.log(e)

@@ -1,94 +1,92 @@
 import '../styles/chatForm.scss'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { v4 as uuidv4 } from 'uuid'
-import { io, Socket } from 'socket.io-client'
-import { uploadFile } from '../../services/s3Service'
+import { BUCKET_URL, uploadFile } from '../../services/s3Service'
+import { useStore } from '../../services/appStore'
+import { emitMessage } from '../../services/sockets'
 
-const ChatForm = () => {
+type Props = {
+  channelId: string
+}
+
+const ChatForm = (props: Props) => {
+  const {
+    store: { authInfo },
+  } = useStore()
   const [message, setMessage] = useState('')
   const [image, setImage] = useState<File | null>(null)
-  const [inputError, setInputError] = useState('')
+  const imageInputRef = useRef<HTMLInputElement>(null)
 
   const sendMessage = () => {
+    // send message to server
+  }
+
+  const onSubmit = (ev: any) => {
+    ev.preventDefault()
     // Socket Stuff
 
-    if (message.trim().length === 0 && !image)
-      return setInputError('You must provide a message or image.')
+    if (authInfo.authenticated) {
+      const newMessage: Message = {
+        _id: uuidv4(),
+        authorName: authInfo.username,
+        channelId: props.channelId,
+        date: new Date(),
+        text: message.trim().length > 0 ? message.trim() : null,
+        imageUrl: image ? `${BUCKET_URL}/channels/${uuidv4()}` : null,
+      }
 
-    if (image) {
-      const imagePath = uuidv4()
-      uploadFile(image, imagePath)
-        .then((res) => {
-          console.log('upload success', res)
-        })
-        .catch((err) => {
-          console.error('aws upload error', err)
-        })
+      if (image && newMessage.imageUrl) {
+        const imagePath = uuidv4()
+        uploadFile(image, imagePath)
+          .then((res) => {
+            console.log('upload success', res)
+            emitMessage(newMessage)
+
+            // reset inputs
+            setMessage('')
+            setImage(null)
+            ;(imageInputRef.current as HTMLInputElement).value = ''
+          })
+          .catch((err) => {
+            console.error('aws upload error', err)
+          })
+      } else if (newMessage.text) {
+        emitMessage(newMessage)
+        setMessage('')
+      }
     }
   }
 
-  useEffect(() => {
-    console.log('image', image)
-  }, [image])
-
   return (
-    <Form className="message-form">
+    <Form className="chat-form" onSubmit={onSubmit}>
       <FloatingLabel label="Send a message" controlId="message-input">
         <Form.Control
-          className="message-input"
+          className="chat-input"
           as="textarea"
           onChange={(event) => {
             setMessage(event.target.value)
           }}
+          value={message}
           placeholder="placeholder"
         />
       </FloatingLabel>
-      <div className="message-button-bar">
+
+      <div className="chat-button-bar">
         <Form.Control
           className="file-input"
           type="file"
           accept="image/*"
           onChange={(ev) => setImage((ev.target as any).files[0])}
+          ref={imageInputRef}
         />
-
-        {inputError && (
-          <Form.Group className="form-error">{inputError}</Form.Group>
-        )}
 
         <Button
-          onClick={sendMessage}
-          disabled={message.trim().length === 0 && !image}
+          type="submit"
+          disabled={(message ? message.trim().length === 0 : true) && !image}
         >
-          {/* const socket: Socket<any> = io("ws://localhost:4000");
-
-  const sendMessage = (e: any) => {
-    e.preventDefault()
-    socket.emit('message', 'matttarantino', 'general', input)
-  }
-
-  useEffect(() => {
-    socket.on("message", (a: any, b: any, c: any) => {
-      console.log(a, b, c)
-    });
-  }, [socket]);
-
-  return (
-    <form>
-      <div className="input-group mb-3" id="ChatFormGroup">
-        <input
-          type="text"
-          id="ChatFormInput"
-          className="form-control"
-          placeholder="Message"
-          required
-          onChange={(event) => {
-            setInput(event.target.value)
-          }}
-        />
-        <button className="btn btn-outline-primary" type="button" id="ChatFormButton" onClick={sendMessage}> */}
           Send
         </Button>
       </div>

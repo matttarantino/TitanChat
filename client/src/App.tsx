@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
 import ErrorPage from './Misc/components/ErrorPage'
 import { httpErrors } from './utils/errors'
 import ChannelPage from './Views/components/ChannelPage'
@@ -10,6 +11,7 @@ import LoginPage from './Views/components/LoginPage'
 import SignupPage from './Views/components/SignupPage'
 import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
+import { useStore } from './services/appStore'
 
 const APP_SPECS: Array<AppSpec> = [
   {
@@ -26,7 +28,7 @@ const APP_SPECS: Array<AppSpec> = [
   },
   {
     name: 'Direct Messages',
-    path: '/dms/:dmId',
+    path: '/direct/:dmId',
     element: <DmPage />,
     ensureAuthenticated: true,
   },
@@ -51,6 +53,12 @@ const APP_SPECS: Array<AppSpec> = [
 ]
 
 const App = () => {
+  const { store } = useStore()
+
+  useEffect(() => {
+    console.log({ store })
+  }, [store])
+
   return (
     <div className="App">
       <BrowserRouter>

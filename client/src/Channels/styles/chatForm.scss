@@ -1,15 +1,15 @@
-.message-form {
+.chat-form {
   display: flex;
   flex-direction: column;
-  padding: 0 1em 2em;
+  padding: 0 1em 1em;
 
-  .message-input {
+  .chat-input {
     width: 100%;
     min-height: 7em;
     max-height: 15em;
   }
 
-  .message-button-bar {
+  .chat-button-bar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -21,7 +21,7 @@
     }
 
     .file-input {
-      width: 20em;
+      width: 35vw;
       height: min-content;
     }
   }

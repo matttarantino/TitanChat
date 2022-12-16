@@ -59,8 +59,9 @@ const LoginPage = () => {
         window.location.reload()
       })
       .catch(({ response }) => {
-        console.error('login error', response)
-        setLoginError('Invalid username or password')
+        if (response.status === 401)
+          setLoginError('Invalid username or password')
+        else console.error('login error', response)
       })
   }
 
