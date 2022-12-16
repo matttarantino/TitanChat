@@ -35,7 +35,9 @@ const SideBar = () => {
   const [newChannelName, setNewChannelName] = useState('')
   const handleClose = () => setShow(false)
   const handleOpen = () => setShow(true)
+
   const addNewChannel = () => {
+    // logic to create new Channel with new channel Name
     handleClose()
   }
 
