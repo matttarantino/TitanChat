@@ -13,11 +13,11 @@ const LandingPage = () => {
         walks of life and is free to use.
       </p>
       <div className="test">
-        <Link className="btn btn-primary" to="/login">
+        <Link className="btn btn-primary home-link" to="/login">
           Login
         </Link>
         <br />
-        <Link className="btn btn-primary" to="/signup">
+        <Link className="btn btn-primary home-link" to="/signup">
           Sign-up
         </Link>
         <br />

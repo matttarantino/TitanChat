@@ -9,10 +9,10 @@ const app = express()
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+})
 
 io.on('connection', (socket) => {
   // emit status update
@@ -27,9 +27,9 @@ io.on('connection', (socket) => {
   //       .emit('joined_channel', { username: username, channel: channel })
   //   })
 
-  socket.on('message', (username, channel, message) => {
-    //in(channel)
-    io.sockets.emit('message', { name: username, message: message })
+  socket.on('message', (messageData: Message) => {
+    // in(channel)
+    io.sockets.emit('message', { messageData })
   })
 
   //   socket.on('left_channel', (username, channel) => {

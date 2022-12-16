@@ -13,4 +13,4 @@ const getCollectionFn = (collection: string) => {
 }
 
 export const getUsersCollection = getCollectionFn('users')
-export const getChannelsCollection = getCollectionFn('channels')
+export const getPublicChannelsCollection = getCollectionFn('public-channels')

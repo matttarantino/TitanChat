@@ -1,7 +1,7 @@
 import { Express, Router } from 'express'
 import authRouter from './auth'
 import userRouter from './users'
-import channelRouter from './channels'
+import publicChannelsRouter from './publicChannels'
 
 const routers: Array<{
   route: string
@@ -9,7 +9,8 @@ const routers: Array<{
 }> = [
   { route: 'users', router: userRouter },
   { route: 'auth', router: authRouter },
-  { route: 'channels', router: channelRouter },
+  { route: 'channels/public', router: publicChannelsRouter },
+  // { route: 'channels/direct', router: directChanellRouter },
 ]
 
 const configRoutes = (app: Express) => {

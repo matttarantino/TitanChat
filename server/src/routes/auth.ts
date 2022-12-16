@@ -26,8 +26,9 @@ authRouter.post('/signup', ensureNotAuthenticated, async (req, res) => {
   // create new user
   try {
     return res.status(200).json(await createUser(user))
-  } catch (err) {
-    return res.status(500).send(String(err))
+  } catch (err: any) {
+    if (err.type === 'exists') return res.status(409).send(err.message)
+    else return res.status(500).send(String(err))
   }
 })
 

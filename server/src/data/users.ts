@@ -20,7 +20,7 @@ export const createUser = async (
   const usernameLower = user.username.toLowerCase()
   const usersCollection = await getUsersCollection()
   if (await usersCollection.findOne({ usernameLower }))
-    throw 'Username is taken.'
+    throw { type: 'exists', message: 'Username is taken.' }
 
   // hash password
   user.password = bcrypt.hashSync(user.password, SALT_ROUNDS)
