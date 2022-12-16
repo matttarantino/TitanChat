@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ErrorPage from '../../Misc/components/ErrorPage'
 import Loading from '../../Misc/components/Loading'
+import ChatForm from '../../Channels/components/ChatForm'
 import { areValidStrings, httpErrors } from '../../utils/errors'
 import '../styles/channelPage.scss'
 
@@ -28,7 +29,10 @@ const ChannelPage = () => {
   ) : pageData ? (
     <div>channel page component</div>
   ) : (
-    <Loading />
+    <div>
+      <Loading />
+      <ChatForm />
+    </div>
   )
 }
 
