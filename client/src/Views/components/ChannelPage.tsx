@@ -29,8 +29,9 @@ const ChannelPage = () => {
   ) : pageData ? (
     <div>channel page component</div>
   ) : (
-    <div>
+    <div className='container'>
       <Loading />
+      <hr />
       <ChatForm />
     </div>
   )
