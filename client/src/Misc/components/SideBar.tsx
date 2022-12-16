@@ -185,14 +185,14 @@ const SideBar = () => {
             <br />
             <div className="d-grid gap-2">
               <Link
-                className="btn btn-outline-secondary"
+                className="btn btn-outline-dark"
                 to="/profile"
                 type="button"
               >
                 Edit Profile
               </Link>
               <Link
-                className="btn btn-outline-danger"
+                className="btn btn-danger"
                 to="/logout"
                 type="button"
               >
