@@ -42,9 +42,7 @@ const ChannelPage = () => {
       <ChatForm channelId={channelId} />
     </div>
   ) : (
-    <div>
-      <Loading />
-    </div>
+    <Loading />
   )
 }
 
