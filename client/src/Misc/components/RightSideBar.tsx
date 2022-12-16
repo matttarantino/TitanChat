@@ -9,7 +9,7 @@ const RightSideBar = () => {
     store: { authInfo },
   } = useStore()
   const [userData, setUserData] = useState<UserListResponse>([])
-  const [Ispublic, setPublic] = useState(true)
+  const [isPublic, setPublic] = useState(true)
   let usersList = null
   const location = useLocation()
   useEffect(() => {
@@ -40,7 +40,7 @@ const RightSideBar = () => {
       )
   })
 
-  if (authInfo.authenticated && Ispublic)
+  if (authInfo.authenticated && isPublic)
     return (
       <nav className="sidebar-container">
         <div className="container">
