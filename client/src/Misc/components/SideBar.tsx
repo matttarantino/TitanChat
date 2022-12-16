@@ -8,8 +8,12 @@ import * as FaIcons from 'react-icons/fa'
 import * as AiIcons from 'react-icons/ai'
 import * as BsIcons from 'react-icons/bs'
 import * as CgIcons from 'react-icons/cg'
-import { useStore } from '../../services/appStore'
+
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form'
 import { getPublicChannels } from '../../services/privateServices'
+import { useStore } from '../../services/appStore'
 
 const SideBar = () => {
   const {
@@ -25,6 +29,17 @@ const SideBar = () => {
   // change initial state of error to "true" when server is integrated
   const [errorChannels, setErrorChannels] = useState(false)
   const [errorDms, setErrorDms] = useState(false)
+
+  // Modal Stuff for "Add New Channel"
+  const [show, setShow] = useState(false)
+  const [newChannelName, setNewChannelName] = useState('')
+  const handleClose = () => setShow(false)
+  const handleOpen = () => setShow(true)
+
+  const addNewChannel = () => {
+    // logic to create new Channel with new channel Name
+    handleClose()
+  }
 
   let channelList = null
   let dmsList = null
@@ -123,13 +138,45 @@ const SideBar = () => {
             </ul>
             <br />
             <div className="d-grid">
-              <button
-                className="btn btn-success"
+              <Button
+                onClick={handleOpen}
+                variant="success"
                 type="button"
                 id="newChannelButton"
               >
-                Add new channel
-              </button>
+                Add New Channel
+              </Button>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title> Add New Channel</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label>New Channel Name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Channel Name"
+                        autoFocus
+                        onChange={(event) => {
+                          setNewChannelName(event.target.value)
+                        }}
+                      />
+                    </Form.Group>
+                  </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Close
+                  </Button>
+                  <Button variant="primary" onClick={addNewChannel}>
+                    Add
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
             <br />
             DMs
@@ -138,7 +185,11 @@ const SideBar = () => {
             </ul>
             <br />
             <div className="d-grid gap-2">
-              <Link className="btn btn-outline-dark" to="/profile" type="button">
+              <Link
+                className="btn btn-outline-dark"
+                to="/profile"
+                type="button"
+              >
                 Edit Profile
               </Link>
               <Link className="btn btn-danger" to="/logout" type="button">
