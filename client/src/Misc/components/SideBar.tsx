@@ -137,7 +137,6 @@ const SideBar = () => {
             <br />
             <div className="d-grid">
               <Button
-                variant="primary"
                 onClick={handleOpen}
                 className="btn btn-success"
                 type="button"
