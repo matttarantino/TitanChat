@@ -1,12 +1,22 @@
 import '../styles/chatForm.scss'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { io, Socket } from 'socket.io-client'
 
 const ChatForm = () => {
   const [input, setInput] = useState('')
 
-  const sendMessage = () => {
-    // Socket Stuff
+  const socket: Socket<any> = io("ws://localhost:4000");
+
+  const sendMessage = (e: any) => {
+    e.preventDefault()
+    socket.emit('message', 'matttarantino', 'general', input)
   }
+
+  useEffect(() => {
+    socket.on("message", (a: any, b: any, c: any) => {
+      console.log(a, b, c)
+    });
+  }, [socket]);
 
   return (
     <form>
