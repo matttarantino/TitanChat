@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useStore } from '../../services/appStore'
 import { getAllUsers } from '../../services/privateServices'
 import '../styles/rightSideBar.scss'
@@ -9,19 +9,21 @@ const RightSideBar = () => {
     store: { authInfo },
   } = useStore()
   const [userData, setUserData] = useState<UserListResponse>([])
+  const [Ispublic, setPublic] = useState(true)
   let usersList = null
-
+  const location = useLocation()
   useEffect(() => {
     async function fetchData() {
       try {
         const { data } = await getAllUsers()
+        setPublic(document.location.href.indexOf('channels') != -1)
         setUserData(data)
       } catch (e) {
         console.log(e)
       }
     }
     if (authInfo.authenticated) fetchData()
-  }, [authInfo.authenticated])
+  }, [authInfo.authenticated, location])
 
   usersList = userData.map((user) => {
     if (authInfo.authenticated && user.username != authInfo.username)
@@ -38,7 +40,7 @@ const RightSideBar = () => {
       )
   })
 
-  if (authInfo.authenticated)
+  if (authInfo.authenticated && Ispublic)
     return (
       <nav className="sidebar-container">
         <div className="container">
