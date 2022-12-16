@@ -1,12 +1,9 @@
 /**
  * @author rgorai
  * @description schema for a message
- * @param channelId id of the channel the message was sent to
- * @param authorName username of the authoring user
+ * @param author id of the user that sent the message
+ * @param text message text
  * @param date full date object detailing when the message was sent
- * @param text message text, if any
- * @param imageUrl url of the image associated with the message, if any
- * @note at least one between text and imageUrl must be present
  */
 type Message = {
   _id: string
