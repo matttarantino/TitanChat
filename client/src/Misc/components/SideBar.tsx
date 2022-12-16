@@ -191,7 +191,11 @@ const SideBar = () => {
               >
                 Edit Profile
               </Link>
-              <Link className="btn btn-danger" to="/logout" type="button">
+              <Link
+                className="btn btn-outline-danger"
+                to="/logout"
+                type="button"
+              >
                 Logout
               </Link>
             </div>
