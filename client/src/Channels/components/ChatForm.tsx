@@ -1,33 +1,41 @@
 import '../styles/chatForm.scss'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { io, Socket } from 'socket.io-client'
 
 const ChatForm = () => {
   const [input, setInput] = useState('')
 
-  const sendMessage = () => {
-    // Socket Stuff
+  const socket: Socket<any> = io("ws://localhost:4000");
+
+  const sendMessage = (e: any) => {
+    e.preventDefault()
+    socket.emit('message', 'matttarantino', 'general', input)
   }
+
+  useEffect(() => {
+    socket.on("message", (a: any, b: any, c: any) => {
+      console.log(a, b, c)
+    });
+  }, [socket]);
 
   return (
     <form>
-      chat form
-      <div id="ChatFormGroup">
-        <label>
-          <input
-            type="text"
-            id="ChatFormInput"
-            placeholder="Message"
-            required
-            onChange={(event) => {
-              setInput(event.target.value)
-            }}
-          />
-        </label>
-        <button id="ChatFormButton" onClick={sendMessage}>
+      <div className="input-group mb-3" id="ChatFormGroup">
+        <input
+          type="text"
+          id="ChatFormInput"
+          className="form-control"
+          placeholder="Message"
+          required
+          onChange={(event) => {
+            setInput(event.target.value)
+          }}
+        />
+        <button className="btn btn-outline-primary" type="button" id="ChatFormButton" onClick={sendMessage}>
           Send
         </button>
       </div>
-    </form>
+    </form >
   )
 }
 
