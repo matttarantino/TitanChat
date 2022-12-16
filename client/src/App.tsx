@@ -55,6 +55,7 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <SideBar />
+
         <main>
           <Routes>
             {APP_SPECS.map((e) => {

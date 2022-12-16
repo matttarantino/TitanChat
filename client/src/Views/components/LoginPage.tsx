@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
+import { Link } from 'react-router-dom'
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { login } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
 import { reduceFormSpecs } from '../../utils/forms'
-import '../styles/loginPage.scss'
-import { Link } from 'react-router-dom'
 
 const LOGIN_SPECS: LoginFormSpecs = {
   username: {
@@ -65,38 +65,42 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="login-form-container">
+    <div className="form-container">
+      <h1>Login</h1>
+
       <Form id="login-form" onSubmit={onFormSubmit}>
         {LOGIN_KEYS.map((currKey) => {
           const currSpecs = LOGIN_SPECS[currKey]
           const inputId = `login-${currKey}`
 
           return (
-            <Form.Group className="mb-3" key={inputId}>
-              <Form.Label htmlFor={inputId}>{currSpecs.label}</Form.Label>
-              <Form.Control
-                {...currSpecs.props}
-                id={inputId}
-                type={currSpecs.type}
-                onChange={(ev) => onInputChange(currKey, ev.target.value)}
-              />
-            </Form.Group>
+            <Fragment key={inputId}>
+              <FloatingLabel
+                className="mb-4"
+                label={currSpecs.label}
+                controlId={inputId}
+              >
+                <Form.Control
+                  {...currSpecs.props}
+                  type={currSpecs.type}
+                  onChange={(ev) => onInputChange(currKey, ev.target.value)}
+                />
+              </FloatingLabel>
+            </Fragment>
           )
         })}
 
         {loginError && (
-          <Form.Group className="mb-3 login-form-error">
-            {loginError}
-          </Form.Group>
+          <Form.Group className="mb-3 form-error">{loginError}</Form.Group>
         )}
 
         <Button
-          className="mt-2 mb-4"
+          className="mb-5"
           variant="primary"
           type="submit"
           form="login-form"
         >
-          Login
+          Enter
         </Button>
       </Form>
 

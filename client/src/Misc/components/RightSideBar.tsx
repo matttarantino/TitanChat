@@ -20,8 +20,8 @@ const RightSideBar = () => {
         console.log(e)
       }
     }
-    fetchData()
-  }, [])
+    if (authInfo.authenticated) fetchData()
+  }, [authInfo.authenticated])
 
   usersList = userData.map((user) => {
     if (authInfo.authenticated && user.username != authInfo.username)

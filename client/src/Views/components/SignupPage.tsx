@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { reduceFormSpecs } from '../../utils/forms'
 import { signup } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
-import '../styles/signupPage.scss'
 
 const SIGNUP_SPECS: SignupFormSpecs = {
   username: {
@@ -83,38 +83,38 @@ const SignupPage = () => {
   }
 
   return (
-    <div className="signup-form-container">
+    <div className="form-container">
+      <h1>Sign Up</h1>
+
       <Form id="signup-form" onSubmit={onFormSubmit}>
         {SIGNUP_KEYS.map((currKey) => {
           const currSpecs = SIGNUP_SPECS[currKey]
           const inputId = `user-${currKey}`
 
           return (
-            <Form.Group className="mb-3" key={inputId}>
-              <Form.Label htmlFor={inputId}>{currSpecs.label}</Form.Label>
-              <Form.Control
-                {...currSpecs.props}
-                id={inputId}
-                type={currSpecs.type}
-                onChange={(ev) => onInputChange(currKey, ev.target.value)}
-              />
-              {formErrors[currKey] && (
-                <span className="signup-field-error">
-                  {formErrors[currKey]}
-                </span>
-              )}
-            </Form.Group>
+            <Fragment key={inputId}>
+              <Form.Group className="mb-4">
+                <FloatingLabel label={currSpecs.label} controlId={inputId}>
+                  <Form.Control
+                    {...currSpecs.props}
+                    type={currSpecs.type}
+                    onChange={(ev) => onInputChange(currKey, ev.target.value)}
+                  />
+                </FloatingLabel>
+                {formErrors[currKey] && (
+                  <span className="field-error">{formErrors[currKey]}</span>
+                )}
+              </Form.Group>
+            </Fragment>
           )
         })}
 
         {signupError && (
-          <Form.Group className="mb-3 signup-form-error">
-            {signupError}
-          </Form.Group>
+          <Form.Group className="mb-3 form-error">{signupError}</Form.Group>
         )}
 
         <Button
-          className="mt-2 mb-4"
+          className="mb-5"
           variant="primary"
           type="submit"
           form="signup-form"
