@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import ChatForm from '../../Channels/components/ChatForm'
 import ErrorPage from '../../Misc/components/ErrorPage'
 import Loading from '../../Misc/components/Loading'
+import ChatForm from '../../Channels/components/ChatForm'
 import { areValidStrings, httpErrors } from '../../utils/errors'
 import '../styles/channelPage.scss'
 
@@ -33,7 +34,10 @@ const ChannelPage = () => {
       <ChatForm />
     </div>
   ) : (
-    <Loading />
+    <div>
+      <Loading />
+      <ChatForm />
+    </div>
   )
 }
 

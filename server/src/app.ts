@@ -7,32 +7,38 @@ import configRoutes from './routes/index'
 
 const app = express()
 const httpServer = createServer(app)
-const io = new Server(httpServer, {})
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+})
 
 io.on('connection', (socket) => {
   // emit status update
   console.log('new client connected', socket.id)
   // online/offline indicators
 
-  socket.on('join_channel', (username, channel) => {
-    console.log(`${username} has joined ${channel}.`)
-    socket.join(channel)
-    io.sockets
-      .in(channel)
-      .emit('joined_channel', { username: username, channel: channel })
-  })
+  //   socket.on('join_channel', (username, channel) => {
+  //     console.log(`${username} has joined ${channel}.`)
+  //     socket.join(channel)
+  //     io.sockets
+  //       .in(channel)
+  //       .emit('joined_channel', { username: username, channel: channel })
+  //   })
 
   socket.on('message', (username, channel, message) => {
-    io.sockets.in(channel).emit('message', { name: username, message: message })
+    // in(channel)
+    io.sockets.emit('message', { name: username, message: message })
   })
 
-  socket.on('left_channel', (username, channel) => {
-    console.log(`${username} has left ${channel}.`)
-    socket.leave(channel)
-    io.sockets
-      .in(channel)
-      .emit('left_channel', { username: username, channel: channel })
-  })
+  //   socket.on('left_channel', (username, channel) => {
+  //     console.log(`${username} has left ${channel}.`)
+  //     socket.leave(channel)
+  //     io.sockets
+  //       .in(channel)
+  //       .emit('left_channel', { username: username, channel: channel })
+  //   })
 
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')
@@ -59,6 +65,7 @@ app.get('*', (_, res) => {
 })
 
 const PORT = 3001
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })
