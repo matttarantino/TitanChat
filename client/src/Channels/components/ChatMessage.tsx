@@ -1,5 +1,4 @@
 import '../styles/chatMessage.scss'
-import anon from '../../../public/anon.png'
 
 const ChatMessage = (props: Message) => {
   const convertDateToString = () => {
@@ -31,46 +30,19 @@ const ChatMessage = (props: Message) => {
     return `${month}/${date}/${year} at ${timeString}`
   }
 
-  if (props.imageUrl === null) {
-    return (
-      <div className="ChatMessageBlock">
-        <div className="ChatMessageDate">{convertDateToString()}</div>
-        <div className="ChatMessageProfilePic">
-          <img alt="ProfilePicture" src={anon} />
-        </div>
-        <div className="ChatMessageAuthorName">{props.authorName}</div>
-        <div className="ChatMessageContents">{props.text}</div>
+  return (
+    <div className="ChatMessageBlock">
+      <div className="ChatMessageDate">{convertDateToString()}</div>
+      <div className="ChatMessageProfilePic">
+        <img alt="ProfilePicture" src={process.env.PUBLIC_URL + '/anon.png'} />
       </div>
-    )
-  } else if (props.text === null) {
-    return (
-      <div className="ChatMessageBlock">
-        <div className="ChatMessageDate">{convertDateToString()}</div>
-        <div className="ChatMessageProfilePic">
-          <img alt="ProfilePicture" src={anon} />
-        </div>
-        <div className="ChatMessageAuthorName">{props.authorName}</div>
-        <div className="ChatMessageContents">
-          <img alt="ImageMessage" src={props.imageUrl} />
-        </div>
+      <div className="ChatMessageAuthorName">{props.authorName}</div>
+      <div className="ChatMessageContents">
+        {props.text && <p>{props.text}</p>}
+        {props.imageUrl && <img alt="ImageMessage" src={props.imageUrl} />}
       </div>
-    )
-  } else {
-    return (
-      <div className="ChatMessageBlock">
-        <div className="ChatMessageDate">{convertDateToString()}</div>
-        <div className="ChatMessageProfilePic">
-          <img alt="ProfilePicture" src={anon} />
-        </div>
-        <div className="ChatMessageAuthorName">{props.authorName}</div>
-        <div className="ChatMessageContents">
-          {props.text}
-          <br />
-          <img alt="ImageMessage" src={props.imageUrl} />
-        </div>
-      </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default ChatMessage
