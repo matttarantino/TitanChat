@@ -20,24 +20,22 @@ const ChatForm = () => {
 
   return (
     <form>
-      chat form
-      <div id="ChatFormGroup">
-        <label>
-          <input
-            type="text"
-            id="ChatFormInput"
-            placeholder="Message"
-            required
-            onChange={(event) => {
-              setInput(event.target.value)
-            }}
-          />
-        </label>
-        <button id="ChatFormButton" onClick={sendMessage}>
+      <div className="input-group mb-3" id="ChatFormGroup">
+        <input
+          type="text"
+          id="ChatFormInput"
+          className="form-control"
+          placeholder="Message"
+          required
+          onChange={(event) => {
+            setInput(event.target.value)
+          }}
+        />
+        <button className="btn btn-outline-primary" type="button" id="ChatFormButton" onClick={sendMessage}>
           Send
         </button>
       </div>
-    </form>
+    </form >
   )
 }
 
