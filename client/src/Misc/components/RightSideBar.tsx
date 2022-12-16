@@ -46,12 +46,6 @@ const RightSideBar = () => {
         <div className="container">
           Members
           <ul className="list-group">{usersList}</ul>
-          <br />
-          <div className="d-grid">
-            <Link className="btn btn-primary" to="/logout" type="button">
-              Logout
-            </Link>
-          </div>
         </div>
       </nav>
     )
