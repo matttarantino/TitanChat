@@ -138,7 +138,7 @@ const SideBar = () => {
             <div className="d-grid">
               <Button
                 onClick={handleOpen}
-                className="btn btn-success"
+                variant="success"
                 type="button"
                 id="newChannelButton"
               >
