@@ -39,6 +39,7 @@ const ChatMessage = (props: Message) => {
       <div className="ChatMessageAuthorName">{props.authorName}</div>
       <div className="ChatMessageContents">
         {props.text && <p>{props.text}</p>}
+        <br />
         {props.imageUrl && <img alt="ImageMessage" src={props.imageUrl} />}
       </div>
     </div>
