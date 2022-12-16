@@ -125,9 +125,17 @@ const SideBar = () => {
 
   if (authInfo.authenticated)
     if (loadingChannels || loadingDms) {
-      return <nav>Loading...</nav>
+      return (
+        <nav className="sidebar-container">
+          <div className="container">Loading...</div>
+        </nav>
+      )
     } else if (errorChannels || errorDms) {
-      return <nav>Error Loading Data ...</nav>
+      return (
+        <nav className="sidebar-container">
+          <div className="container">Error Loading Data ...</div>
+        </nav>
+      )
     } else {
       return (
         <nav className="sidebar-container">
