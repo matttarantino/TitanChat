@@ -42,6 +42,16 @@ const SideBar = () => {
       channelId: 'general',
       icon: <AiIcons.AiFillWechat />,
     },
+    {
+      label: 'CS-554',
+      channelId: 'cs554',
+      icon: <AiIcons.AiFillWechat />,
+    },
+    {
+      label: 'Random',
+      channelId: 'random',
+      icon: <AiIcons.AiFillWechat />,
+    },
   ]
 
   const DmsSideBarData = [
@@ -90,17 +100,21 @@ const SideBar = () => {
 
   channelList = ChannelSideBarData.map((elem) => {
     return (
-      <Link to={`/channels/${elem.channelId}`} key={elem.label}>
-        {elem.icon} {elem.label}
-      </Link>
+      <li className="list-group-item">
+        <Link className='text-decoration-none' to={`/channels/${elem.channelId}`} key={elem.label}>
+          {elem.icon} {elem.label}
+        </Link>
+      </li>
     )
   })
 
   dmsList = DmsSideBarData.map((elem) => {
     return (
-      <Link to={`/dms/${elem.channelId}`} key={elem.label}>
-        {elem.icon} {elem.label}
-      </Link>
+      <li className="list-group-item">
+        <Link className='text-decoration-none' to={`/dms/${elem.channelId}`} key={elem.label}>
+          {elem.icon} {elem.label}
+        </Link>
+      </li>
     )
   })
 
@@ -112,9 +126,27 @@ const SideBar = () => {
     } else {
       return (
         <nav className="sidebar-container">
-          Channel SideBar
-          <div id="channelSideBar">{channelList}</div>
-          <div id="dmsSideBar">{dmsList}</div>
+          <div className="container">
+            Channels
+            <ul className="list-group" id="channelSideBar">
+              {channelList}
+            </ul>
+
+            <br />
+
+            <div className="d-grid">
+              <button className="btn btn-primary" type="button" id="newChannelButton">
+                Add new channel
+              </button>
+            </div>
+
+            <br />
+
+            DMs
+            <ul className="list-group" id="dmsSideBar">
+              {dmsList}
+            </ul>
+          </div>
         </nav>
       )
     }
