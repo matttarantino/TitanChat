@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useStore } from '../../services/appStore'
-import { GetAllUsers } from '../../services/protectedService'
+import { getAllUsers } from '../../services/privateServices'
 import '../styles/rightSideBar.scss'
 
 const RightSideBar = () => {
@@ -9,38 +9,44 @@ const RightSideBar = () => {
     store: { authInfo },
   } = useStore()
   const [userData, setUserData] = useState<UserListResponse>([])
+  const [isPublic, setPublic] = useState(true)
   let usersList = null
-
+  const location = useLocation()
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data } = await GetAllUsers()
+        const { data } = await getAllUsers()
+        setPublic(document.location.href.indexOf('channels') != -1)
         setUserData(data)
       } catch (e) {
         console.log(e)
       }
     }
-    fetchData()
-  }, [])
+    if (authInfo.authenticated) fetchData()
+  }, [authInfo.authenticated, location])
 
   usersList = userData.map((user) => {
     if (authInfo.authenticated && user.username != authInfo.username)
       return (
-        <div>
-          <Link to={`/dms/${user.username}`} key={user._id}>
+        <li className="list-group-item">
+          <Link
+            className="text-decoration-none"
+            to={`/dms/${user.username}`}
+            key={user._id}
+          >
             {user.username}
           </Link>
-        </div>
+        </li>
       )
   })
 
-  if (authInfo.authenticated)
+  if (authInfo.authenticated && isPublic)
     return (
       <nav className="sidebar-container">
-        Right SideBar
-        <div id="channelSideBar">{usersList}</div>
-        <br />
-        <Link to="/logout">Logout</Link>
+        <div className="container">
+          Members
+          <ul className="list-group">{usersList}</ul>
+        </div>
       </nav>
     )
   else return <></>

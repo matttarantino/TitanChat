@@ -1,0 +1,11 @@
+.channel-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+
+  .message-container {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+}

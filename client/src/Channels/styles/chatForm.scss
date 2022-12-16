@@ -1,0 +1,28 @@
+.chat-form {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1em 1em;
+
+  .chat-input {
+    width: 100%;
+    min-height: 7em;
+    max-height: 15em;
+  }
+
+  .chat-button-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+
+    .form-error {
+      font-size: 0.95em;
+    }
+
+    .file-input {
+      width: 35vw;
+      height: min-content;
+    }
+  }
+}

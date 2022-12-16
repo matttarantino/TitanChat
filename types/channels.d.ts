@@ -1,12 +1,9 @@
 /**
  * @author rgorai
  * @description schema for a message
- * @param channelId id of the channel the message was sent to
- * @param authorName username of the authoring user
- * @param date date that the message was sent
- * @param text message text, if any
- * @param imageUrl url of the image associated with the message, if any
- * @note at least one between text and imageUrl must be present
+ * @param author id of the user that sent the message
+ * @param text message text
+ * @param date full date object detailing when the message was sent
  */
 type Message = {
   _id: string
@@ -25,7 +22,7 @@ type Message = {
  * @param messages array of {@link Message}s that are part of this channel
  */
 type PublicChannel = {
-  _id: string
+  _id: ObjectId
   name: string
   creatorId: string
   messages: Array<Message>
@@ -36,7 +33,7 @@ type PublicChannel = {
  * @description the data to create a public channel. See
  *              {@link PublicChannel} for param descriptions.
  */
-type ChannelRegistrationInfo = Omit<PublicChannel, '_id' | 'messages'>
+type PublicChannelRegistrationInfo = Omit<PublicChannel, '_id' | 'messages'>
 
 /**
  * @author rgorai
@@ -58,7 +55,7 @@ type DmChannel = {
 
 /**
  * @author rgorai
- * @description response schema for requesting all channels
+ * @description response schema for requesting all public/direct channels
  * @param label channel's display label
  * @param channelId channels id to link to
  */
