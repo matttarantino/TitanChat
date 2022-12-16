@@ -26,21 +26,33 @@ const RightSideBar = () => {
   usersList = userData.map((user) => {
     if (authInfo.authenticated && user.username != authInfo.username)
       return (
-        <div>
-          <Link to={`/dms/${user.username}`} key={user._id}>
+        <li className="list-group-item">
+          <Link
+            className="text-decoration-none"
+            to={`/dms/${user.username}`}
+            key={user._id}
+          >
             {user.username}
           </Link>
-        </div>
+        </li>
       )
   })
 
   if (authInfo.authenticated)
     return (
       <nav className="sidebar-container">
-        Right SideBar
-        <div id="channelSideBar">{usersList}</div>
-        <br />
-        <Link to="/logout">Logout</Link>
+        <div className="container">
+          Members
+          <ul className="list-group" id="channelSideBar">
+            {usersList}
+          </ul>
+          <br />
+          <div className="d-grid">
+            <Link className="btn btn-primary" to="/logout" type="button">
+              Logout
+            </Link>
+          </div>
+        </div>
       </nav>
     )
   else return <></>
