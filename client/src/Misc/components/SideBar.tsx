@@ -87,8 +87,8 @@ const SideBar = () => {
 
   channelList = channels.map((elem) => {
     return (
-      <li className="list-group-item">
-        <Link className="text-decoration-none" to={`/channels/${elem.channelId}`} key={elem.label}>
+      <li className="list-group-item" key={elem.label}>
+        <Link className="text-decoration-none" to={`/channels/${elem.channelId}`} >
           <AiIcons.AiFillWechat /> {elem.label}
         </Link>
       </li>
@@ -97,11 +97,10 @@ const SideBar = () => {
 
   dmsList = DmsSideBarData.map((elem) => {
     return (
-      <li className="list-group-item">
+      <li className="list-group-item" key={elem.label}>
         <Link
           className="text-decoration-none"
           to={`/dms/${elem.channelId}`}
-          key={elem.label}
         >
           {elem.icon} {elem.label}
         </Link>
