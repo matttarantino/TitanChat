@@ -124,7 +124,7 @@ const SideBar = () => {
             <br />
             <div className="d-grid">
               <button
-                className="btn btn-primary"
+                className="btn btn-success"
                 type="button"
                 id="newChannelButton"
               >
@@ -136,12 +136,15 @@ const SideBar = () => {
             <ul className="list-group" id="dmsSideBar">
               {dmsList}
             </ul>
-          </div>
-          <br />
-          <div className="d-grid">
-            <Link className="btn btn-primary" to="/logout" type="button">
-              Logout
-            </Link>
+            <br />
+            <div className="d-grid gap-2">
+              <Link className="btn btn-outline-secondary" to="/profile" type="button">
+                Edit Profile
+              </Link>
+              <Link className="btn btn-outline-danger" to="/logout" type="button">
+                Logout
+              </Link>
+            </div>
           </div>
         </nav>
       )
