@@ -87,9 +87,11 @@ const SideBar = () => {
 
   channelList = channels.map((elem) => {
     return (
-      <Link to={`/channels/${elem.channelId}`} key={elem.label}>
-        <AiIcons.AiFillWechat /> {elem.label}
-      </Link>
+      <li className="list-group-item">
+        <Link className="text-decoration-none" to={`/channels/${elem.channelId}`} key={elem.label}>
+          <AiIcons.AiFillWechat /> {elem.label}
+        </Link>
+      </li>
     )
   })
 
