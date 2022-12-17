@@ -14,7 +14,8 @@
     "build:client": "yarn --cwd client build",
     "lint": "eslint --fix --ext .tsx,.ts,.html,.json && prettier --write \"**/*.{tsx,ts,scss,html,json}\" && stylelint --fix --allow-empty-input **/*.scss",
     "pre-commit": "lint-staged --quiet",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "heroku-postbuild": "yarn --cwd frontend install && yarn build"
   },
   "lint-staged": {
     "**/*.{tsx,ts}": [
