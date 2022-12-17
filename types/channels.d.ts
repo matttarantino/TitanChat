@@ -3,7 +3,7 @@
  * @description schema for a message
  * @param authorName username of the user that sent the message
  * @param channelId is of the channel in which the message was sent
- * @param date full date object detailing when the message was sent
+ * @param date stringified date object specifying when the message was sent
  * @param text message text, if any
  * @param imageUrl s3 url of the image, if any
  */
@@ -11,7 +11,7 @@ type Message = {
   _id: string
   authorName: string
   channelId: string
-  date: Date
+  date: string
   text: string | null
   imageUrl: string | null
 }

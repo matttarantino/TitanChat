@@ -2,20 +2,22 @@ import '../styles/chatMessage.scss'
 
 const ChatMessage = (props: Message) => {
   const convertDateToString = () => {
-    let date = props.date.getDate().toString()
-    let month = (props.date.getMonth() + 1).toString()
-    const year = props.date.getFullYear().toString()
+    const date = new Date(props.date)
 
-    if (Number(date) < 10) {
-      date = '0' + date
+    let day = date.getDate().toString()
+    let month = (date.getMonth() + 1).toString()
+    const year = date.getFullYear().toString()
+
+    if (Number(day) < 10) {
+      day = '0' + day
     }
 
     if (Number(month) < 10) {
       month = '0' + month
     }
 
-    let hours = props.date.getHours().toString()
-    let minutes = props.date.getMinutes().toString()
+    let hours = date.getHours().toString()
+    let minutes = date.getMinutes().toString()
 
     if (Number(hours) < 10) {
       hours = '0' + hours
@@ -25,22 +27,33 @@ const ChatMessage = (props: Message) => {
       minutes = '0' + minutes
     }
 
-    const timeString = hours + ':' + minutes
+    const timeString = `${Number(hours) % 12}:${minutes} ${
+      Number(hours) < 12 ? 'AM' : 'PM'
+    }`
 
-    return `${month}/${date}/${year} at ${timeString}`
+    return `${month}/${day}/${year} at ${timeString}`
   }
 
   return (
-    <div className="ChatMessageBlock">
-      <div className="ChatMessageDate">{convertDateToString()}</div>
-      <div className="ChatMessageProfilePic">
+    <div className="chat-message-container">
+      <div className="profile-pic-container">
         <img alt="ProfilePicture" src={process.env.PUBLIC_URL + '/anon.png'} />
       </div>
-      <div className="ChatMessageAuthorName">{props.authorName}</div>
-      <div className="ChatMessageContents">
-        {props.text && <p>{props.text}</p>}
-        <br />
-        {props.imageUrl && <img alt="ImageMessage" src={props.imageUrl} />}
+      <div>
+        <div className="author-container">
+          <div className="author-name">{props.authorName}</div>
+          <div className="message-day">{convertDateToString()}</div>
+        </div>
+        <div>
+          {props.text && <p className="message-text">{props.text}</p>}
+          {props.imageUrl && (
+            <img
+              className="message-image"
+              alt="ImageMessage"
+              src={props.imageUrl}
+            />
+          )}
+        </div>
       </div>
     </div>
   )

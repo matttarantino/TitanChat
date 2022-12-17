@@ -12,6 +12,7 @@ const RightSideBar = () => {
   const [isPublic, setPublic] = useState(true)
   let usersList = null
   const location = useLocation()
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -29,10 +30,7 @@ const RightSideBar = () => {
     if (authInfo.authenticated && user.username != authInfo.username)
       return (
         <li className="list-group-item" key={user._id}>
-          <Link
-            className="text-decoration-none"
-            to={`/dms/${user.username}`}
-          >
+          <Link className="text-decoration-none" to={`/dms/${user.username}`}>
             {user.username}
           </Link>
         </li>

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import '../styles/sideBar.scss'
-import Loading from '../../Misc/components/Loading'
 // import * as FaIcons from 'react-icons/fa'
 import * as AiIcons from 'react-icons/ai'
 // import * as BsIcons from 'react-icons/bs'
@@ -12,6 +11,7 @@ import * as CgIcons from 'react-icons/cg'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+import Loading from '../../Misc/components/Loading'
 import { getPublicChannels } from '../../services/privateServices'
 import { useStore } from '../../services/appStore'
 
@@ -38,7 +38,7 @@ const SideBar = () => {
 
   const addNewChannel = (ev: any) => {
     ev.preventDefault()
-    console.log(newChannelName);
+    console.log(newChannelName)
     // logic to create new Channel with new channel Name
     handleClose()
   }
@@ -86,20 +86,23 @@ const SideBar = () => {
       fetchChannels()
       fetchDms()
     }
-  }, [])
+  }, [authInfo.authenticated])
 
   channelList = channels.map((elem) => {
-    let path = `/channels/${elem.channelId}`
-    let active = location.pathname === path
+    const path = `/channels/${elem.channelId}`
+    const active = location.pathname === path
     return (
-      <li className={`list-group-item ${active ? 'active' : ''}`} key={elem.label} >
+      <li
+        className={`list-group-item ${active ? 'active' : ''}`}
+        key={elem.label}
+      >
         <Link
           className={`text-decoration-none ${active ? 'text-white' : ''}`}
           to={`/channels/${elem.channelId}`}
         >
           <AiIcons.AiFillWechat /> {elem.label}
         </Link>
-      </li >
+      </li>
     )
   })
 
@@ -117,7 +120,9 @@ const SideBar = () => {
     if (loadingChannels || loadingDms) {
       return (
         <nav className="sidebar-container">
-          <div className="container"><Loading /></div>
+          <div className="container">
+            <Loading />
+          </div>
         </nav>
       )
     } else if (errorChannels || errorDms) {
@@ -172,29 +177,26 @@ const SideBar = () => {
                   </Button>
                   <Button type="submit" variant="primary">
                     Add
-                  </Button >
-                </Modal.Footer >
-              </Modal >
-            </div >
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </div>
             <br />
             Direct Messages
-            < ul className="list-group" id="dmsSideBar" >
+            <ul className="list-group" id="dmsSideBar">
               {dmsList}
-            </ul >
+            </ul>
             <br />
             <div className="d-grid gap-2">
-              <Link
-                className="btn btn-outline-dark"
-                to="/profile"
-              >
+              <Link className="btn btn-outline-dark" to="/profile">
                 Edit Profile
               </Link>
               <Link className="btn btn-danger" to="/logout">
                 Logout
               </Link>
             </div>
-          </div >
-        </div >
+          </div>
+        </div>
       )
     }
   else return <></>

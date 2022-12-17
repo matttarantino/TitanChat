@@ -21,38 +21,37 @@ io.on('connection', (socket) => {
   console.log('new client connected', socket.id)
   // online/offline indicators
 
-  //   socket.on('join_channel', (username, channel) => {
-  //     console.log(`${username} has joined ${channel}.`)
-  //     socket.join(channel)
-  //     io.sockets
-  //       .in(channel)
-  //       .emit('joined_channel', { username: username, channel: channel })
-  //   })
-
-  socket.on('message', (messageData: Message) => {
-    // in(channel)
-    io.sockets.emit('message', { messageData })
+  socket.on('join_channel', (username, channel) => {
+    console.log(`${username} has joined ${channel}.`)
+    socket.join(channel)
+    // io.sockets
+    //   .in(channel)
+    //   .emit('joined_channel', { username: username, channel: channel })
   })
 
+  socket.on('message', (messageData: Message) => {
+    console.log('IN HERE', messageData)
+    io.sockets.in(messageData.channelId).emit('message', { messageData })
+  })
+
+  socket.on('leave_channel', (username, channel) => {
+    console.log(`${username} has left ${channel}.`)
+    socket.leave(channel)
+    // io.sockets
+    //   .in(channel)
+    //   .emit('left_channel', { username: username, channel: channel })
+  })
   socket.on('channel_added', (channelData: PublicChannelRegistrationInfo) => {
     io.sockets.emit('new_channel_added', { channelData })
   })
-
-  //   socket.on('left_channel', (username, channel) => {
-  //     console.log(`${username} has left ${channel}.`)
-  //     socket.leave(channel)
-  //     io.sockets
-  //       .in(channel)
-  //       .emit('left_channel', { username: username, channel: channel })
-  //   })
 
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')
   })
 
-  socket.onAny((event, ...args) => {
-    console.log(event, args)
-  })
+  // socket.onAny((event, ...args) => {
+  //   console.log(event, args)
+  // })
 })
 
 app.use(cors())

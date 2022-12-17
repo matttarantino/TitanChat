@@ -5,6 +5,7 @@
   width: 15rem;
   background-color: #e7e7e7;
   overflow-y: auto;
+  flex-shrink: 0;
 
   .channel-list {
     display: flex;
