@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client'
 
-const socket = io(`wss://${process.env.HOST}:${process.env.PORT}`)
+const socket = io(`${process.env.HOST}`)
 
 socket.on('message', ({ messageData }: { messageData: Message }) => {
   console.log(messageData)
