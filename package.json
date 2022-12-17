@@ -9,7 +9,7 @@
     "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
     "dev:server": "ts-node-dev --files ./server/src/app.ts",
     "dev:client": "yarn --cwd client start",
-    "build": "yarn build:client && yarn build:server",
+    "build": "yarn --cwd client install && yarn --cwd client build && yarn --cwd ./ build:server",
     "build:server": "cd server && tsc",
     "build:client": "yarn --cwd client build",
     "lint": "eslint --fix --ext .tsx,.ts,.html,.json && prettier --write \"**/*.{tsx,ts,scss,html,json}\" && stylelint --fix --allow-empty-input **/*.scss",
@@ -34,7 +34,8 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.12.1",
-    "socket.io": "^4.5.4"
+    "socket.io": "^4.5.4",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
