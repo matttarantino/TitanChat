@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { ObjectId } from 'mongodb'
 import {
   createChannel,
   getAllPublicChannels,
@@ -11,7 +12,7 @@ const publicChannelsRouter = Router()
 
 publicChannelsRouter
   .route('/')
-  .get(ensureAuthenticated, async (req, res) => {
+  .get(ensureAuthenticated, async (_, res) => {
     return res.status(200).json(await getAllPublicChannels())
   })
   .post(ensureAuthenticated, async (req, res) => {
@@ -38,6 +39,7 @@ publicChannelsRouter.get(
     // error check
     try {
       areValidStrings({ channelId })
+      const _ = new ObjectId(channelId)
     } catch (err) {
       return res.status(400).send(String(err))
     }

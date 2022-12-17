@@ -32,6 +32,10 @@ const ChannelPage = () => {
       })
 
     // cleanup
+    return () => {
+      setPageData(null)
+      setPageError(null)
+    }
   }, [channelId])
 
   return pageError ? (

@@ -11,7 +11,7 @@
 type AppSpec = {
   name: string
   path: string
-  element: ReactElement
+  element: JSX.Element
   ensureAuthenticated: boolean | null
 }
 
