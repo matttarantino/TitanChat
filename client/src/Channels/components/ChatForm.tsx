@@ -48,7 +48,7 @@ const ChatForm = (props: Props) => {
             // reset inputs
             setMessage('')
             setImage(null)
-            ;(imageInputRef.current as HTMLInputElement).value = ''
+              ; (imageInputRef.current as HTMLInputElement).value = ''
           })
           .catch((err) => {
             console.error('aws upload error', err)
@@ -62,6 +62,7 @@ const ChatForm = (props: Props) => {
 
   return (
     <Form className="chat-form" onSubmit={onSubmit}>
+      < hr />
       <FloatingLabel label="Send a message" controlId="message-input">
         <Form.Control
           className="chat-input"
