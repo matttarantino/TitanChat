@@ -9,6 +9,7 @@ import SideBar from './Misc/components/SideBar'
 import RightSideBar from './Misc/components/RightSideBar'
 import LoginPage from './Views/components/LoginPage'
 import SignupPage from './Views/components/SignupPage'
+import ProfilePage from './Views/components/ProfilePage'
 import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
 import { useStore } from './services/appStore'
@@ -43,6 +44,12 @@ const APP_SPECS: Array<AppSpec> = [
     path: '/signup',
     element: <SignupPage />,
     ensureAuthenticated: false,
+  },
+  {
+    name: 'Profile',
+    path: '/profile',
+    element: <ProfilePage />,
+    ensureAuthenticated: true,
   },
   {
     name: 'Logout',
