@@ -1,6 +1,7 @@
 import { io } from 'socket.io-client'
 
-const socket = io('ws://localhost:4000')
+const host = process.env.NODE_ENV === 'production' ? 'titanschat.herokuapp.com' : 'localhost:3001'
+const socket = io(host)
 
 // socket.on('message', ({ messageData }: { messageData: Message }) => {
 //   console.log('on message listener', messageData)

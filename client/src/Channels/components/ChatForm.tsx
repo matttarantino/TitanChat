@@ -72,7 +72,7 @@ const ChatForm = (props: Props) => {
             // reset inputs
             setMessage('')
             setImage(null)
-            ;(imageInputRef.current as HTMLInputElement).value = ''
+              ; (imageInputRef.current as HTMLInputElement).value = ''
           })
           .catch((err) => {
             console.error('aws upload error', err)
