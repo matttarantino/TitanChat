@@ -5,13 +5,15 @@ import cors from 'cors'
 import { Server } from 'socket.io'
 import configRoutes from './routes/index'
 
+const PORT = (process.env.PORT || 3001)
+
 const app = express()
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
     origin: [
       'http://localhost:3000',
-      `https://${process.env.HOST}`
+      `https://${process.env.HOST}:${PORT}`
     ],
     methods: ['GET', 'POST'],
   },
@@ -52,10 +54,6 @@ io.on('connection', (socket) => {
   })
 })
 
-httpServer.listen(4000, () => {
-  console.log(`Listening on *:${4000}`)
-})
-
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -67,7 +65,10 @@ app.get('*', (_, res) => {
   res.sendFile(path.resolve('client', 'build', 'index.html'))
 })
 
-const PORT = (process.env.PORT || 3001)
+httpServer.listen(PORT, () => {
+  console.log(`Listening on *:${PORT}`)
+})
+
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
+  console.log(`Server running on *:${PORT}`)
 })
