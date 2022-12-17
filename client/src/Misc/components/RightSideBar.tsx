@@ -28,11 +28,10 @@ const RightSideBar = () => {
   usersList = userData.map((user) => {
     if (authInfo.authenticated && user.username != authInfo.username)
       return (
-        <li className="list-group-item">
+        <li className="list-group-item" key={user._id}>
           <Link
             className="text-decoration-none"
             to={`/dms/${user.username}`}
-            key={user._id}
           >
             {user.username}
           </Link>
@@ -42,12 +41,12 @@ const RightSideBar = () => {
 
   if (authInfo.authenticated && isPublic)
     return (
-      <nav className="sidebar-container">
+      <div className="sidebar-container">
         <div className="container">
           Members
           <ul className="list-group">{usersList}</ul>
         </div>
-      </nav>
+      </div>
     )
   else return <></>
 }
