@@ -138,7 +138,7 @@ const SideBar = () => {
       )
     } else {
       return (
-        <nav className="sidebar-container">
+        <div className="sidebar-container">
           <div className="container">
             Channels
             <ul className="list-group" id="channelSideBar">
@@ -187,7 +187,7 @@ const SideBar = () => {
               </Modal>
             </div>
             <br />
-            DMs
+            Direct Messages
             <ul className="list-group" id="dmsSideBar">
               {dmsList}
             </ul>
@@ -196,16 +196,15 @@ const SideBar = () => {
               <Link
                 className="btn btn-outline-dark"
                 to="/profile"
-                type="button"
               >
                 Edit Profile
               </Link>
-              <Link className="btn btn-danger" to="/logout" type="button">
+              <Link className="btn btn-danger" to="/logout">
                 Logout
               </Link>
             </div>
           </div>
-        </nav>
+        </div>
       )
     }
   else return <></>

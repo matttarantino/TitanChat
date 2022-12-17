@@ -42,12 +42,12 @@ const RightSideBar = () => {
 
   if (authInfo.authenticated && isPublic)
     return (
-      <nav className="sidebar-container">
+      <div className="sidebar-container">
         <div className="container">
           Members
           <ul className="list-group">{usersList}</ul>
         </div>
-      </nav>
+      </div>
     )
   else return <></>
 }
