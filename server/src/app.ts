@@ -68,7 +68,3 @@ app.get('*', (_, res) => {
 httpServer.listen(PORT, () => {
   console.log(`Listening on *:${PORT}`)
 })
-
-app.listen(PORT, () => {
-  console.log(`Server running on *:${PORT}`)
-})
