@@ -11,7 +11,7 @@
     "dev:client": "yarn --cwd client start",
     "build": "yarn build:client && yarn build:server",
     "build:server": "cd server && tsc",
-    "build:client": "yarn --cwd client build",
+    "build:client": "yarn --cwd client install && yarn build",
     "lint": "eslint --fix --ext .tsx,.ts,.html,.json && prettier --write \"**/*.{tsx,ts,scss,html,json}\" && stylelint --fix --allow-empty-input **/*.scss",
     "pre-commit": "lint-staged --quiet",
     "prepare": "husky install"
