@@ -44,22 +44,22 @@ const SideBar = () => {
   let channelList = null
   let dmsList = null
 
-  const ChannelSideBarData = [
-    {
-      label: 'General',
-      channelId: 'general',
-      // icon: <AiIcons.AiFillWechat />,
-    },
-    {
-      label: 'CS-554',
-      channelId: 'cs554',
-      icon: <AiIcons.AiFillWechat />,
-    },
-    {
-      label: 'Random',
-      channelId: 'random',
-      icon: <AiIcons.AiFillWechat />,
-    },
+  const ChannelSideBarData: ChannelsResponse = [
+    // {
+    //   label: 'General',
+    //   channelId: 'general',
+    //   // icon: <AiIcons.AiFillWechat />,
+    // },
+    // {
+    //   label: 'CS-554',
+    //   channelId: 'cs554',
+    //   icon: <AiIcons.AiFillWechat />,
+    // },
+    // {
+    //   label: 'Random',
+    //   channelId: 'random',
+    //   icon: <AiIcons.AiFillWechat />,
+    // },
   ]
 
   const DmsSideBarData = [
@@ -74,7 +74,7 @@ const SideBar = () => {
     if (authInfo.authenticated) {
       getPublicChannels()
         .then(({ data }) => {
-          console.log('public channel data', data)
+          // console.log('public channel data', data)
           setChannels([...ChannelSideBarData, ...data])
         })
         .catch(({ response }) => {
@@ -193,14 +193,10 @@ const SideBar = () => {
             </ul>
             <br />
             <div className="d-grid gap-2">
-              <Link
-                className="btn btn-outline-dark"
-                to="/profile"
-                type="button"
-              >
+              <Link className="btn btn-outline-dark" to="/profile">
                 Edit Profile
               </Link>
-              <Link className="btn btn-danger" to="/logout" type="button">
+              <Link className="btn btn-danger" to="/logout">
                 Logout
               </Link>
             </div>
