@@ -1,12 +1,12 @@
-import React from 'react'
-import axios from 'axios'
+// import React from 'react'
+// import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import '../styles/sideBar.scss'
-
-import * as FaIcons from 'react-icons/fa'
+import Loading from '../../Misc/components/Loading'
+// import * as FaIcons from 'react-icons/fa'
 import * as AiIcons from 'react-icons/ai'
-import * as BsIcons from 'react-icons/bs'
+// import * as BsIcons from 'react-icons/bs'
 import * as CgIcons from 'react-icons/cg'
 
 import Button from 'react-bootstrap/Button'
@@ -23,7 +23,7 @@ const SideBar = () => {
   const [dms, setDms] = useState<ChannelsResponse>([])
 
   // change initial state of loading to "true" when server is integrated
-  const [loadingChannels, setLoadingChannels] = useState(false)
+  const [loadingChannels, setLoadingChannels] = useState(true)
   const [loadingDms, setLoadingDms] = useState(false)
 
   // change initial state of error to "true" when server is integrated
@@ -36,31 +36,14 @@ const SideBar = () => {
   const handleClose = () => setShow(false)
   const handleOpen = () => setShow(true)
 
-  const addNewChannel = () => {
     // logic to create new Channel with new channel Name
     handleClose()
   }
 
+  const location = useLocation()
+
   let channelList = null
   let dmsList = null
-
-  const ChannelSideBarData = [
-    {
-      label: 'General',
-      channelId: 'general',
-      // icon: <AiIcons.AiFillWechat />,
-    },
-    {
-      label: 'CS-554',
-      channelId: 'cs554',
-      icon: <AiIcons.AiFillWechat />,
-    },
-    {
-      label: 'Random',
-      channelId: 'random',
-      icon: <AiIcons.AiFillWechat />,
-    },
-  ]
 
   const DmsSideBarData = [
     {
@@ -72,15 +55,16 @@ const SideBar = () => {
 
   useEffect(() => {
     if (authInfo.authenticated) {
-      getPublicChannels()
-        .then(({ data }) => {
-          console.log('public channel data', data)
-          setChannels([...ChannelSideBarData, ...data])
-        })
-        .catch(({ response }) => {
-          console.error('public channel error', response)
-          setErrorChannels(response)
-        })
+      async function fetchChannels() {
+        getPublicChannels()
+          .then(({ data }) => {
+            setChannels(data)
+          })
+          .catch(({ response }) => {
+            setErrorChannels(response)
+          })
+        setLoadingChannels(false)
+      }
 
       async function fetchDms() {
         try {
@@ -95,21 +79,24 @@ const SideBar = () => {
           // setErrorChannels(true)
         }
       }
+
+      fetchChannels()
       fetchDms()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   channelList = channels.map((elem) => {
+    let path = `/channels/${elem.channelId}`
+    let active = location.pathname === path
     return (
-      <li className="list-group-item" key={elem.label}>
+      <li className={`list-group-item ${active ? 'active' : ''}`} key={elem.label} >
         <Link
-          className="text-decoration-none"
+          className={`text-decoration-none ${active ? 'text-white' : ''}`}
           to={`/channels/${elem.channelId}`}
         >
           <AiIcons.AiFillWechat /> {elem.label}
         </Link>
-      </li>
+      </li >
     )
   })
 
@@ -127,7 +114,7 @@ const SideBar = () => {
     if (loadingChannels || loadingDms) {
       return (
         <nav className="sidebar-container">
-          <div className="container">Loading...</div>
+          <div className="container"><Loading /></div>
         </nav>
       )
     } else if (errorChannels || errorDms) {
@@ -159,7 +146,6 @@ const SideBar = () => {
                   <Modal.Title> Add New Channel</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Form>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -180,7 +166,6 @@ const SideBar = () => {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={addNewChannel}>
                     Add
                   </Button>
                 </Modal.Footer>
