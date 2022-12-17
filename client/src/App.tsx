@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useEffect } from 'react'
 import ErrorPage from './Misc/components/ErrorPage'
 import { httpErrors } from './utils/errors'
-import ChannelPage from './Views/components/ChannelPage'
 import DmPage from './Views/components/DmPage'
 import LandingPage from './Views/components/LandingPage'
 import SideBar from './Misc/components/SideBar'
@@ -13,6 +12,7 @@ import ProfilePage from './Views/components/ProfilePage'
 import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
 import { useStore } from './services/appStore'
+import PublicChannelPage from './Views/components/PublicChannelPage'
 
 const APP_SPECS: Array<AppSpec> = [
   {
@@ -22,9 +22,9 @@ const APP_SPECS: Array<AppSpec> = [
     ensureAuthenticated: false,
   },
   {
-    name: 'Channels',
+    name: 'Pulic Channels',
     path: '/channels/:channelId',
-    element: <ChannelPage />,
+    element: <PublicChannelPage />,
     ensureAuthenticated: true,
   },
   {

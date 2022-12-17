@@ -1,4 +1,8 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from '@aws-sdk/client-s3'
 
 const BUCKET_NAME = 'cs554-project-titan-bucket'
 const REGION = 'us-east-2'
@@ -25,6 +29,14 @@ export const uploadFile = (file: File, filePath: string) =>
       Bucket: BUCKET_NAME,
       Key: filePath,
       Body: file,
+    })
+  )
+
+export const getFile = (filePath: string) =>
+  bucket.send(
+    new GetObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: filePath,
     })
   )
 
