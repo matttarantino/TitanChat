@@ -1,9 +1,11 @@
 /**
  * @author rgorai
  * @description schema for a message
- * @param author id of the user that sent the message
- * @param text message text
+ * @param authorName username of the user that sent the message
+ * @param channelId is of the channel in which the message was sent
  * @param date full date object detailing when the message was sent
+ * @param text message text, if any
+ * @param imageUrl s3 url of the image, if any
  */
 type Message = {
   _id: string
@@ -22,7 +24,7 @@ type Message = {
  * @param messages array of {@link Message}s that are part of this channel
  */
 type PublicChannel = {
-  _id: ObjectId
+  _id: string
   name: string
   creatorId: string
   messages: Array<Message>

@@ -9,7 +9,7 @@ const app = express()
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
     methods: ['GET', 'POST'],
   },
 })
@@ -65,7 +65,6 @@ app.get('*', (_, res) => {
 })
 
 const PORT = 3001
-
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })

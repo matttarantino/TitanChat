@@ -8,7 +8,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["node", "react"],
     "strict": true
   }
 }
