@@ -9,7 +9,7 @@
     "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
     "dev:server": "ts-node-dev --files ./server/src/app.ts",
     "dev:client": "yarn --cwd client start",
-    "build": "npm build:client && npm build:server",
+    "build": "cd server && tsc && yarn --cwd client build",
     "build:server": "cd server && tsc",
     "build:client": "yarn --cwd client build",
     "lint": "eslint --fix --ext .tsx,.ts,.html,.json && prettier --write \"**/*.{tsx,ts,scss,html,json}\" && stylelint --fix --allow-empty-input **/*.scss",
