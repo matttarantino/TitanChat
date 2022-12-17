@@ -1,0 +1,14 @@
+{
+  "include": [".", "../../types/*.d.ts"],
+  "compilerOptions": {
+    "rootDirs": ["."],
+    "outDir": "build",
+    "lib": ["esnext"],
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": ["node", "react"],
+    "strict": true
+  }
+}
