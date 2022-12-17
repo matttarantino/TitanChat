@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client'
 
-const socket = io(`${process.env.APP_HOST}`)
+const socket = io(`titanschat.herokuapp.com`)
 
 socket.on('message', ({ messageData }: { messageData: Message }) => {
   console.log(messageData)
