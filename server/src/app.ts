@@ -32,6 +32,10 @@ io.on('connection', (socket) => {
     io.sockets.emit('message', { messageData })
   })
 
+  socket.on('channel_added', (channelData: PublicChannelRegistrationInfo) => {
+    io.sockets.emit('new_channel_added', { channelData })
+  })
+
   //   socket.on('left_channel', (username, channel) => {
   //     console.log(`${username} has left ${channel}.`)
   //     socket.leave(channel)

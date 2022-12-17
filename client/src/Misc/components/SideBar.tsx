@@ -36,6 +36,9 @@ const SideBar = () => {
   const handleClose = () => setShow(false)
   const handleOpen = () => setShow(true)
 
+  const addNewChannel = (ev: any) => {
+    ev.preventDefault()
+    console.log(newChannelName);
     // logic to create new Channel with new channel Name
     handleClose()
   }
@@ -146,6 +149,7 @@ const SideBar = () => {
                   <Modal.Title> Add New Channel</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                  <Form onSubmit={addNewChannel}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -166,16 +170,17 @@ const SideBar = () => {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
+                  <Button type="submit" variant="primary">
                     Add
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </div>
+                  </Button >
+                </Modal.Footer >
+              </Modal >
+            </div >
             <br />
             Direct Messages
-            <ul className="list-group" id="dmsSideBar">
+            < ul className="list-group" id="dmsSideBar" >
               {dmsList}
-            </ul>
+            </ul >
             <br />
             <div className="d-grid gap-2">
               <Link
@@ -188,8 +193,8 @@ const SideBar = () => {
                 Logout
               </Link>
             </div>
-          </div>
-        </div>
+          </div >
+        </div >
       )
     }
   else return <></>
