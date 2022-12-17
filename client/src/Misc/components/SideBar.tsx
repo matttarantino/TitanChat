@@ -44,24 +44,6 @@ const SideBar = () => {
   let channelList = null
   let dmsList = null
 
-  const ChannelSideBarData = [
-    {
-      label: 'General',
-      channelId: 'general',
-      // icon: <AiIcons.AiFillWechat />,
-    },
-    {
-      label: 'CS-554',
-      channelId: 'cs554',
-      icon: <AiIcons.AiFillWechat />,
-    },
-    {
-      label: 'Random',
-      channelId: 'random',
-      icon: <AiIcons.AiFillWechat />,
-    },
-  ]
-
   const DmsSideBarData = [
     {
       label: 'Random 1',
@@ -75,7 +57,7 @@ const SideBar = () => {
       getPublicChannels()
         .then(({ data }) => {
           console.log('public channel data', data)
-          setChannels([...ChannelSideBarData, ...data])
+          setChannels(data)
         })
         .catch(({ response }) => {
           console.error('public channel error', response)
