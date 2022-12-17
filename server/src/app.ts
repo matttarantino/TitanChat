@@ -32,13 +32,13 @@ io.on('connection', (socket) => {
     io.sockets.in(messageData.channelId).emit('message', { messageData })
   })
 
-  //   socket.on('left_channel', (username, channel) => {
-  //     console.log(`${username} has left ${channel}.`)
-  //     socket.leave(channel)
-  //     io.sockets
-  //       .in(channel)
-  //       .emit('left_channel', { username: username, channel: channel })
-  //   })
+  socket.on('leave_channel', (username, channel) => {
+    console.log(`${username} has left ${channel}.`)
+    socket.leave(channel)
+    // io.sockets
+    //   .in(channel)
+    //   .emit('left_channel', { username: username, channel: channel })
+  })
 
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')

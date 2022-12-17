@@ -22,6 +22,13 @@ const ChatForm = (props: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
 
+  // useEffect(() => {
+  //   return () => {
+  //     setMessage('')
+  //     setImage(null)
+  //   }
+  // }, [])
+
   // enables sending when input is received
   useEffect(() => {
     setSendDisabled(!(message.trim().length > 0 || image))
