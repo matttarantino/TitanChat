@@ -19,18 +19,18 @@ const ProfilePage = () => {
   return (
     <div className="form-container">
       {authInfo.authenticated && (
-        <h1 className="profileName">{authInfo.username}</h1>
+        <h1 className="profileName">Editing: {authInfo.username}</h1>
       )}
       <Form onSubmit={onFormSubmit}>
         <label>Select Profile Picture:</label>
-        <input
-          onChange={(e) => readURL(e.target.files)}
+        <Form.Control
+          className="file-input"
           type="file"
           id="img"
           name="img"
           accept="image/*"
-        ></input>
-        <br />
+          onChange={(e) => readURL(e.target)}
+        />
         <br />
         <Form.Group className="mb-3">
           <Form.Label>New Username</Form.Label>
