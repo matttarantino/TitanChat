@@ -39,6 +39,9 @@ io.on('connection', (socket) => {
     //   .in(channel)
     //   .emit('left_channel', { username: username, channel: channel })
   })
+  socket.on('channel_added', (channelData: PublicChannelRegistrationInfo) => {
+    io.sockets.emit('new_channel_added', { channelData })
+  })
 
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')

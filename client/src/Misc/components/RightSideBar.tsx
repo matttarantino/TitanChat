@@ -29,12 +29,8 @@ const RightSideBar = () => {
   usersList = userData.map((user) => {
     if (authInfo.authenticated && user.username != authInfo.username)
       return (
-        <li className="list-group-item" key={user.username}>
-          <Link
-            className="text-decoration-none"
-            to={`/dms/${user.username}`}
-            key={user._id}
-          >
+        <li className="list-group-item" key={user._id}>
+          <Link className="text-decoration-none" to={`/dms/${user.username}`}>
             {user.username}
           </Link>
         </li>
