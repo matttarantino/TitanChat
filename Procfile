@@ -1,1 +1,1 @@
-web: npm build && npm start
+web: npm build && npm start --only=production --ignore-scripts
