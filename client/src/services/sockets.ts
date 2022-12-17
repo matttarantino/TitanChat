@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client'
 
-const socket = io('ws://localhost:4000')
+const socket = io(`ws://${process.env.HOST}:4000`)
 
 socket.on('message', ({ messageData }: { messageData: Message }) => {
   console.log(messageData)
