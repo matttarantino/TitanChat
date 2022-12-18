@@ -2,14 +2,6 @@
 
 ## Available Scripts
 
-In the root directory of the project, you need to install dependencies for the server
-
-### `npm i`
-
-In the client directory of the project, you need to install dependencies for the client
-
-### `npm i`
-
 In the root directory of the project, you need to run yarn install
 
 ### `yarn install`
