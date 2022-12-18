@@ -22,13 +22,6 @@ const ChatForm = (props: Props) => {
   const formRef = useRef<HTMLFormElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
 
-  // useEffect(() => {
-  //   return () => {
-  //     setMessage('')
-  //     setImage(null)
-  //   }
-  // }, [])
-
   // enables sending when input is received
   useEffect(() => {
     setSendDisabled(!(message.trim().length > 0 || image))
@@ -63,7 +56,7 @@ const ChatForm = (props: Props) => {
 
       if (image) {
         const imagePath = `channels/${uuidv4()}-${image.name}`
-        newMessage.imageUrl = imagePath // `${BUCKET_URL}/${imagePath}`
+        newMessage.imageUrl = `${BUCKET_URL}/${imagePath}`
 
         uploadFile(image, imagePath)
           .then(() => {
