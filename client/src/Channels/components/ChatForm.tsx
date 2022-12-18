@@ -100,7 +100,11 @@ const ChatForm = (props: Props) => {
           ref={imageInputRef}
         />
 
-        <Button type="submit" variant="success" disabled={sendDisabled}>
+        <Button
+          type="submit"
+          variant={sendDisabled ? 'dark' : 'success'}
+          disabled={sendDisabled}
+        >
           Send
         </Button>
       </div>
