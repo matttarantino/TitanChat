@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import '../styles/sideBar.scss'
 import * as CgIcons from 'react-icons/cg'
-
 import { FiHash } from 'react-icons/fi'
-
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
@@ -36,12 +34,12 @@ const SideBar = () => {
   // Modal Stuff for "Add New Channel"
   const [show, setShow] = useState(false)
   const [newChannelName, setNewChannelName] = useState('')
+  const [newChannelError, setNewChannelError] = useState('')
   const handleClose = () => setShow(false)
   const handleOpen = () => setShow(true)
 
   const addNewChannel = (ev: any) => {
     ev.preventDefault()
-    console.log(newChannelName)
 
     if (authInfo.authenticated)
       createChannel({
@@ -191,11 +189,15 @@ const SideBar = () => {
                   </Form>
                 </Modal.Body>
 
+                {newChannelError && (
+                  <Form.Group className="mb-3 form-error">{newChannelError}</Form.Group>
+                )}
+
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button type="submit" variant="primary">
+                  <Button type="submit" variant="primary" onClick={addNewChannel}>
                     Add
                   </Button>
                 </Modal.Footer>
