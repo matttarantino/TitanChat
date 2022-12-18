@@ -4,6 +4,8 @@ import express from 'express'
 import cors from 'cors'
 import { Server } from 'socket.io'
 import configRoutes from './routes/index'
+import { Socket } from 'dgram'
+import { createChannel } from './data/publicChannels'
 
 const PORT = (process.env.PORT || 3001)
 
@@ -11,12 +13,16 @@ const app = express()
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: ['*'],
     methods: ['GET', 'POST'],
   },
 })
 
 io.on('connection', (socket) => {
+  socket.on('createChannel', async (channelData: PublicChannelRegistrationInfo) => {
+    await createChannel(channelData)
+    io.sockets.emit('channel_created', {})
+  })
+
   // emit status update
   console.log('new client connected', socket.id)
   // online/offline indicators

@@ -14,6 +14,10 @@ import Form from 'react-bootstrap/Form'
 import Loading from '../../Misc/components/Loading'
 import { getPublicChannels } from '../../services/privateServices'
 import { useStore } from '../../services/appStore'
+import {
+  newChannelCreated,
+  createChannel
+} from '../../services/sockets'
 
 const SideBar = () => {
   const {
@@ -39,6 +43,14 @@ const SideBar = () => {
   const addNewChannel = (ev: any) => {
     ev.preventDefault()
     console.log(newChannelName)
+
+    if (authInfo.authenticated)
+      createChannel({
+        name: newChannelName,
+        creatorId: authInfo.userId
+      })
+
+
     // logic to create new Channel with new channel Name
     handleClose()
   }
@@ -82,6 +94,11 @@ const SideBar = () => {
           // setErrorChannels(true)
         }
       }
+
+      // set channel listener
+      newChannelCreated(({ }) => {
+        fetchChannels()
+      })
 
       fetchChannels()
       fetchDms()

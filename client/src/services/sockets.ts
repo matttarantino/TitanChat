@@ -27,3 +27,10 @@ export const emitMessage = (newMessage: Message) =>
   socket.emit('message', newMessage)
 
 export const disconnectSocket = () => socket.disconnect()
+
+export const createChannel = (channelData: PublicChannelRegistrationInfo) =>
+  socket.emit('createChannel', channelData)
+
+export const newChannelCreated = (
+  callback: (args: {}) => void
+) => socket.on('channel_created', (args) => callback(args))
