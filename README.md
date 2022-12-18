@@ -1,6 +1,6 @@
 # Getting Started with Running TitanChat Locally
 
-## Available Scripts
+## Available Scripts.. We Will Need Yarn installed on your local machine: https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable 
 
 In the root directory of the project, you need to run yarn install
 
