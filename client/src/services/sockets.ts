@@ -23,9 +23,9 @@ export const emitMessage = (newMessage: Message) =>
 
 export const disconnectSocket = () => socket.disconnect()
 
-export const createChannel = (channelData: PublicChannelRegistrationInfo) =>
-  socket.emit('createChannel', channelData)
+export const emitRefreshChannels = () =>
+  socket.emit('refresh_channels')
 
-export const newChannelCreated = (
+export const refreshChannels = (
   callback: (args: {}) => void
-) => socket.on('channel_created', (args) => callback(args))
+) => socket.on('refresh_channels', (args) => callback(args))

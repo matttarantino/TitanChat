@@ -12,8 +12,8 @@ import Loading from '../../Misc/components/Loading'
 import { getPublicChannels } from '../../services/privateServices'
 import { useStore } from '../../services/appStore'
 import {
-  newChannelCreated,
-  createChannel
+  refreshChannels,
+  emitRefreshChannels
 } from '../../services/sockets'
 
 const SideBar = () => {
@@ -41,11 +41,10 @@ const SideBar = () => {
   const addNewChannel = (ev: any) => {
     ev.preventDefault()
 
-    if (authInfo.authenticated)
-      createChannel({
-        name: newChannelName,
-        creatorId: authInfo.userId
-      })
+    // hit backend
+    // setNewChannelError if errors
+    // otherwise
+    emitRefreshChannels()
 
     handleClose()
   }
@@ -91,7 +90,7 @@ const SideBar = () => {
       }
 
       // set channel listener
-      newChannelCreated(({ }) => {
+      refreshChannels(({ }) => {
         fetchChannels()
       })
 

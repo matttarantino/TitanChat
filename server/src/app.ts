@@ -36,8 +36,8 @@ io.on('connection', (socket) => {
     socket.leave(channel)
   })
 
-  socket.on('channel_created', () => {
-    io.sockets.emit('channel_created', {})
+  socket.on('refresh_channels', () => {
+    io.sockets.emit('refresh_channels', {})
   })
 
   socket.on('disconnect', () => {
