@@ -92,17 +92,13 @@ const SideBar = () => {
     const path = `/channels/${elem.channelId}`
     const active = location.pathname === path
     return (
-      <li
-        className={`list-group-item ${active ? 'active' : ''}`}
+      <Link
+        className={`list-group-item list-group-item-action text-decoration-none ${active ? 'text-white active' : 'text-primary'}`}
+        to={`/channels/${elem.channelId}`}
         key={elem.label}
       >
-        <Link
-          className={`text-decoration-none ${active ? 'text-white' : ''}`}
-          to={`/channels/${elem.channelId}`}
-        >
-          <AiIcons.AiFillWechat /> {elem.label}
-        </Link>
-      </li>
+        <AiIcons.AiFillWechat /> {elem.label}
+      </Link>
     )
   })
 
