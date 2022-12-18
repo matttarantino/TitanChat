@@ -7,10 +7,11 @@ import {
 } from 'react'
 import { setObjValueFromKeychain } from '../utils/misc'
 
-const DEFAULT_STATE = {
+const DEFAULT_STATE: AppState = {
   authInfo: JSON.parse(localStorage.getItem('authInfo') as string) ?? {
     authenticated: false,
   },
+  sessionMessages: [],
 }
 
 export const appContext: Context<any> = createContext(DEFAULT_STATE)
@@ -23,7 +24,7 @@ type UpdateStore = (
 export const StoreProvider = (props: PropsWithChildren) => {
   const [store, setStore] = useState(DEFAULT_STATE)
 
-  const updateStore: UpdateStore = (keychain, newValue) => {
+  const updateStore: UpdateStore = (keychain, newValue) =>
     setStore((prev: AppState) => {
       const newState = setObjValueFromKeychain(prev, keychain, newValue)
       const storeKey = typeof keychain === 'string' ? keychain : keychain[0]
@@ -31,7 +32,6 @@ export const StoreProvider = (props: PropsWithChildren) => {
       localStorage.setItem(storeKey, JSON.stringify(newState[storeKey]))
       return newState
     })
-  }
 
   return <appContext.Provider value={{ store, updateStore }} {...props} />
 }

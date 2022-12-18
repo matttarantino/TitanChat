@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import '../styles/sideBar.scss'
-// import * as FaIcons from 'react-icons/fa'
-import * as AiIcons from 'react-icons/ai'
-// import * as BsIcons from 'react-icons/bs'
 import * as CgIcons from 'react-icons/cg'
+
+import { FiHash } from 'react-icons/fi'
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
@@ -109,15 +108,14 @@ const SideBar = () => {
     const path = `/channels/${elem.channelId}`
     const active = location.pathname === path
     return (
-      <li
-        className={`list-group-item ${active ? 'active' : ''}`}
-        key={elem.label}
-      >
+      <li key={elem.label}>
         <Link
-          className={`text-decoration-none ${active ? 'text-white' : ''}`}
+          className={`list-group-item ${active ? 'active' : ''} ${
+            active ? 'text-white' : ''
+          }`}
           to={`/channels/${elem.channelId}`}
         >
-          <AiIcons.AiFillWechat /> {elem.label}
+          <FiHash /> <span>{elem.label}</span>
         </Link>
       </li>
     )
@@ -125,8 +123,11 @@ const SideBar = () => {
 
   dmsList = DmsSideBarData.map((elem) => {
     return (
-      <li className="list-group-item" key={elem.label}>
-        <Link className="text-decoration-none" to={`/dms/${elem.channelId}`}>
+      <li key={elem.label}>
+        <Link
+          className="list-group-item text-decoration-none"
+          to={`/dms/${elem.channelId}`}
+        >
           {elem.icon} {elem.label}
         </Link>
       </li>
@@ -150,26 +151,30 @@ const SideBar = () => {
       )
     } else {
       return (
-        <div className="sidebar-container">
-          <div className="container">
-            Channels
-            <ul className="list-group" id="channelSideBar">
+        <div className="container sidebar-container">
+          <div>
+            <div className="bar-label">Channels</div>
+
+            <ul className="list-group channel-list" id="channelSideBar">
               {channelList}
             </ul>
-            <br />
+            {/* <br /> */}
             <div className="d-grid">
               <Button
+                className="mb-3"
                 onClick={handleOpen}
-                variant="success"
+                variant="secondary"
                 type="button"
                 id="newChannelButton"
               >
-                Add New Channel
+                Add new channel
               </Button>
-              <Modal show={show} onHide={handleClose}>
+
+              <Modal show={show} onHide={handleClose} animation={false}>
                 <Modal.Header closeButton>
                   <Modal.Title> Add New Channel</Modal.Title>
                 </Modal.Header>
+
                 <Modal.Body>
                   <Form onSubmit={addNewChannel}>
                     <Form.Group
@@ -188,6 +193,7 @@ const SideBar = () => {
                     </Form.Group>
                   </Form>
                 </Modal.Body>
+
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>
                     Close
@@ -199,19 +205,21 @@ const SideBar = () => {
               </Modal>
             </div>
             <br />
-            Direct Messages
+
+            <div className="bar-label">Direct Messages</div>
+
             <ul className="list-group" id="dmsSideBar">
               {dmsList}
             </ul>
-            <br />
-            <div className="d-grid gap-2">
-              <Link className="btn btn-outline-dark" to="/profile">
-                Edit Profile
-              </Link>
-              <Link className="btn btn-danger" to="/logout">
-                Logout
-              </Link>
-            </div>
+          </div>
+
+          <div className="d-grid gap-2">
+            <Link className="btn btn-outline-dark" to="/profile">
+              Edit Profile
+            </Link>
+            <Link className="btn btn-danger" to="/logout">
+              Logout
+            </Link>
           </div>
         </div>
       )
