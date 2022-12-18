@@ -72,7 +72,7 @@ const ChatForm = (props: Props) => {
             // reset inputs
             setMessage('')
             setImage(null)
-            ;(imageInputRef.current as HTMLInputElement).value = ''
+              ; (imageInputRef.current as HTMLInputElement).value = ''
           })
           .catch((err) => {
             console.error('aws upload error', err)
@@ -101,7 +101,9 @@ const ChatForm = (props: Props) => {
       </FloatingLabel>
 
       <div className="chat-button-bar">
+        <Form.Label htmlFor="image-upload" className="d-none">Upload a file</Form.Label>
         <Form.Control
+          id="image-upload"
           className="file-input"
           type="file"
           accept="image/*"
@@ -110,7 +112,7 @@ const ChatForm = (props: Props) => {
           ref={imageInputRef}
         />
 
-        <Button type="submit" variant="success" disabled={sendDisabled}>
+        <Button type="submit" variant={sendDisabled ? 'dark' : 'primary'} disabled={sendDisabled}>
           Send
         </Button>
       </div>
