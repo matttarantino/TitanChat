@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import ErrorPage from './Misc/components/ErrorPage'
 import { httpErrors } from './utils/errors'
 import DmPage from './Views/components/DmPage'
@@ -13,6 +13,7 @@ import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
 import { useStore } from './services/appStore'
 import PublicChannelPage from './Views/components/PublicChannelPage'
+import { onMessageReceived } from './services/sockets'
 
 const APP_SPECS: Array<AppSpec> = [
   {
@@ -60,7 +61,21 @@ const APP_SPECS: Array<AppSpec> = [
 ]
 
 const App = () => {
-  const { store } = useStore()
+  const { store, updateStore } = useStore()
+  const [sessionMessages, setSessionMessages] = useState<Array<Message>>([])
+
+  // config message listener
+  useEffect(() => {
+    onMessageReceived(({ messageData }) => {
+      console.log('message received', messageData)
+      setSessionMessages((prev) => [messageData, ...prev])
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  useEffect(() => {
+    updateStore('sessionMessages', sessionMessages)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionMessages])
 
   useEffect(() => {
     console.log({ store })

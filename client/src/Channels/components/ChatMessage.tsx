@@ -27,9 +27,9 @@ const ChatMessage = (props: Message) => {
       minutes = '0' + minutes
     }
 
-    const timeString = `${Number(hours) % 12}:${minutes} ${
-      Number(hours) < 12 ? 'AM' : 'PM'
-    }`
+    const timeString = `${
+      Number(hours) !== 0 ? Number(hours) % 12 : 12
+    }:${minutes} ${Number(hours) < 12 ? 'AM' : 'PM'}`
 
     return `${month}/${day}/${year} at ${timeString}`
   }
