@@ -5,13 +5,16 @@ import cors from 'cors'
 import { Server } from 'socket.io'
 import configRoutes from './routes/index'
 
-const PORT = (process.env.PORT || 3001)
+const PORT = process.env.PORT || 3001
 
 const app = express()
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: ['*'],
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? 'https://titanschat.herokuapp.com'
+        : ['http://localhost:3000', 'http://localhost:3001'],
     methods: ['GET', 'POST'],
   },
 })
@@ -30,8 +33,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('message', (messageData: Message) => {
-    console.log('IN HERE', messageData)
-    io.sockets.in(messageData.channelId).emit('message', { messageData })
+    io.sockets.emit('message', { messageData })
   })
 
   socket.on('leave_channel', (username, channel) => {
@@ -41,6 +43,7 @@ io.on('connection', (socket) => {
     //   .in(channel)
     //   .emit('left_channel', { username: username, channel: channel })
   })
+
   socket.on('channel_added', (channelData: PublicChannelRegistrationInfo) => {
     io.sockets.emit('new_channel_added', { channelData })
   })

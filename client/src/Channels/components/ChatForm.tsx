@@ -72,7 +72,7 @@ const ChatForm = (props: Props) => {
             // reset inputs
             setMessage('')
             setImage(null)
-              ; (imageInputRef.current as HTMLInputElement).value = ''
+            ;(imageInputRef.current as HTMLInputElement).value = ''
           })
           .catch((err) => {
             console.error('aws upload error', err)
@@ -106,10 +106,11 @@ const ChatForm = (props: Props) => {
           type="file"
           accept="image/*"
           onChange={(ev) => setImage((ev.target as any).files[0])}
+          onKeyDown={onTextKeydown}
           ref={imageInputRef}
         />
 
-        <Button type="submit" disabled={sendDisabled}>
+        <Button type="submit" variant="success" disabled={sendDisabled}>
           Send
         </Button>
       </div>
