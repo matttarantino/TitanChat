@@ -55,17 +55,14 @@ const ChatForm = (props: Props) => {
       }
 
       if (image) {
-        const imagePath = `channels/${uuidv4()}-${image.name}`
-        newMessage.imageUrl = `${BUCKET_URL}/${imagePath}`
-
-        uploadFile(image, imagePath)
-          .then(() => {
-            sendMessage(newMessage)
+        uploadFile(image, 'channels', image.name)
+          .then((imageUrl) => {
+            sendMessage({ ...newMessage, imageUrl })
 
             // reset inputs
             setMessage('')
             setImage(null)
-              ; (imageInputRef.current as HTMLInputElement).value = ''
+            ;(imageInputRef.current as HTMLInputElement).value = ''
           })
           .catch((err) => {
             console.error('aws upload error', err)
@@ -94,9 +91,7 @@ const ChatForm = (props: Props) => {
       </FloatingLabel>
 
       <div className="chat-button-bar">
-        <Form.Label htmlFor="image-upload" className="d-none">Upload a file</Form.Label>
         <Form.Control
-          id="image-upload"
           className="file-input"
           type="file"
           accept="image/*"
@@ -105,7 +100,7 @@ const ChatForm = (props: Props) => {
           ref={imageInputRef}
         />
 
-        <Button type="submit" variant={sendDisabled ? 'dark' : 'success'} disabled={sendDisabled}>
+        <Button type="submit" variant="success" disabled={sendDisabled}>
           Send
         </Button>
       </div>
