@@ -8,10 +8,10 @@ export const createChannel = async (
 ): Promise<PublicChannel> => {
   // error check
   try {
-    areValidStrings({ creatorId: channel.creatorId })
+    areValidStrings(channel)
     isValidChannelName(channel.name)
   } catch (err) {
-    throw `DB Error: ${String(err)}`
+    throw `${String(err)}`
   }
 
   // check if channel name exists
@@ -31,7 +31,7 @@ export const createChannel = async (
   })
 
   if (!retval.acknowledged)
-    throw `DB Error: failed to add channel ${String(channel.name)}.`
+    throw `Failed to add channel ${String(channel.name)}.`
 
   return (await getPublicChannelById(
     String(retval.insertedId)

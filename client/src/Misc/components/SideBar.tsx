@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Loading from '../../Misc/components/Loading'
-import { getPublicChannels } from '../../services/privateServices'
+import { getPublicChannels, addPublicChannel } from '../../services/privateServices'
 import { useStore } from '../../services/appStore'
 import {
   refreshChannels,
@@ -35,18 +35,25 @@ const SideBar = () => {
   const [show, setShow] = useState(false)
   const [newChannelName, setNewChannelName] = useState('')
   const [newChannelError, setNewChannelError] = useState('')
-  const handleClose = () => setShow(false)
+  const handleClose = () => {
+    setNewChannelError('')
+    setShow(false)
+  }
   const handleOpen = () => setShow(true)
 
   const addNewChannel = (ev: any) => {
     ev.preventDefault()
 
-    // hit backend
-    // setNewChannelError if errors
-    // otherwise
-    emitRefreshChannels()
-
-    handleClose()
+    if (authInfo.authenticated)
+      addPublicChannel({ name: newChannelName, creatorId: authInfo.userId })
+        .then(() => {
+          emitRefreshChannels()
+          handleClose()
+          setNewChannelError('')
+        })
+        .catch(({ response }) => {
+          setNewChannelError(response.data)
+        })
   }
 
   const location = useLocation()
@@ -170,6 +177,10 @@ const SideBar = () => {
                 </Modal.Header>
 
                 <Modal.Body>
+                  {newChannelError && (
+                    <Form.Group className="mb-3 form-error">{newChannelError}</Form.Group>
+                  )}
+
                   <Form onSubmit={addNewChannel}>
                     <Form.Group
                       className="mb-3"
@@ -181,16 +192,13 @@ const SideBar = () => {
                         placeholder="Channel Name"
                         autoFocus
                         onChange={(event) => {
+                          setNewChannelError('')
                           setNewChannelName(event.target.value)
                         }}
                       />
                     </Form.Group>
                   </Form>
                 </Modal.Body>
-
-                {newChannelError && (
-                  <Form.Group className="mb-3 form-error">{newChannelError}</Form.Group>
-                )}
 
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>

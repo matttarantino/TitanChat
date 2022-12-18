@@ -5,7 +5,7 @@ import {
   getAllPublicChannels,
   getPublicChannelById,
 } from '../data/publicChannels'
-import { areValidStrings } from '../utils/errors'
+import { areValidStrings, isValidChannelName } from '../utils/errors'
 import { ensureAuthenticated } from '../middleware/auth'
 
 const publicChannelsRouter = Router()
@@ -20,6 +20,7 @@ publicChannelsRouter
 
     try {
       areValidStrings({ name, creatorId })
+      isValidChannelName(name)
     } catch (err) {
       return res.status(400).send(String(err))
     }
