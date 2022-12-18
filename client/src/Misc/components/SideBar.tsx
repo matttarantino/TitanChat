@@ -157,7 +157,7 @@ const SideBar = () => {
               <Button
                 className="mb-3"
                 onClick={handleOpen}
-                variant="success"
+                variant="secondary"
                 type="button"
                 id="newChannelButton"
               >
