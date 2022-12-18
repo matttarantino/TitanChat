@@ -4,7 +4,6 @@ import express from 'express'
 import cors from 'cors'
 import { Server } from 'socket.io'
 import configRoutes from './routes/index'
-import { Socket } from 'dgram'
 import { createChannel } from './data/publicChannels'
 
 const PORT = process.env.PORT || 3001
@@ -27,16 +26,11 @@ io.on('connection', (socket) => {
     io.sockets.emit('channel_created', {})
   })
 
-  // emit status update
   console.log('new client connected', socket.id)
-  // online/offline indicators
 
   socket.on('join_channel', (username, channel) => {
     console.log(`${username} has joined ${channel}.`)
     socket.join(channel)
-    // io.sockets
-    //   .in(channel)
-    //   .emit('joined_channel', { username: username, channel: channel })
   })
 
   socket.on('message', (messageData: Message) => {
@@ -46,22 +40,11 @@ io.on('connection', (socket) => {
   socket.on('leave_channel', (username, channel) => {
     console.log(`${username} has left ${channel}.`)
     socket.leave(channel)
-    // io.sockets
-    //   .in(channel)
-    //   .emit('left_channel', { username: username, channel: channel })
-  })
-
-  socket.on('channel_added', (channelData: PublicChannelRegistrationInfo) => {
-    io.sockets.emit('new_channel_added', { channelData })
   })
 
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')
   })
-
-  // socket.onAny((event, ...args) => {
-  //   console.log(event, args)
-  // })
 })
 
 app.use(cors())
