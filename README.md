@@ -19,13 +19,13 @@ Afterwards, in the root directory of the project, start server and client.
 
 You will Need MongoDB running: https://www.mongodb.com/ 
 
-For s3 to work on Local Machines, we have to add the following.
+For s3 to work on Local Machines, we have to add the following:
 
 ### `./client/.env.local`
 
 ### `REACT_APP_AWS_ACCESS_KEY = AKIA6ICJUY2LLLVI7QMH,  REACT_APP_AWS_SECRET_KEY = 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`
 
-For Server Authentication to Work, we have to add the following
+For Server Authentication to Work, we have to add the following:
 
 ### `./server/.env.local`
 
