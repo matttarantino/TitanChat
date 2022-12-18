@@ -49,8 +49,6 @@ const SideBar = () => {
         creatorId: authInfo.userId
       })
 
-
-    // logic to create new Channel with new channel Name
     handleClose()
   }
 
@@ -110,9 +108,8 @@ const SideBar = () => {
     return (
       <li key={elem.label}>
         <Link
-          className={`list-group-item ${active ? 'active' : ''} ${
-            active ? 'text-white' : ''
-          }`}
+          className={`list-group-item ${active ? 'active' : ''} ${active ? 'text-white' : ''
+            }`}
           to={`/channels/${elem.channelId}`}
         >
           <FiHash /> <span>{elem.label}</span>
@@ -163,7 +160,7 @@ const SideBar = () => {
               <Button
                 className="mb-3"
                 onClick={handleOpen}
-                variant="secondary"
+                variant="success"
                 type="button"
                 id="newChannelButton"
               >
