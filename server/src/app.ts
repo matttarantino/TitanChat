@@ -4,7 +4,6 @@ import express from 'express'
 import cors from 'cors'
 import { Server } from 'socket.io'
 import configRoutes from './routes/index'
-import { createChannel } from './data/publicChannels'
 
 const PORT = process.env.PORT || 3001
 
@@ -21,11 +20,6 @@ const io = new Server(httpServer, {
 })
 
 io.on('connection', (socket) => {
-  socket.on('createChannel', async (channelData: PublicChannelRegistrationInfo) => {
-    await createChannel(channelData)
-    io.sockets.emit('channel_created', {})
-  })
-
   console.log('new client connected', socket.id)
 
   socket.on('join_channel', (username, channel) => {
@@ -40,6 +34,10 @@ io.on('connection', (socket) => {
   socket.on('leave_channel', (username, channel) => {
     console.log(`${username} has left ${channel}.`)
     socket.leave(channel)
+  })
+
+  socket.on('channel_created', () => {
+    io.sockets.emit('channel_created', {})
   })
 
   socket.on('disconnect', () => {
