@@ -28,6 +28,6 @@ For s3 to work on Local Machines, we have to add the following.
 
 For Server Authentication to Work, we have to add the rolling
 
-### `.`
+### `./server/.env.local`
 
 ### `JWT_SECRET_STRING = somesecretstring`
