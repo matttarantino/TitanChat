@@ -20,16 +20,11 @@ const io = new Server(httpServer, {
 })
 
 io.on('connection', (socket) => {
-  // emit status update
   console.log('new client connected', socket.id)
-  // online/offline indicators
 
   socket.on('join_channel', (username, channel) => {
     console.log(`${username} has joined ${channel}.`)
     socket.join(channel)
-    // io.sockets
-    //   .in(channel)
-    //   .emit('joined_channel', { username: username, channel: channel })
   })
 
   socket.on('message', (messageData: Message) => {
@@ -39,22 +34,15 @@ io.on('connection', (socket) => {
   socket.on('leave_channel', (username, channel) => {
     console.log(`${username} has left ${channel}.`)
     socket.leave(channel)
-    // io.sockets
-    //   .in(channel)
-    //   .emit('left_channel', { username: username, channel: channel })
   })
 
-  socket.on('channel_added', (channelData: PublicChannelRegistrationInfo) => {
-    io.sockets.emit('new_channel_added', { channelData })
+  socket.on('refresh_channels', () => {
+    io.sockets.emit('refresh_channels', {})
   })
 
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')
   })
-
-  // socket.onAny((event, ...args) => {
-  //   console.log(event, args)
-  // })
 })
 
 app.use(cors())

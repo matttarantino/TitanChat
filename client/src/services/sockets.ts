@@ -21,4 +21,11 @@ export const onMessageReceived = (
 export const emitMessage = (newMessage: Message) =>
   socket.emit('message', newMessage)
 
-// export const disconnectSocket = () => socket.disconnect()
+export const disconnectSocket = () => socket.disconnect()
+
+export const emitRefreshChannels = () =>
+  socket.emit('refresh_channels')
+
+export const refreshChannels = (
+  callback: (args: {}) => void
+) => socket.on('refresh_channels', (args) => callback(args))
