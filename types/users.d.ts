@@ -51,3 +51,5 @@ type LoginSpecs = {
   username: string
   password: string
 }
+
+type userUpdateInfo = Omit<User, '_id' | 'password' | 'directMessages'>
