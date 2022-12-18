@@ -8,7 +8,7 @@ export const createChannel = async (
 ): Promise<PublicChannel> => {
   // error check
   try {
-    areValidStrings({ creatorId: channel.creatorId })
+    areValidStrings(channel)
     isValidChannelName(channel.name)
   } catch (err) {
     throw `${String(err)}`
