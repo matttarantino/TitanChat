@@ -14,6 +14,7 @@ type User = {
   username: string
   usernameLower: string
   password: string
+  profilePhotoUrl: string
   directMessages: Array<string>
 }
 
@@ -52,4 +53,12 @@ type LoginSpecs = {
   password: string
 }
 
-type userUpdateInfo = Omit<User, '_id' | 'password' | 'directMessages'>
+/**
+ * @author matttarantino
+ * @description the data to update a user from the profile page. See
+ *              {@link User} for param descriptions.
+ */
+type UserUpdateInfo = Omit<
+  User,
+  '_id' | 'password' | 'directMessages'
+>
