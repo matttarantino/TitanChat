@@ -9,12 +9,12 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Loading from '../../Misc/components/Loading'
-import { getPublicChannels, addPublicChannel } from '../../services/privateServices'
-import { useStore } from '../../services/appStore'
 import {
-  refreshChannels,
-  emitRefreshChannels
-} from '../../services/sockets'
+  getPublicChannels,
+  addPublicChannel,
+} from '../../services/privateServices'
+import { useStore } from '../../services/appStore'
+import { refreshChannels, emitRefreshChannels } from '../../services/sockets'
 
 const SideBar = () => {
   const {
@@ -97,7 +97,7 @@ const SideBar = () => {
       }
 
       // set channel listener
-      refreshChannels(({ }) => {
+      refreshChannels(() => {
         fetchChannels()
       })
 
@@ -112,8 +112,9 @@ const SideBar = () => {
     return (
       <li key={elem.label}>
         <Link
-          className={`list-group-item ${active ? 'active' : ''} ${active ? 'text-white' : ''
-            }`}
+          className={`list-group-item ${active ? 'active' : ''} ${
+            active ? 'text-white' : ''
+          }`}
           to={`/channels/${elem.channelId}`}
         >
           <FiHash /> <span>{elem.label}</span>
@@ -178,7 +179,9 @@ const SideBar = () => {
 
                 <Modal.Body>
                   {newChannelError && (
-                    <Form.Group className="mb-3 form-error">{newChannelError}</Form.Group>
+                    <Form.Group className="mb-3 form-error">
+                      {newChannelError}
+                    </Form.Group>
                   )}
 
                   <Form onSubmit={addNewChannel}>
@@ -204,7 +207,11 @@ const SideBar = () => {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button type="submit" variant="primary" onClick={addNewChannel}>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    onClick={addNewChannel}
+                  >
                     Add
                   </Button>
                 </Modal.Footer>

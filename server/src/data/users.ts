@@ -33,10 +33,10 @@ export const createUser = async (
   })
   if (!retval.acknowledged)
     throw `DB Error: failed to add user ${String(user)}.`
-  return (await getUser(String(retval.insertedId))) as UserData
+  return (await getUserById(String(retval.insertedId))) as UserData
 }
 
-export const getUser = async (userId: string): Promise<UserData | null> => {
+export const getUserById = async (userId: string): Promise<UserData | null> => {
   let userIdObj
 
   // error check
@@ -53,6 +53,24 @@ export const getUser = async (userId: string): Promise<UserData | null> => {
     _id: userIdObj,
   })) as any
   return user ? { ...user, _id: userId, password: undefined } : null
+}
+
+export const getUserByUsername = async (
+  username: string
+): Promise<UserData | null> => {
+  // error check
+  try {
+    areValidStrings({ username })
+  } catch (err) {
+    return null
+  }
+
+  // find and return entry
+  const usersCollection = await getUsersCollection()
+  const user = (await usersCollection.findOne({
+    username,
+  })) as any
+  return user ? { ...user, _id: String(user._id), password: undefined } : null
 }
 
 export const getAllUsers = async (): Promise<UserListResponse> => {

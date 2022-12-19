@@ -8,7 +8,7 @@
     "start": "node ./server/build/app.js",
     "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
     "dev:server": "ts-node-dev --files ./server/src/app.ts",
-    "dev:client": "yarn --cwd client start",
+    "dev:client": "yarn --cwd client --max-old-space-size=8192 start",
     "build": "yarn --cwd client install && yarn --cwd client build && yarn --cwd ./ build:server",
     "build:server": "cd server && tsc",
     "build:client": "yarn --cwd client build",

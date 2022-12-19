@@ -18,3 +18,8 @@ export const getPublicChannelInfo = (channelId: string) =>
 
 export const addPublicChannel = (channelInfo: PublicChannelRegistrationInfo) =>
   axios.post('/api/channels/public', channelInfo, { headers: authHeader() })
+
+export const postMessagePublicChannel = (message: Message) =>
+  axios.post('/api/channels/public/' + message.channelId, message, {
+    headers: authHeader(),
+  })

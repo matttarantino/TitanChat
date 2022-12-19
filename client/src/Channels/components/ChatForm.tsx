@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { BUCKET_URL, uploadFile } from '../../services/s3Service'
 import { useStore } from '../../services/appStore'
 import { emitMessage } from '../../services/sockets'
+import { postMessagePublicChannel } from '../../services/privateServices'
 
 type Props = {
   channelId: string
@@ -35,8 +36,9 @@ const ChatForm = (props: Props) => {
 
   const sendMessage = (newMessage: Message) => {
     emitMessage(newMessage)
-
-    // send message to server
+    postMessagePublicChannel(newMessage).catch(({ response }) => {
+      console.error('message post error', response)
+    })
   }
 
   const onSubmit = (ev: any) => {

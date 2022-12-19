@@ -1,7 +1,11 @@
 import { ObjectId } from 'mongodb'
-import { isValidChannelName, areValidStrings } from '../utils/errors'
+import {
+  isValidChannelName,
+  areValidStrings,
+  isValidMessage,
+} from '../utils/errors'
 import { getPublicChannelsCollection } from './config/mongoCollections'
-import { getUser } from './users'
+import { getUserById, getUserByUsername } from './users'
 
 export const createChannel = async (
   channel: PublicChannelRegistrationInfo
@@ -16,16 +20,16 @@ export const createChannel = async (
 
   // check if channel name exists
   const channelNameLower = channel.name.toLowerCase()
-  const publicChannelsCollection = await getPublicChannelsCollection()
-  if (await publicChannelsCollection.findOne({ name: channelNameLower }))
+  const publicChannels = await getPublicChannelsCollection()
+  if (await publicChannels.findOne({ name: channelNameLower }))
     throw { type: 'exists', message: 'Channel is already taken.' }
 
   // check if user exists
-  if (!(await getUser(channel.creatorId))) throw 'Creator does not exist.'
+  if (!(await getUserById(channel.creatorId))) throw 'Creator does not exist.'
 
   // add new entry to db
   channel.name = channelNameLower
-  const retval = await publicChannelsCollection.insertOne({
+  const retval = await publicChannels.insertOne({
     ...channel,
     messages: [],
   })
@@ -39,8 +43,8 @@ export const createChannel = async (
 }
 
 export const getAllPublicChannels = async (): Promise<ChannelsResponse> => {
-  const publicChannelsCollection = await getPublicChannelsCollection()
-  return await publicChannelsCollection
+  const publicChannels = await getPublicChannelsCollection()
+  return await publicChannels
     .find({})
     .map((e) => ({ label: e.name, channelId: String(e._id) }))
     .toArray()
@@ -60,6 +64,29 @@ export const getPublicChannelById = async (
   }
 
   // find and return entry
-  const publicChannelsCollection = await getPublicChannelsCollection()
-  return (await publicChannelsCollection.findOne({ _id: channelIdObj })) as any
+  const publicChannels = await getPublicChannelsCollection()
+  return (await publicChannels.findOne({ _id: channelIdObj })) as any
+}
+
+export const addMessageToChannel = async (message: Message) => {
+  isValidMessage(message)
+
+  // ensure channel exists
+  if (!(await getPublicChannelById(message.channelId)))
+    throw 'Channel does not exist.'
+
+  // check if user exists
+  if (!(await getUserByUsername(message.authorName)))
+    throw 'User does not exist.'
+
+  // push message to channel
+  const publicChannels = await getPublicChannelsCollection()
+  const ret = await publicChannels.updateOne(
+    { _id: new ObjectId(message.channelId) },
+    { $push: { messages: message } }
+  )
+
+  if (ret.modifiedCount !== 1) throw 'Channel update failed.'
+
+  return await getPublicChannelById(message.channelId)
 }

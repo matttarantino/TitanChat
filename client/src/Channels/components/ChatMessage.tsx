@@ -39,7 +39,7 @@ const ChatMessage = (props: Message) => {
       <div className="profile-pic-container">
         <img alt="ProfilePicture" src={process.env.PUBLIC_URL + '/anon.png'} />
       </div>
-      <div>
+      <div className="message-content">
         <div className="author-container">
           <div className="author-name">{props.authorName}</div>
           <div className="message-day">{convertDateToString()}</div>

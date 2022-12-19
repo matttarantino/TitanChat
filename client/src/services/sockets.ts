@@ -23,9 +23,7 @@ export const emitMessage = (newMessage: Message) =>
 
 export const disconnectSocket = () => socket.disconnect()
 
-export const emitRefreshChannels = () =>
-  socket.emit('refresh_channels')
+export const emitRefreshChannels = () => socket.emit('refresh_channels')
 
-export const refreshChannels = (
-  callback: (args: {}) => void
-) => socket.on('refresh_channels', (args) => callback(args))
+export const refreshChannels = (callback: () => void) =>
+  socket.on('refresh_channels', () => callback())

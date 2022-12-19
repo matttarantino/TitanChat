@@ -1,6 +1,7 @@
 /**
  * @author rgorai
  * @description schema for a message
+ * @param _id client-created uuid of the message
  * @param authorName username of the user that sent the message
  * @param channelId is of the channel in which the message was sent
  * @param date stringified date object specifying when the message was sent

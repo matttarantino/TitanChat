@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getAllUsers, getUser } from '../data/users'
+import { getAllUsers, getUserById } from '../data/users'
 import { areValidStrings } from '../utils/errors'
 import { ensureAuthenticated } from '../middleware/auth'
 
