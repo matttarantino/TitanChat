@@ -37,7 +37,7 @@ const SIGNUP_SPECS: SignupFormSpecs = {
     type: 'file',
     defaultValue: '',
     props: { placeholder: 'Choose Profile Photo' },
-  },
+  }
 }
 
 const SIGNUP_KEYS = Object.keys(SIGNUP_SPECS) as Array<keyof SignupFormSpecs>
