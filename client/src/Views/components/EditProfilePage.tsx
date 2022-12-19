@@ -50,7 +50,7 @@ const EditProfilePage = () => {
 
       if (!formErrorPresent)
         try {
-          // await updateUserProfile({ ...newUserData, profilePhotoUrl })
+          await updateUserProfile({ ...newUserData, profilePhotoUrl })
           setProfileImage(null)
           setUsername('')
           navigate(-1)
