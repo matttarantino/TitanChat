@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom'
 const EditProfilePage = () => {
   const [username, setUsername] = useState('')
   const [profileImage, setProfileImage] = useState<File | null>(null)
+  const [profileProtoUrl, setProfileProtoUrl] = useState('')
+  const [profileError, setProfileError] = useState('')
   const navigate = useNavigate()
   const {
     store: { authInfo },
@@ -17,39 +19,35 @@ const EditProfilePage = () => {
 
   const onFormSubmit = (ev: any) => {
     ev.preventDefault()
-    console.log(username)
-    console.log(profileImage)
     const usernameLower = username.toLowerCase()
 
     const newUserData = {
       username: username,
       usernameLower: usernameLower,
-      profilePicture: profileImage,
+      profilePhotoUrl: profileProtoUrl,
     }
 
-    // don't know if s3Directory arg is correct
-    if (profileImage) {
+    if (profileImage)
       uploadFile(profileImage, 'profile', profileImage.name)
         .then((url) => {
-          setProfileImage(null)
+          setProfileProtoUrl(url)
         })
-        .catch((error) => {
-          console.error('aws edit profile pic error: ', error)
+        .catch(() => {
+          setProfileError('An error occurred uploading the photo. Try again!')
         })
-    }
 
-    // we need type User to also have a profilePicture field
-    if (username.trim().length > 0) {
-      updateUserProfile(newUserData)
-        .then((e) => {
-          console.log(e)
-          setProfileImage(null)
-          setUsername('')
-        })
-        .catch((error) => {
-          console.error('Updating Profile Server Error: ', error)
-        })
-    }
+
+    // if (username.trim().length > 0) {
+    updateUserProfile(newUserData)
+      .then(() => {
+        setProfileImage(null)
+        setUsername('')
+        navigate(-1)
+      })
+      .catch((error) => {
+        setProfileError(error.data)
+      })
+    // }
   }
 
   return (
@@ -57,28 +55,37 @@ const EditProfilePage = () => {
       {authInfo.authenticated && (
         <h1 className="profileName">Editing: {authInfo.username}</h1>
       )}
+
+      {profileError && (
+        <Form.Group className="mb-3 form-error">{profileError}</Form.Group>
+      )}
+
       <Form onSubmit={onFormSubmit}>
-        <label>Select Profile Picture:</label>
-        <Form.Control
-          className="file-input"
-          type="file"
-          id="img"
-          name="img"
-          accept="image/*"
-          onChange={(e) => setProfileImage((e.target as any).files[0])}
-        />
-        <br />
         <Form.Group className="mb-3">
           <Form.Label>New Username</Form.Label>
           <Form.Control
             type="username"
             placeholder="Enter New Username"
             onChange={(event) => {
+              setProfileError('');
               setUsername(event.target.value)
             }}
           />
+          <br />
+          <Form.Label>Update Profile Picture:</Form.Label>
+          <Form.Control
+            className="file-input"
+            type="file"
+            id="img"
+            name="img"
+            accept="image/*"
+            onChange={(e) => {
+              setProfileError('');
+              setProfileImage((e.target as any).files[0])
+            }}
+          />
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={() => navigate(-1)}>
+        <Button variant="primary" type="submit" onClick={onFormSubmit}>
           Submit
         </Button>
       </Form>
