@@ -44,7 +44,7 @@ export const getUser = async (userId: string): Promise<UserData | null> => {
     areValidStrings({ userId })
     userIdObj = new ObjectId(userId)
   } catch (err) {
-    return null
+    throw `DB Error: ${String(err)}`
   }
 
   // find and return entry
@@ -53,6 +53,32 @@ export const getUser = async (userId: string): Promise<UserData | null> => {
     _id: userIdObj,
   })) as any
   return user ? { ...user, _id: userId, password: undefined } : null
+}
+
+export const updateUser = async (userData: UserUpdateInfo): Promise<UserData | null> => {
+  let userIdObj
+
+  // error check
+  try {
+    areValidStrings({ userData })
+    userIdObj = new ObjectId(userData._id)
+  } catch (err) {
+    throw `DB Error: ${String(err)}`
+  }
+
+  // find and return entry
+  const usersCollection = await getUsersCollection()
+  const user = (await usersCollection.findOne({
+    _id: userIdObj,
+  })) as any
+
+  if (!user) {
+    throw 'No user exists with that ID'
+  }
+
+  // update user in mongo
+
+  return user ? { ...user, _id: userData._id, password: undefined } : null
 }
 
 export const getAllUsers = async (): Promise<UserListResponse> => {
