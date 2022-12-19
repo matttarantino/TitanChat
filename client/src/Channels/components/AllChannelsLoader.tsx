@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Loading from '../../Misc/components/Loading'
 import { useStore } from '../../services/appStore'
@@ -18,7 +18,6 @@ const AllChannelsLoader = () => {
     if (authInfo.authenticated) {
       getPublicChannels()
         .then(({ data }: { data: ChannelsResponse }) => {
-          console.log('channel loader', data)
           updateStore(
             'sessionChannelInfo',
             data.reduce(

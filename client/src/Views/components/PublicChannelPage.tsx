@@ -28,10 +28,6 @@ const PublicChannelPage = () => {
       }
 
       // request data from server
-      console.log(
-        'HERE',
-        (sessionChannelInfo[channelId]?.messages ?? []).length === 0
-      )
       if ((sessionChannelInfo[channelId]?.messages ?? []).length === 0)
         getPublicChannelInfo(channelId)
           .then(({ data }: { data: PublicChannel }) => {

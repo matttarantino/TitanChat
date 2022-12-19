@@ -9,22 +9,15 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Loading from '../../Misc/components/Loading'
-import {
-  getPublicChannels,
-  addPublicChannel,
-} from '../../services/privateServices'
+import { addPublicChannel } from '../../services/privateServices'
 import { useStore } from '../../services/appStore'
-import {
-  refreshPublicChannels,
-  emitRefreshPubliChannels,
-} from '../../services/sockets'
+import { emitRefreshPubliChannels } from '../../services/sockets'
 
 const SideBar = () => {
   const {
     store: { authInfo, sessionChannelInfo },
   } = useStore()
   const navigate = useNavigate()
-  const [channels, setChannels] = useState<ChannelsResponse>([])
   const [dms, setDms] = useState<ChannelsResponse>([])
 
   // change initial state of loading to "true" when server is integrated
