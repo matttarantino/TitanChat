@@ -21,17 +21,10 @@ const EditProfilePage = () => {
 
   const onFormSubmit = (ev: any) => {
     ev.preventDefault()
-    const usernameLower = username.toLowerCase()
     let formErrorPresent = false
 
-    const newUserData = {
-      _id: authInfo.authenticated ? authInfo.userId : '',
-      username: username,
-      usernameLower: usernameLower
-    }
-
     try {
-      isValidUserName(newUserData.username)
+      isValidUserName(username)
     } catch (err) {
       formErrorPresent = true
       setProfileError(String(err))
@@ -48,15 +41,23 @@ const EditProfilePage = () => {
           setProfileError('An error occurred uploading the photo. Try again!')
         }
 
+      const newUserData = {
+        _id: authInfo.authenticated ? authInfo.userId : '',
+        username: username,
+        usernameLower: username.toLowerCase()
+      }
+
       if (!formErrorPresent)
         try {
           await updateUserProfile({ ...newUserData, profilePhotoUrl })
           setProfileImage(null)
           setUsername('')
+          if (authInfo.authenticated)
+            authInfo.username = newUserData.username
           navigate(-1)
         } catch (err: any) {
           if (err.response.status == 409) setProfileError(err.response.data)
-          else console.error('signup error', err.response)
+          else console.error('profile error', err.response)
         }
 
       setSubmitButtonDisabled(false)

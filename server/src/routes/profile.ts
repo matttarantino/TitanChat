@@ -13,8 +13,8 @@ profileRouter.patch(
     const user: UserUpdateInfo = req.body
     // error check
     try {
-      // is this going to get caught on the missing URL?
-      // areValidStrings(user)
+      // const { profilePhotoUrl, ...requiredInfo } = user
+      // areValidStrings(requiredInfo)
       const _ = new ObjectId(user._id)
     } catch (err) {
       return res.status(400).send(String(err))
@@ -23,8 +23,8 @@ profileRouter.patch(
     // send user data
     try {
       return res.status(200).json(await updateUser(user))
-    } catch (err) {
-      console.log(err)
+    } catch (err: any) {
+      if (err.type === 'exists') return res.status(409).send(err.message)
       return res.status(500).send(String(err))
     }
   }
