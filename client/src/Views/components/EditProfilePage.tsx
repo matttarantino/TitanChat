@@ -6,12 +6,14 @@ import { useState } from 'react'
 import { updateUserProfile } from '../../services/privateServices'
 import { uploadFile } from '../../services/s3Service'
 import { useNavigate } from 'react-router-dom'
+import { isValidUserName } from '../../utils/errors'
 
 const EditProfilePage = () => {
   const [username, setUsername] = useState('')
   const [profileImage, setProfileImage] = useState<File | null>(null)
-  const [profileProtoUrl, setProfileProtoUrl] = useState('')
   const [profileError, setProfileError] = useState('')
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+
   const navigate = useNavigate()
   const {
     store: { authInfo },
@@ -20,35 +22,45 @@ const EditProfilePage = () => {
   const onFormSubmit = (ev: any) => {
     ev.preventDefault()
     const usernameLower = username.toLowerCase()
+    let formErrorPresent = false
 
     const newUserData = {
       _id: authInfo.authenticated ? authInfo.userId : '',
       username: username,
-      usernameLower: usernameLower,
-      profilePhotoUrl: profileProtoUrl,
+      usernameLower: usernameLower
     }
 
-    if (profileImage)
-      uploadFile(profileImage, 'profile', profileImage.name)
-        .then((url) => {
-          setProfileProtoUrl(url)
-        })
-        .catch(() => {
+    try {
+      isValidUserName(newUserData.username)
+    } catch (err) {
+      formErrorPresent = true
+      setProfileError(String(err))
+    }
+
+    ; (async () => {
+      let profilePhotoUrl = null
+
+      if (profileImage)
+        try {
+          profilePhotoUrl = await uploadFile(profileImage, 'profile', profileImage.name)
+        } catch (err) {
+          formErrorPresent = true
           setProfileError('An error occurred uploading the photo. Try again!')
-        })
+        }
 
+      if (!formErrorPresent)
+        try {
+          // await updateUserProfile({ ...newUserData, profilePhotoUrl })
+          setProfileImage(null)
+          setUsername('')
+          navigate(-1)
+        } catch (err: any) {
+          if (err.response.status == 409) setProfileError(err.response.data)
+          else console.error('signup error', err.response)
+        }
 
-    // if (username.trim().length > 0) {
-    updateUserProfile(newUserData)
-      .then(() => {
-        setProfileImage(null)
-        setUsername('')
-        navigate(-1)
-      })
-      .catch((error) => {
-        setProfileError(error.data)
-      })
-    // }
+      setSubmitButtonDisabled(false)
+    })()
   }
 
   return (
@@ -86,7 +98,11 @@ const EditProfilePage = () => {
             }}
           />
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={onFormSubmit}>
+        <Button
+          variant={submitButtonDisabled ? 'dark' : 'primary'}
+          disabled={submitButtonDisabled}
+          type="submit"
+          onClick={onFormSubmit}>
           Submit
         </Button>
       </Form>
