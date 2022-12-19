@@ -22,6 +22,7 @@ const EditProfilePage = () => {
     const usernameLower = username.toLowerCase()
 
     const newUserData = {
+      _id: authInfo.authenticated ? authInfo.userId : '',
       username: username,
       usernameLower: usernameLower,
       profilePhotoUrl: profileProtoUrl,
