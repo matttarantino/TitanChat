@@ -54,7 +54,7 @@ const SignupPage = () => {
   const [formErrors, setFormErrors] = useState(DEFAULT_ERROR_STATE)
   const [signupError, setSignupError] = useState('')
   const [profileImage, setProfileImage] = useState<File | null>(null)
-  const [profileProtoUrl, setProfileProtoUrl] = useState('')
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
   // update passwordConfirmation validation to use state
   SIGNUP_SPECS.passwordConfirmation.validation = () => {
@@ -67,6 +67,7 @@ const SignupPage = () => {
 
   const onFormSubmit = (ev: any) => {
     ev.preventDefault()
+    setSubmitButtonDisabled(true)
 
     // error check
     setFormErrors(DEFAULT_ERROR_STATE)
@@ -79,35 +80,28 @@ const SignupPage = () => {
         formErrorPresent = true
       }
 
-    console.log('@@@@@@')
-    console.log(profileImage)
-    console.log('@@@@@@')
+    ; (async () => {
+      let profilePhotoUrl = null
 
-    if (profileImage)
-      uploadFile(profileImage, 'profile', profileImage.name)
-        .then((url) => {
-          console.log('!!!!!')
-          console.log(url)
-          console.log('!!!!!')
-          onInputChange('profilePhotoUrl', url)
-          setProfileProtoUrl(url)
-          console.log(profileData)
-        })
-        .catch(() => {
+      if (profileImage)
+        try {
+          profilePhotoUrl = await uploadFile(profileImage, 'profile', profileImage.name)
+        } catch (err) {
           formErrorPresent = true
           setSignupError('An error occurred uploading the photo. Try again!')
-        })
+        }
 
-    // send signup request if there are no errors
-    if (!formErrorPresent)
-      signup({ ...profileData, passwordConfirmation: undefined })
-        .then(() => {
-          // window.location.reload()
-        })
-        .catch(({ response }) => {
-          if (response.status == 409) setSignupError(response.data)
-          else console.error('signup error', response)
-        })
+      if (!formErrorPresent)
+        try {
+          await signup({ ...profileData, profilePhotoUrl, passwordConfirmation: undefined })
+          window.location.reload()
+        } catch (err: any) {
+          if (err.response.status == 409) setSignupError(err.response.data)
+          else console.error('signup error', err.response)
+        }
+
+      setSubmitButtonDisabled(false)
+    })()
   }
 
   return (
@@ -153,7 +147,8 @@ const SignupPage = () => {
 
         <Button
           className="mb-5"
-          variant="primary"
+          variant={submitButtonDisabled ? 'dark' : 'primary'}
+          disabled={submitButtonDisabled}
           type="submit"
           form="signup-form"
         >
