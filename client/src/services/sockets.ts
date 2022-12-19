@@ -10,10 +10,8 @@ const socket = io(host)
 export const joinChannel = (username: string, channelId: string) =>
   socket.emit('join_channel', username, channelId)
 
-export const leaveChannel = (username: string, channelId: string) => {
-  console.log('CHANNEL LEFT')
+export const leaveChannel = (username: string, channelId: string) =>
   socket.emit('leave_channel', username, channelId)
-}
 
 export const onMessageReceived = (callback: (messageData: Message) => void) =>
   socket.on('message', (args) => callback(args))

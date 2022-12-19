@@ -28,6 +28,10 @@ const PublicChannelPage = () => {
       }
 
       // request data from server
+      console.log(
+        'HERE',
+        (sessionChannelInfo[channelId]?.messages ?? []).length === 0
+      )
       if ((sessionChannelInfo[channelId]?.messages ?? []).length === 0)
         getPublicChannelInfo(channelId)
           .then(({ data }: { data: PublicChannel }) => {
@@ -54,8 +58,7 @@ const PublicChannelPage = () => {
 
   return pageError ? (
     <ErrorPage {...pageError} />
-  ) : channelId &&
-    (sessionChannelInfo[channelId]?.messages ?? []).length > 0 ? (
+  ) : channelId && sessionChannelInfo[channelId] ? (
     <div className="channel-container">
       <div className="message-container-wrapper">
         {/* {channelInfo && <h1> Welcome to #{channelInfo.name}!</h1>} */}

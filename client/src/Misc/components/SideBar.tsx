@@ -1,7 +1,7 @@
 // import React from 'react'
 // import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import '../styles/sideBar.scss'
 import * as CgIcons from 'react-icons/cg'
 import { FiHash } from 'react-icons/fi'
@@ -23,6 +23,7 @@ const SideBar = () => {
   const {
     store: { authInfo, sessionChannelInfo },
   } = useStore()
+  const navigate = useNavigate()
   const [channels, setChannels] = useState<ChannelsResponse>([])
   const [dms, setDms] = useState<ChannelsResponse>([])
 
@@ -53,6 +54,7 @@ const SideBar = () => {
           emitRefreshPubliChannels(data)
           handleClose()
           setNewChannelError('')
+          navigate(`/channels/${data._id}`)
         })
         .catch(({ response }) => {
           setNewChannelError(response.data)
