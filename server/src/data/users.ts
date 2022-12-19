@@ -59,7 +59,7 @@ export const getAllUsers = async (): Promise<UserListResponse> => {
   const usersCollection = await getUsersCollection()
   return await usersCollection
     .find({})
-    .map((e) => ({ _id: String(e._id), username: e.username }))
+    .map((e) => ({ _id: String(e._id), username: e.username, profilePhotoUrl: e.profilePhotoUrl }))
     .toArray()
 }
 
