@@ -60,11 +60,9 @@ const PublicChannelPage = () => {
         {/* {channelInfo && <h1> Welcome to #{channelInfo.name}!</h1>} */}
 
         {/* <div className="message-container"> */}
-        {[...roomMessages, ...(channelInfo?.messages.reverse() ?? [])].map(
-          (e) => (
-            <ChatMessage {...e} key={e._id} />
-          )
-        )}
+        {[...roomMessages, ...(channelInfo?.messages ?? [])].map((e) => (
+          <ChatMessage {...e} key={e._id} />
+        ))}
         {/* </div> */}
       </div>
       <ChatForm channelId={channelId} />

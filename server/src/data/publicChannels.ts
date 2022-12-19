@@ -83,7 +83,14 @@ export const addMessageToChannel = async (message: Message) => {
   const publicChannels = await getPublicChannelsCollection()
   const ret = await publicChannels.updateOne(
     { _id: new ObjectId(message.channelId) },
-    { $push: { messages: message } }
+    {
+      $push: {
+        messages: {
+          $each: [message],
+          $position: 0,
+        },
+      },
+    }
   )
 
   if (ret.modifiedCount !== 1) throw 'Channel update failed.'
