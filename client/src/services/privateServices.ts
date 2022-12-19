@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { authHeader } from './authService'
 
-export const getUserProfile = () =>
-  axios.get('/api/user/profile', { headers: authHeader() })
+// export const getUserProfile = () =>
+//   axios.get('/api/user/profile', { headers: authHeader() })
 
 export const updateUserProfile = (userData: UserUpdateInfo) =>
-  axios.put('/api/user/profile', userData, { headers: authHeader() })
+  axios.patch('/api/user/profile', userData, { headers: authHeader() })
 
 export const getAllUsers = () =>
   axios.get('/api/users', { headers: authHeader() })
