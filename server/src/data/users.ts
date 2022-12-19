@@ -60,7 +60,7 @@ export const updateUser = async (userData: UserUpdateInfo): Promise<UserData | n
 
   // error check
   try {
-    areValidStrings({ userData })
+    // areValidStrings(userData)
     userIdObj = new ObjectId(userData._id)
   } catch (err) {
     throw `DB Error: ${String(err)}`
