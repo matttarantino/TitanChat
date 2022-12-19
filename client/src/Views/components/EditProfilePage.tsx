@@ -9,19 +9,21 @@ import { useNavigate } from 'react-router-dom'
 import { isValidUserName } from '../../utils/errors'
 
 const EditProfilePage = () => {
-  const [username, setUsername] = useState('')
+  const {
+    store: { authInfo },
+  } = useStore()
+
+  const [username, setUsername] = useState(authInfo.authenticated ? authInfo.username : '')
   const [profileImage, setProfileImage] = useState<File | null>(null)
   const [profileError, setProfileError] = useState('')
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
   const navigate = useNavigate()
-  const {
-    store: { authInfo },
-  } = useStore()
 
   const onFormSubmit = (ev: any) => {
     ev.preventDefault()
     let formErrorPresent = false
+    setSubmitButtonDisabled(true)
 
     try {
       isValidUserName(username)
@@ -80,6 +82,7 @@ const EditProfilePage = () => {
           <Form.Control
             type="username"
             placeholder="Enter New Username"
+            value={username}
             onChange={(event) => {
               setProfileError('');
               setUsername(event.target.value)

@@ -60,8 +60,8 @@ export const updateUser = async (userData: UserUpdateInfo): Promise<UserData | n
 
   // error check
   try {
-    // const { profilePhotoUrl, ...requiredInfo } = userData
-    // areValidStrings(requiredInfo)
+    const { profilePhotoUrl, ...requiredInfo } = userData
+    areValidStrings(requiredInfo)
     userIdObj = new ObjectId(userData._id)
   } catch (err) {
     throw `DB Error: ${String(err)}`
@@ -78,7 +78,7 @@ export const updateUser = async (userData: UserUpdateInfo): Promise<UserData | n
 
   const { _id, ...updateData } = userData
 
-  if (await usersCollection.findOne({ usernameLower: userData.usernameLower }))
+  if (userData.usernameLower != user.usernameLower && await usersCollection.findOne({ usernameLower: userData.usernameLower }))
     throw { type: 'exists', message: 'Username is taken.' }
 
   const retval = await usersCollection.updateOne(

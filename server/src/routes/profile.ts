@@ -13,8 +13,8 @@ profileRouter.patch(
     const user: UserUpdateInfo = req.body
     // error check
     try {
-      // const { profilePhotoUrl, ...requiredInfo } = user
-      // areValidStrings(requiredInfo)
+      const { profilePhotoUrl, ...requiredInfo } = user
+      areValidStrings(requiredInfo)
       const _ = new ObjectId(user._id)
     } catch (err) {
       return res.status(400).send(String(err))
