@@ -4,18 +4,25 @@
   background-color: #ededed;
   border-right: 1px solid #ced4da;
   border-left: 1px solid #ced4da;
-  overflow-y: auto;
   flex-shrink: 0;
-  padding-top: 1em;
   padding-bottom: 1em;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
+  .channels-list {
+    padding: 1em 0.75rem 0;
+    overflow-y: auto;
+  }
+
   .bar-label {
     font-weight: 600;
     margin-bottom: 0.5em;
     margin-left: 0.1em;
+  }
+
+  .button-container {
+    border-top: 1px solid #ced4da;
   }
 
   ul {

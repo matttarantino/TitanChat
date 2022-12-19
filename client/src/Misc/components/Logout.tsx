@@ -8,7 +8,8 @@ const Logout = () => {
 
   useEffect(() => {
     updateStore('authInfo', logout())
-  }, [updateStore])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return <Navigate replace to="/" />
 }

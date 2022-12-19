@@ -29,14 +29,21 @@ type RouteError = {
   data?: string
 }
 
+type SessionChannelInfo = {
+  [channelId: string]: {
+    name: string
+    messages: Array<Message>
+  }
+}
+
 /**
  * @author rgorai
  * @description defines the app's Context type
  * @param authInfo stores the user's authentication info as {@link AuthResponse}
- * @param sessionMessages an object containing all of the current session's
- *                        message data from socket.io
+ * @param sessionChannelInfo an object containing all ids/names of all our channels
+ *                           as well as each of their session messages from socket.io
  */
 type AppState = {
   authInfo: AuthResponse
-  sessionMessages: Array<Message>
+  sessionChannelInfo: SessionChannelInfo
 }

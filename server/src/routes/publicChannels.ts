@@ -52,7 +52,9 @@ publicChannelsRouter.get(
 
     // send user data
     try {
-      return res.status(200).json(await getPublicChannelById(channelId))
+      const channel = await getPublicChannelById(channelId)
+      if (!channel) return res.status(404).send('Channel does not exist.')
+      else return res.status(200).json(channel)
     } catch (err) {
       return res.status(500).send(String(err))
     }

@@ -16,5 +16,10 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "../types/*.d.ts"]
+  "include": [
+    "src",
+    "../types/*.d.ts",
+    "../server/tasks/random.ts",
+    "../server/tasks/random.ts"
+  ]
 }

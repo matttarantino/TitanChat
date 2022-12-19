@@ -14,17 +14,20 @@ import {
   addPublicChannel,
 } from '../../services/privateServices'
 import { useStore } from '../../services/appStore'
-import { refreshChannels, emitRefreshChannels } from '../../services/sockets'
+import {
+  refreshPublicChannels,
+  emitRefreshPubliChannels,
+} from '../../services/sockets'
 
 const SideBar = () => {
   const {
-    store: { authInfo },
+    store: { authInfo, sessionChannelInfo },
   } = useStore()
   const [channels, setChannels] = useState<ChannelsResponse>([])
   const [dms, setDms] = useState<ChannelsResponse>([])
 
   // change initial state of loading to "true" when server is integrated
-  const [loadingChannels, setLoadingChannels] = useState(true)
+  // const [loadingChannels, setLoadingChannels] = useState(true)
   const [loadingDms, setLoadingDms] = useState(false)
 
   // change initial state of error to "true" when server is integrated
@@ -46,8 +49,8 @@ const SideBar = () => {
 
     if (authInfo.authenticated)
       addPublicChannel({ name: newChannelName, creatorId: authInfo.userId })
-        .then(() => {
-          emitRefreshChannels()
+        .then(({ data }: { data: PublicChannel }) => {
+          emitRefreshPubliChannels(data)
           handleClose()
           setNewChannelError('')
         })
@@ -71,17 +74,6 @@ const SideBar = () => {
 
   useEffect(() => {
     if (authInfo.authenticated) {
-      async function fetchChannels() {
-        getPublicChannels()
-          .then(({ data }) => {
-            setChannels(data)
-          })
-          .catch(({ response }) => {
-            setErrorChannels(response)
-          })
-        setLoadingChannels(false)
-      }
-
       async function fetchDms() {
         try {
           // const { data } = await axios.get(localDmsUrl)
@@ -96,28 +88,22 @@ const SideBar = () => {
         }
       }
 
-      // set channel listener
-      refreshChannels(() => {
-        fetchChannels()
-      })
-
-      fetchChannels()
       fetchDms()
     }
   }, [authInfo.authenticated])
 
-  channelList = channels.map((elem) => {
-    const path = `/channels/${elem.channelId}`
+  channelList = Object.keys(sessionChannelInfo).map((channelId) => {
+    const path = `/channels/${channelId}`
     const active = location.pathname === path
     return (
-      <li key={elem.label}>
+      <li key={channelId}>
         <Link
           className={`list-group-item ${active ? 'active' : ''} ${
             active ? 'text-white' : ''
           }`}
-          to={`/channels/${elem.channelId}`}
+          to={path}
         >
-          <FiHash /> <span>{elem.label}</span>
+          <FiHash /> <span>{sessionChannelInfo[channelId].name}</span>
         </Link>
       </li>
     )
@@ -136,8 +122,8 @@ const SideBar = () => {
     )
   })
 
-  if (authInfo.authenticated)
-    if (loadingChannels || loadingDms) {
+  if (authInfo.authenticated && Object.keys(sessionChannelInfo).length > 0)
+    if (loadingDms) {
       return (
         <nav className="sidebar-container">
           <div className="container">
@@ -153,14 +139,14 @@ const SideBar = () => {
       )
     } else {
       return (
-        <div className="container sidebar-container">
-          <div>
+        <div className="sidebar-container">
+          <div className="channels-list">
             <div className="bar-label">Channels</div>
 
             <ul className="list-group channel-list" id="channelSideBar">
               {channelList}
             </ul>
-            {/* <br /> */}
+
             <div className="d-grid">
               <Button
                 className="mb-3"
@@ -226,7 +212,7 @@ const SideBar = () => {
             </ul>
           </div>
 
-          <div className="d-grid gap-2">
+          <div className="container d-grid gap-2 pt-3 button-container">
             <Link className="btn btn-outline-dark" to="/profile">
               Edit Profile
             </Link>

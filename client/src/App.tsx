@@ -1,7 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import ErrorPage from './Misc/components/ErrorPage'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { httpErrors } from './utils/errors'
+import { useStore } from './services/appStore'
+import { onMessageReceived } from './services/sockets'
+import ErrorPage from './Misc/components/ErrorPage'
 import DmPage from './Views/components/DmPage'
 import LandingPage from './Views/components/LandingPage'
 import SideBar from './Misc/components/SideBar'
@@ -11,9 +13,8 @@ import SignupPage from './Views/components/SignupPage'
 import ProfilePage from './Views/components/ProfilePage'
 import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
-import { useStore } from './services/appStore'
 import PublicChannelPage from './Views/components/PublicChannelPage'
-import { onMessageReceived } from './services/sockets'
+import AllChannelsLoader from './Channels/components/AllChannelsLoader'
 
 const APP_SPECS: Array<AppSpec> = [
   {
@@ -23,7 +24,7 @@ const APP_SPECS: Array<AppSpec> = [
     ensureAuthenticated: false,
   },
   {
-    name: 'Pulic Channels',
+    name: 'Public Channels',
     path: '/channels/:channelId',
     element: <PublicChannelPage />,
     ensureAuthenticated: true,
@@ -61,21 +62,7 @@ const APP_SPECS: Array<AppSpec> = [
 ]
 
 const App = () => {
-  const { store, updateStore } = useStore()
-  const [sessionMessages, setSessionMessages] = useState<Array<Message>>([])
-
-  // config message listener
-  useEffect(() => {
-    onMessageReceived(({ messageData }) => {
-      console.log('message received', messageData)
-      setSessionMessages((prev) => [messageData, ...prev])
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  useEffect(() => {
-    updateStore('sessionMessages', sessionMessages)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionMessages])
+  const { store } = useStore()
 
   useEffect(() => {
     console.log({ store })
@@ -88,26 +75,29 @@ const App = () => {
 
         <main>
           <Routes>
-            {APP_SPECS.map((e) => {
-              const currRoute = (
+            {APP_SPECS.filter((e) => e.ensureAuthenticated === null).map(
+              (e) => (
                 <Route path={e.path} element={e.element} key={e.path} />
               )
-              return e.ensureAuthenticated === null ? (
-                currRoute
-              ) : (
-                <Route
-                  path={e.path}
-                  element={
-                    <AuthWrapper
-                      ensureNotAuthenticated={!e.ensureAuthenticated}
-                    >
-                      {e.element}
-                    </AuthWrapper>
-                  }
-                  key={e.path}
-                />
-              )
-            })}
+            )}
+
+            <Route element={<AllChannelsLoader />}>
+              {APP_SPECS.filter((e) => e.ensureAuthenticated !== null).map(
+                (e) => (
+                  <Route
+                    path={e.path}
+                    element={
+                      <AuthWrapper
+                        ensureNotAuthenticated={!e.ensureAuthenticated}
+                      >
+                        {e.element}
+                      </AuthWrapper>
+                    }
+                    key={e.path}
+                  />
+                )
+              )}
+            </Route>
 
             <Route path="*" element={<ErrorPage {...httpErrors[404]} />} />
           </Routes>

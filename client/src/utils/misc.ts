@@ -5,7 +5,8 @@
  * @param source object to get value from
  * @param keychain array of string representing the hierarchy of keys from
  *                 the source's root to the desired mutation location
- * @returns the value located at the desired location
+ * @returns the value located at the desired location, or undefined
+ *          if the value doesn't exists / an invlaid keychain is supplied
  */
 export const getObjValueFromKeychain = (
   source: any,
@@ -22,13 +23,13 @@ export const getObjValueFromKeychain = (
  * @description returns a deep copy of an object with an updated value
  *              at the location specified by the supplised keychain
  * @param source object to set value in
- * @param keychain array of string representing the hierarchy of keys from
+ * @param keychain array of strings representing the hierarchy of keys from
  *                 the source's root to the desired mutation location
  * @param value the value to update with
  * @returns a new object with the updated value
  */
 export const setObjValueFromKeychain = (
-  source: { [_: string | number]: any },
+  source: { [_: string]: any },
   keychain: string | Array<string>,
   value: any
 ): any => {
@@ -38,9 +39,48 @@ export const setObjValueFromKeychain = (
     [key]:
       typeof keychain === 'string' || keychain.length === 1
         ? value
-        : setObjValueFromKeychain(source[key] ?? {}, keychain.slice(1), value),
+        : setObjValueFromKeychain(source[key], keychain.slice(1), value),
   }
 }
+
+/**
+ * @author rgorai
+ * @description prepends a value to an array that is nested in an object.
+ *              See {@link setObjValueFromKeychain} for param definitions.
+ */
+export const prependToArrayFromKeychain = (
+  source: any,
+  keychain: string | Array<string>,
+  value: any
+): any => {
+  try {
+    return typeof keychain === 'string'
+      ? { ...source, [keychain]: [value, ...source[keychain]] }
+      : keychain.length === 1
+      ? { ...source, [keychain[0]]: [value, ...source[keychain[0]]] }
+      : {
+          ...source,
+          [keychain[0]]: prependToArrayFromKeychain(
+            source[keychain[0]],
+            keychain.slice(1),
+            value
+          ),
+        }
+  } catch (err) {
+    return 'Prepend Error: Invalid keychain.'
+  }
+}
+// ;(() => {
+//   const test: any = {
+//     testing: {
+//       evenFurther: {
+//         andAgain: ['data should be here'],
+//       },
+//     },
+//   }
+
+//   console.log('TEST', setObjValueFromKeychain(test, ['testing', 'evenFurther', 'anotherKey'], 'YES'))
+// })()
 
 /**
  * @author rgorai
