@@ -4,7 +4,7 @@ import { authHeader } from './authService'
 export const getUserProfile = () =>
   axios.get('/api/user/profile', { headers: authHeader() })
 
-export const updateUserProfile = (userData: userUpdateInfo) =>
+export const updateUserProfile = (userData: UserUpdateInfo) =>
   axios.put('/api/user/profile', userData, { headers: authHeader() })
 
 export const getAllUsers = () =>
