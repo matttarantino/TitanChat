@@ -10,7 +10,7 @@ const RightSideBar = () => {
     store: { authInfo },
   } = useStore()
   const [userData, setUserData] = useState<UserListResponse>([])
-  const [isPublic, setIsPublic] = useState(true)
+  const [isPublic, setIsPublic] = useState(false)
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
@@ -49,9 +49,10 @@ const RightSideBar = () => {
         })
   }
 
-  const usersList = userData.map((user) => {
-    if (authInfo.authenticated && user.username != authInfo.username)
-      return (
+  if (authInfo.authenticated && isPublic) {
+    const usersList = userData
+      .filter((e) => e.username !== authInfo.username)
+      .map((user) => (
         <li key={user._id}>
           <button
             className="list-group-item text-decoration-none sidebar-link"
@@ -65,18 +66,22 @@ const RightSideBar = () => {
             <span>{user.username}</span>
           </button>
         </li>
-      )
-  })
+      ))
 
-  if (authInfo.authenticated && isPublic)
     return (
       <div className="sidebar-container rightbar-container">
         <div className="container">
           <div className="bar-label">Members</div>
-          <ul className="list-group">{usersList}</ul>
+          <ul className="list-group">
+            {usersList.length > 0 ? (
+              usersList
+            ) : (
+              <div className="empty-notice">{`You're the only one here!`}</div>
+            )}
+          </ul>
         </div>
       </div>
     )
-  else return <></>
+  } else return <></>
 }
 export default RightSideBar

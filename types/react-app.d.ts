@@ -55,7 +55,7 @@ type SessionChannelInfo = {
 type AppState = {
   authInfo: AuthResponse
   sessionChannelInfo: {
-    public: SessionChannelInfo
-    direct: SessionChannelInfo
+    public: SessionChannelInfo | null
+    direct: SessionChannelInfo | null
   }
 }

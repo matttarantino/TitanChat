@@ -43,59 +43,65 @@ const SideBar = () => {
         })
   }
 
-  const getSideBarLink = (
-    channelId: string,
-    channelType: 'public' | 'direct',
-    channelIcon: ReactElement
-  ) => {
-    const path = `/${channelType}/${channelId}`
-    const active = pathname === path
-    return (
-      <li key={path}>
-        <Link
-          className={`list-group-item ${active ? 'active' : ''} ${
-            active ? 'text-white' : ''
-          } sidebar-link`}
-          to={path}
-        >
-          {channelIcon}{' '}
-          <span>{sessionChannelInfo[channelType][channelId].name}</span>
-        </Link>
-      </li>
-    )
-  }
-
-  const channelList = Object.keys(sessionChannelInfo.public).map((channelId) =>
-    getSideBarLink(channelId, 'public', <FiHash />)
-  )
-
-  const dmsList = Object.keys(sessionChannelInfo.direct).map((channelId) =>
-    getSideBarLink(
-      channelId,
-      'direct',
-      <img
-        className="channel-icon"
-        src={
-          sessionChannelInfo.direct[channelId].channelIcon ??
-          process.env.PUBLIC_URL + '/anon.png'
-        }
-        alt={sessionChannelInfo.direct[channelId].name}
-      />
-    )
-  )
-
   if (
     authInfo.authenticated &&
-    (Object.keys(sessionChannelInfo.public).length > 0 ||
-      Object.keys(sessionChannelInfo.direct).length > 0)
-  )
+    // (Object.keys(sessionChannelInfo.public).length > 0 ||
+    //   Object.keys(sessionChannelInfo.direct).length > 0)
+    sessionChannelInfo.public &&
+    sessionChannelInfo.direct
+  ) {
+    const getSideBarLink = (
+      channelId: string,
+      channelType: 'public' | 'direct',
+      channelIcon: ReactElement
+    ) => {
+      const path = `/${channelType}/${channelId}`
+      const active = pathname === path
+      return (
+        <li key={path}>
+          <Link
+            className={`list-group-item ${active ? 'active' : ''} ${
+              active ? 'text-white' : ''
+            } sidebar-link`}
+            to={path}
+          >
+            {channelIcon}
+            <span>{sessionChannelInfo[channelType]?.[channelId].name}</span>
+          </Link>
+        </li>
+      )
+    }
+
+    const channelList = Object.keys(sessionChannelInfo.public).map(
+      (channelId) => getSideBarLink(channelId, 'public', <FiHash />)
+    )
+
+    const dmsList = Object.keys(sessionChannelInfo.direct).map((channelId) =>
+      getSideBarLink(
+        channelId,
+        'direct',
+        <img
+          className="channel-icon"
+          src={
+            sessionChannelInfo.direct?.[channelId].channelIcon ??
+            process.env.PUBLIC_URL + '/anon.png'
+          }
+          alt={sessionChannelInfo.direct?.[channelId].name}
+        />
+      )
+    )
+
     return (
       <div className="sidebar-container">
         <div className="channels-list">
           <div className="bar-label">Channels</div>
 
           <ul className="list-group channel-list" id="channelSideBar">
-            {channelList}
+            {channelList.length > 0 ? (
+              channelList
+            ) : (
+              <div className="empty-notice">Create a new channel below!</div>
+            )}
           </ul>
 
           <div className="d-grid">
@@ -175,7 +181,7 @@ const SideBar = () => {
         </div>
       </div>
     )
-  else return <></>
+  } else return <></>
 }
 
 export default SideBar
