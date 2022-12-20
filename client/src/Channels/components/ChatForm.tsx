@@ -25,9 +25,12 @@ const ChatForm = (props: Props) => {
 
   // enables sending when input is received
   useEffect(() => {
-    textInputRef?.current?.focus?.();
     setSendDisabled(!(message.trim().length > 0 || image))
   }, [message, image])
+
+  useEffect(() => {
+    textInputRef?.current?.focus?.();
+  }, [])
 
   // submits the form when ctrl + enter is pressed in the text input
   const onTextKeydown = (ev: React.KeyboardEvent) => {
