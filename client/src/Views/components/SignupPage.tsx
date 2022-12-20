@@ -33,7 +33,7 @@ const SIGNUP_SPECS: SignupFormSpecs = {
     props: { placeholder: 'Re-enter Password' },
   },
   profilePhotoUrl: {
-    label: '(Optional) Profile Picture',
+    label: 'Profile Picture (Optional)',
     type: 'file',
     defaultValue: '',
     props: { placeholder: 'Choose Profile Photo' },
