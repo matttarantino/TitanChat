@@ -5,11 +5,12 @@
  */
 type AuthResponse =
   | {
-      authenticated: false
-    }
+    authenticated: false
+  }
   | {
-      authenticated: true
-      userId: string
-      username: string
-      access_token: string
-    }
+    authenticated: true
+    userId: string
+    userProfilePhoto: string | null | undefined
+    username: string
+    access_token: string
+  }

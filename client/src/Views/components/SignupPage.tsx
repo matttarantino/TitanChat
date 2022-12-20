@@ -6,6 +6,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { reduceFormSpecs } from '../../utils/forms'
 import { signup } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
+import { uploadFile } from '../../services/s3Service'
 
 const SIGNUP_SPECS: SignupFormSpecs = {
   username: {
@@ -31,6 +32,12 @@ const SIGNUP_SPECS: SignupFormSpecs = {
     required: true,
     props: { placeholder: 'Re-enter Password' },
   },
+  profilePhotoUrl: {
+    label: '(Optional) Profile Picture',
+    type: 'file',
+    defaultValue: '',
+    props: { placeholder: 'Choose Profile Photo' },
+  }
 }
 
 const SIGNUP_KEYS = Object.keys(SIGNUP_SPECS) as Array<keyof SignupFormSpecs>
@@ -46,6 +53,8 @@ const SignupPage = () => {
   const [profileData, setProfileData] = useState(DEFAULT_FORM_STATE)
   const [formErrors, setFormErrors] = useState(DEFAULT_ERROR_STATE)
   const [signupError, setSignupError] = useState('')
+  const [profileImage, setProfileImage] = useState<File | null>(null)
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
   // update passwordConfirmation validation to use state
   SIGNUP_SPECS.passwordConfirmation.validation = () => {
@@ -58,6 +67,7 @@ const SignupPage = () => {
 
   const onFormSubmit = (ev: any) => {
     ev.preventDefault()
+    setSubmitButtonDisabled(true)
 
     // error check
     setFormErrors(DEFAULT_ERROR_STATE)
@@ -70,16 +80,28 @@ const SignupPage = () => {
         formErrorPresent = true
       }
 
-    // send signup request if there are no errors
-    if (!formErrorPresent)
-      signup({ ...profileData, passwordConfirmation: undefined })
-        .then(() => {
+    ; (async () => {
+      let profilePhotoUrl = null
+
+      if (profileImage)
+        try {
+          profilePhotoUrl = await uploadFile(profileImage, 'profile', profileImage.name)
+        } catch (err) {
+          formErrorPresent = true
+          setSignupError('An error occurred uploading the photo. Try again!')
+        }
+
+      if (!formErrorPresent)
+        try {
+          await signup({ ...profileData, profilePhotoUrl, passwordConfirmation: undefined })
           window.location.reload()
-        })
-        .catch(({ response }) => {
-          if (response.status == 409) setSignupError(response.data)
-          else console.error('signup error', response)
-        })
+        } catch (err: any) {
+          if (err.response.status == 409) setSignupError(err.response.data)
+          else console.error('signup error', err.response)
+        }
+
+      setSubmitButtonDisabled(false)
+    })()
   }
 
   return (
@@ -94,13 +116,23 @@ const SignupPage = () => {
           return (
             <Fragment key={inputId}>
               <Form.Group className="mb-4">
-                <FloatingLabel label={currSpecs.label} controlId={inputId}>
+                {currSpecs.type != 'file' && (<FloatingLabel label={currSpecs.label} controlId={inputId}>
                   <Form.Control
                     {...currSpecs.props}
                     type={currSpecs.type}
                     onChange={(ev) => onInputChange(currKey, ev.target.value)}
                   />
-                </FloatingLabel>
+                </FloatingLabel>)}
+                {currSpecs.type == 'file' && (<div>
+                  <Form.Label htmlFor={inputId}>{currSpecs.label}</Form.Label>
+                  <Form.Control
+                    id={inputId}
+                    {...currSpecs.props}
+                    type={currSpecs.type}
+                    onChange={(ev) => setProfileImage((ev.target as any).files[0])}
+                  />
+                </div>
+                )}
                 {formErrors[currKey] && (
                   <span className="field-error">{formErrors[currKey]}</span>
                 )}
@@ -115,7 +147,8 @@ const SignupPage = () => {
 
         <Button
           className="mb-5"
-          variant="primary"
+          variant={submitButtonDisabled ? 'dark' : 'primary'}
+          disabled={submitButtonDisabled}
           type="submit"
           form="signup-form"
         >

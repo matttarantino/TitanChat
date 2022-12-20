@@ -48,6 +48,7 @@ const ChatForm = (props: Props) => {
       const newMessage: Message = {
         _id: uuidv4(),
         authorName: authInfo.username,
+        authorProfilePhoto: authInfo.userProfilePhoto,
         channelId: props.channelId,
         date: String(new Date()),
         text: message.trim().length > 0 ? message.trim() : null,
@@ -62,7 +63,7 @@ const ChatForm = (props: Props) => {
             // reset inputs
             setMessage('')
             setImage(null)
-            ;(imageInputRef.current as HTMLInputElement).value = ''
+              ; (imageInputRef.current as HTMLInputElement).value = ''
           })
           .catch((err) => {
             console.error('aws upload error', err)
