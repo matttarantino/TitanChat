@@ -40,6 +40,10 @@ io.on('connection', (socket) => {
     io.sockets.emit('public_channel_added', channelInfo)
   })
 
+  socket.on('direct_channel_added', (channelInfo) => {
+    io.sockets.emit('direct_channel_added', channelInfo)
+  })
+
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')
   })

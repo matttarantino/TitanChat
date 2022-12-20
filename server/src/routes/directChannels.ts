@@ -38,8 +38,9 @@ directChannelsRouter.post('/', ensureAuthenticated, async (req, res) => {
         userToProfilePhoto,
       })
     )
-  } catch (err) {
-    return res.status(500).send(String(err))
+  } catch (err: any) {
+    if (err.type === 'exists') return res.status(409).send(err.channelId)
+    else return res.status(500).send(String(err))
   }
 })
 
@@ -74,15 +75,19 @@ directChannelsRouter.get(
     }
 
     try {
-      return res
-        .status(200)
-        .json(await getDirectChannelByUsernameChannelId(username, channelId))
+      const channel = await getDirectChannelByUsernameChannelId(
+        username,
+        channelId
+      )
+      if (!channel) return res.status(404).send('Channel does not exist.')
+      else return res.status(200).json(channel)
     } catch (err) {
       return res.status(500).send(String(err))
     }
   }
 )
 
+// post message to direct channel
 directChannelsRouter.post('/message', ensureAuthenticated, async (req, res) => {
   const message: Message = req.body
 

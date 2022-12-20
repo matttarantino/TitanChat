@@ -7,10 +7,14 @@ import { v4 as uuidv4 } from 'uuid'
 import { uploadFile } from '../../services/s3Service'
 import { useStore } from '../../services/appStore'
 import { emitMessage } from '../../services/sockets'
-import { postMessagePublicChannel } from '../../services/privateServices'
+import {
+  postMessageDirectChannel,
+  postMessagePublicChannel,
+} from '../../services/privateServices'
 
 type Props = {
   channelId: string
+  channelType: 'public' | 'direct'
 }
 
 const ChatForm = (props: Props) => {
@@ -41,9 +45,14 @@ const ChatForm = (props: Props) => {
 
   const sendMessage = (newMessage: Message) => {
     emitMessage(newMessage)
-    postMessagePublicChannel(newMessage).catch(({ response }) => {
-      console.error('message post error', response)
-    })
+    if (props.channelType === 'public')
+      postMessagePublicChannel(newMessage).catch(({ response }) => {
+        console.error('message post error', response)
+      })
+    else
+      postMessageDirectChannel(newMessage).catch(({ response }) => {
+        console.error('message post error', response)
+      })
   }
 
   const onSubmit = (ev: any) => {
@@ -57,6 +66,7 @@ const ChatForm = (props: Props) => {
         authorName: authInfo.username,
         authorProfilePhoto: authInfo.userProfilePhoto,
         channelId: props.channelId,
+        channelType: props.channelType,
         date: String(new Date()),
         text: message.trim().length > 0 ? message.trim() : null,
         imageUrl: null,

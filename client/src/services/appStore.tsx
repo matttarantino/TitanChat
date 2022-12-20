@@ -14,7 +14,10 @@ const DEFAULT_STATE: AppState = {
   authInfo: JSON.parse(localStorage.getItem('authInfo') as string) ?? {
     authenticated: false,
   },
-  sessionChannelInfo: {},
+  sessionChannelInfo: {
+    public: {},
+    direct: {},
+  },
 }
 
 export const appContext: Context<any> = createContext(DEFAULT_STATE)

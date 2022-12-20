@@ -15,15 +15,24 @@ export const addDirectChannel = async ({
   areValidStrings({ userFromId, userFromName, userToId, userToName })
 
   // check if From user exists
+  console.log('HERE NOW', userFromId)
   const fromUser = await getUserById(userFromId)
+  console.log('ret', !fromUser)
   if (!fromUser) throw 'From user does not exist.'
 
   // check if To user exists
   if (!(await getUserById(userToId))) throw 'To user does not exist.'
 
   // check if dm is already started with To user
-  if (fromUser.directMessages.find((e) => e.userToId === userToId))
-    throw 'Direct message with To user already exists.'
+  const directChannel = fromUser.directMessages.find(
+    (e) => e.userToId === userToId
+  )
+  if (directChannel)
+    throw {
+      type: 'exists',
+      message: 'Direct message with To user already exists.',
+      channelId: String(directChannel._id),
+    }
 
   // add direct channel to From user
   const users = await getUsersCollection()
@@ -65,7 +74,7 @@ export const addDirectChannel = async ({
     }
   )
 
-  return await getDirectChannelByUsernameChannelId(userFromId, newChannelId)
+  return await getDirectChannelByUsernameChannelId(userFromName, newChannelId)
 }
 
 export const getAllUserDirectChannels = async (
@@ -123,13 +132,14 @@ export const postMessageToDirectChannel = async (message: Message) => {
     { _id: new ObjectId(channel.userFromId) },
     {
       $push: {
-        directMessages: {
-          messages: {
-            $each: [message],
-            $position: 0,
-          },
+        'directMessages.$[i].messages': {
+          $each: [message],
+          $position: 0,
         },
       },
+    },
+    {
+      arrayFilters: [{ 'i._id': message.channelId }],
     }
   )
 
@@ -140,13 +150,14 @@ export const postMessageToDirectChannel = async (message: Message) => {
     { _id: new ObjectId(channel.userToId) },
     {
       $push: {
-        directMessages: {
-          messages: {
-            $each: [message],
-            $position: 0,
-          },
+        'directMessages.$[i].messages': {
+          $each: [message],
+          $position: 0,
         },
       },
+    },
+    {
+      arrayFilters: [{ 'i._id': message.channelId }],
     }
   )
 

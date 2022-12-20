@@ -29,10 +29,19 @@ type RouteError = {
   data?: string
 }
 
+/**
+ * @author rgorai
+ * @description defines the information stored for each channel on the client
+ * @param channelId of the channel as the object's key
+ * @param name name of the channel
+ * @param messages session messages for the channel
+ * @param channelIcon channel's icon, if any
+ */
 type SessionChannelInfo = {
   [channelId: string]: {
     name: string
     messages: Array<Message>
+    channelIcon?: string
   }
 }
 
@@ -45,5 +54,8 @@ type SessionChannelInfo = {
  */
 type AppState = {
   authInfo: AuthResponse
-  sessionChannelInfo: SessionChannelInfo
+  sessionChannelInfo: {
+    public: SessionChannelInfo
+    direct: SessionChannelInfo
+  }
 }

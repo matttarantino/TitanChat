@@ -4,6 +4,7 @@
  * @param _id client-created uuid of the message
  * @param authorName username of the user that sent the message
  * @param channelId is of the channel in which the message was sent
+ * @param channelType the type of channel the message was sent to
  * @param date stringified date object specifying when the message was sent
  * @param text message text, if any
  * @param imageUrl s3 url of the image, if any
@@ -13,6 +14,7 @@ type Message = {
   authorName: string
   authorProfilePhoto: string | null | undefined
   channelId: string
+  channelType: 'public' | 'direct'
   date: string
   text: string | null
   imageUrl: string | null

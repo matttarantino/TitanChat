@@ -24,6 +24,17 @@ export const postMessagePublicChannel = (message: Message) =>
     headers: authHeader(),
   })
 
+export const getDirectChannels = (userId: string) =>
+  axios.get('/api/channels/direct/' + userId, { headers: authHeader() })
+
+export const getDirectChannelInfo = (
+  username: string,
+  directChannelId: string
+) =>
+  axios.get(`/api/channels/direct/${username}/${directChannelId}`, {
+    headers: authHeader(),
+  })
+
 export const addDirectChannel = (channelInfo: DirectChannelRegistrationInfo) =>
   axios.post('/api/channels/direct', channelInfo, { headers: authHeader() })
 
