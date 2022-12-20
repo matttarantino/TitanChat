@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useStore } from '../../services/appStore'
 import { addDirectChannel, getAllUsers } from '../../services/privateServices'
-import { emitRefreshDirectChannels } from '../../services/sockets'
+import { refreshUsers, emitRefreshDirectChannels } from '../../services/sockets'
 import '../styles/rightSideBar.scss'
 
 const RightSideBar = () => {
@@ -26,6 +26,23 @@ const RightSideBar = () => {
     }
     if (authInfo.authenticated) fetchData()
   }, [authInfo.authenticated, pathname])
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await getAllUsers()
+        setIsPublic(pathname.includes('public'))
+        setUserData(data)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    // set up user refresh listener
+    refreshUsers(() => {
+      fetchData()
+    })
+  }, [])
 
   const onUserClick = (toUser: UserListResponse[number]) => {
     if (authInfo.authenticated)

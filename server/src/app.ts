@@ -44,6 +44,10 @@ io.on('connection', (socket) => {
     io.sockets.emit('direct_channel_added', channelInfo)
   })
 
+  socket.on('refresh_users', () => {
+    io.sockets.emit('refresh_users')
+  })
+
   socket.on('disconnect', () => {
     console.log('Disconnect Fired')
   })

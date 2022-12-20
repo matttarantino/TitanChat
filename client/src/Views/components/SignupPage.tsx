@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { reduceFormSpecs } from '../../utils/forms'
 import { signup } from '../../services/authService'
+import { emitRefreshUsers } from '../../services/sockets'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
 import { uploadFile } from '../../services/s3Service'
 
@@ -79,7 +80,7 @@ const SignupPage = () => {
         formErrorPresent = true
       }
 
-    ;(async () => {
+    ; (async () => {
       let profilePhotoUrl = null
 
       if (profileImage)
@@ -101,6 +102,7 @@ const SignupPage = () => {
             profilePhotoUrl,
             passwordConfirmation: undefined,
           })
+          emitRefreshUsers()
           window.location.reload()
         } catch (err: any) {
           if (err.response.status == 409) setSignupError(err.response.data)
