@@ -15,7 +15,7 @@ type User = {
   usernameLower: string
   password: string
   profilePhotoUrl: string | null
-  directMessages: Array<string>
+  directMessages: Array<DirectChannel>
 }
 
 /**

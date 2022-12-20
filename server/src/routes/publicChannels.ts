@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { ObjectId } from 'mongodb'
 import {
-  addMessageToChannel,
-  createChannel,
+  postMessageToPublicChannel,
+  createPublicChannel,
   getAllPublicChannels,
   getPublicChannelById,
 } from '../data/publicChannels'
@@ -31,7 +31,9 @@ publicChannelsRouter
     }
 
     try {
-      return res.status(200).json(await createChannel({ name, creatorId }))
+      return res
+        .status(200)
+        .json(await createPublicChannel({ name, creatorId }))
     } catch (err: any) {
       if (err.type === 'exists') return res.status(409).send(err.message)
       else return res.status(500).send(String(err))
@@ -61,24 +63,20 @@ publicChannelsRouter.get(
   }
 )
 
-publicChannelsRouter.post(
-  '/:channelId',
-  ensureAuthenticated,
-  async (req, res) => {
-    const message: Message = req.body
+publicChannelsRouter.post('/message', ensureAuthenticated, async (req, res) => {
+  const message: Message = req.body
 
-    try {
-      isValidMessage(message)
-    } catch (err) {
-      return res.status(400).send(String(err))
-    }
-
-    try {
-      return res.status(200).json(await addMessageToChannel(message))
-    } catch (err) {
-      return res.status(500).send(String(err))
-    }
+  try {
+    isValidMessage(message)
+  } catch (err) {
+    return res.status(400).send(String(err))
   }
-)
+
+  try {
+    return res.status(200).json(await postMessageToPublicChannel(message))
+  } catch (err) {
+    return res.status(500).send(String(err))
+  }
+})
 
 export default publicChannelsRouter

@@ -4,13 +4,17 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { v4 as uuidv4 } from 'uuid'
-import { BUCKET_URL, uploadFile } from '../../services/s3Service'
+import { uploadFile } from '../../services/s3Service'
 import { useStore } from '../../services/appStore'
 import { emitMessage } from '../../services/sockets'
-import { postMessagePublicChannel } from '../../services/privateServices'
+import {
+  postMessageDirectChannel,
+  postMessagePublicChannel,
+} from '../../services/privateServices'
 
 type Props = {
   channelId: string
+  channelType: 'public' | 'direct'
 }
 
 const ChatForm = (props: Props) => {
@@ -41,9 +45,14 @@ const ChatForm = (props: Props) => {
 
   const sendMessage = (newMessage: Message) => {
     emitMessage(newMessage)
-    postMessagePublicChannel(newMessage).catch(({ response }) => {
-      console.error('message post error', response)
-    })
+    if (props.channelType === 'public')
+      postMessagePublicChannel(newMessage).catch(({ response }) => {
+        console.error('message post error', response)
+      })
+    else
+      postMessageDirectChannel(newMessage).catch(({ response }) => {
+        console.error('message post error', response)
+      })
   }
 
   const onSubmit = (ev: any) => {
@@ -57,6 +66,7 @@ const ChatForm = (props: Props) => {
         authorName: authInfo.username,
         authorProfilePhoto: authInfo.userProfilePhoto,
         channelId: props.channelId,
+        channelType: props.channelType,
         date: String(new Date()),
         text: message.trim().length > 0 ? message.trim() : null,
         imageUrl: null,
@@ -100,7 +110,9 @@ const ChatForm = (props: Props) => {
       </FloatingLabel>
 
       <div className="chat-button-bar">
-        <Form.Label hidden htmlFor="file-input">New Image Upload</Form.Label>
+        <Form.Label hidden htmlFor="file-input">
+          New Image Upload
+        </Form.Label>
         <Form.Control
           id="file-input"
           className="file-input"

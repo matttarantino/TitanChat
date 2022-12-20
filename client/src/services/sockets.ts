@@ -2,8 +2,8 @@ import { io } from 'socket.io-client'
 
 const host =
   process.env.NODE_ENV === 'production'
-  ? 'https://titanschat.herokuapp.com/'
-  : 'ws://localhost:3001'
+    ? 'https://titanschat.herokuapp.com/'
+    : 'ws://localhost:3001'
 const socket = io(host)
 
 export const joinChannel = (username: string, channelId: string) =>

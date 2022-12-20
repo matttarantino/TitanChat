@@ -10,7 +10,7 @@ type AuthResponse =
   | {
       authenticated: true
       userId: string
-      userProfilePhoto: string | null | undefined
+      userProfilePhoto: string | null
       username: string
       access_token: string
     }
