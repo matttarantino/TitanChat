@@ -70,17 +70,6 @@ export const prependToArrayFromKeychain = (
     return 'Prepend Error: Invalid keychain.'
   }
 }
-// ;(() => {
-//   const test: any = {
-//     testing: {
-//       evenFurther: {
-//         andAgain: ['data should be here'],
-//       },
-//     },
-//   }
-
-//   console.log('TEST', setObjValueFromKeychain(test, ['testing', 'evenFurther', 'anotherKey'], 'YES'))
-// })()
 
 /**
  * @author rgorai
