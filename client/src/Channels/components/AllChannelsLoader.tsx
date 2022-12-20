@@ -61,8 +61,10 @@ const AllChannelsLoader = () => {
   }, [authInfo.authenticated])
 
   return (authInfo.authenticated &&
-    (Object.keys(sessionChannelInfo.public).length > 0 ||
-      Object.keys(sessionChannelInfo.direct).length > 0)) ||
+    // (Object.keys(sessionChannelInfo.public).length > 0 ||
+    //   Object.keys(sessionChannelInfo.direct).length > 0)) ||
+    sessionChannelInfo.public &&
+    sessionChannelInfo.direct) ||
     !authInfo.authenticated ? (
     <Outlet />
   ) : (

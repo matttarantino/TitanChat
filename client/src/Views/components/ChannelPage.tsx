@@ -37,7 +37,7 @@ const ChannelPage = (props: Props) => {
 
       // request data from server
       if (
-        (sessionChannelInfo[props.channelType][channelId]?.messages ?? [])
+        (sessionChannelInfo[props.channelType]?.[channelId]?.messages ?? [])
           .length === 0
       )
         (props.channelType === 'public'
@@ -69,9 +69,13 @@ const ChannelPage = (props: Props) => {
 
   return pageError ? (
     <ErrorPage {...pageError} />
-  ) : channelId && sessionChannelInfo[props.channelType][channelId] ? (
+  ) : channelId && sessionChannelInfo[props.channelType]?.[channelId] ? (
     <div className="channel-container">
-      <ChatList {...sessionChannelInfo[props.channelType][channelId]} />
+      <ChatList
+        {...(sessionChannelInfo[props.channelType]?.[
+          channelId
+        ] as SessionChannelInfo[string])}
+      />
       <ChatForm channelId={channelId} channelType={props.channelType} />
     </div>
   ) : (

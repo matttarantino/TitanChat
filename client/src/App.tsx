@@ -107,13 +107,17 @@ const App = () => {
       // set up direct channel refresh listener
       refreshDirectChannels((channelInfo) => {
         console.log('direct channel added', channelInfo)
-        if (
-          authInfo.username === channelInfo.userFromName ||
-          authInfo.username === channelInfo.userToName
-        )
+        if (authInfo.username === channelInfo.userFromName)
           updateStore(['sessionChannelInfo', 'direct', channelInfo._id], {
             name: channelInfo.userToName,
             messages: [],
+            channelIcon: channelInfo.userToProfilePhoto,
+          })
+        else if (authInfo.username === channelInfo.userToName)
+          updateStore(['sessionChannelInfo', 'direct', channelInfo._id], {
+            name: channelInfo.userFromName,
+            messages: [],
+            channelIcon: channelInfo.userFromProfilePhoto,
           })
       })
     }
