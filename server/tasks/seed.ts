@@ -1,4 +1,4 @@
-import { createChannel } from '../src/data/publicChannels'
+import { createPublicChannel } from '../src/data/publicChannels'
 import { createUser } from '../src/data/users'
 ;(async () => {
   const UserRegistrationInfo = {
@@ -25,10 +25,10 @@ import { createUser } from '../src/data/users'
     creatorId: user._id,
   }
 
-  await createChannel(PublicChannelRegistrationInfo1)
-  await createChannel(PublicChannelRegistrationInfo2)
-  await createChannel(PublicChannelRegistrationInfo3)
-  await createChannel(PublicChannelRegistrationInfo4)
+  await createPublicChannel(PublicChannelRegistrationInfo1)
+  await createPublicChannel(PublicChannelRegistrationInfo2)
+  await createPublicChannel(PublicChannelRegistrationInfo3)
+  await createPublicChannel(PublicChannelRegistrationInfo4)
 
   console.log('Done seeding.')
 })().catch((err) => {

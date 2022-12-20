@@ -23,3 +23,11 @@ export const postMessagePublicChannel = (message: Message) =>
   axios.post('/api/channels/public/' + message.channelId, message, {
     headers: authHeader(),
   })
+
+export const addDirectChannel = (channelInfo: PublicChannelRegistrationInfo) =>
+  axios.post('/api/channels/public', channelInfo, { headers: authHeader() })
+
+export const postDirectPublicChannel = (message: Message) =>
+  axios.post('/api/channels/public/' + message.channelId, message, {
+    headers: authHeader(),
+  })

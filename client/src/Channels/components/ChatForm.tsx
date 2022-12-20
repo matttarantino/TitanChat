@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { v4 as uuidv4 } from 'uuid'
-import { BUCKET_URL, uploadFile } from '../../services/s3Service'
+import { uploadFile } from '../../services/s3Service'
 import { useStore } from '../../services/appStore'
 import { emitMessage } from '../../services/sockets'
 import { postMessagePublicChannel } from '../../services/privateServices'
@@ -100,7 +100,9 @@ const ChatForm = (props: Props) => {
       </FloatingLabel>
 
       <div className="chat-button-bar">
-        <Form.Label hidden htmlFor="file-input">New Image Upload</Form.Label>
+        <Form.Label hidden htmlFor="file-input">
+          New Image Upload
+        </Form.Label>
         <Form.Control
           id="file-input"
           className="file-input"

@@ -5,7 +5,7 @@ import Loading from '../../Misc/components/Loading'
 import { areValidStrings, httpErrors } from '../../utils/errors'
 import '../styles/dmPage.scss'
 
-const DmPage = () => {
+const DirectChannelPage = () => {
   const [pageData, setPageData] = useState<DirectChannel | null>(null)
   const [pageError, setPageError] = useState<RouteError | null>(null)
   const { dmId } = useParams()
@@ -32,4 +32,4 @@ const DmPage = () => {
   )
 }
 
-export default DmPage
+export default DirectChannelPage

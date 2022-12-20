@@ -3,10 +3,6 @@ import { Outlet } from 'react-router-dom'
 import Loading from '../../Misc/components/Loading'
 import { useStore } from '../../services/appStore'
 import { getPublicChannels } from '../../services/privateServices'
-import {
-  onMessageReceived,
-  refreshPublicChannels,
-} from '../../services/sockets'
 
 const AllChannelsLoader = () => {
   const {
@@ -15,9 +11,9 @@ const AllChannelsLoader = () => {
   } = useStore()
 
   useEffect(() => {
-    if (authInfo.authenticated) {
+    if (authInfo.authenticated)
       getPublicChannels()
-        .then(({ data }: { data: ChannelsResponse }) => {
+        .then(({ data }: { data: PublicChannelsResponse }) => {
           updateStore(
             'sessionChannelInfo',
             data.reduce(
@@ -35,26 +31,6 @@ const AllChannelsLoader = () => {
         .catch(({ response }) => {
           console.error('channel load error', response)
         })
-
-      // set up message listener
-      onMessageReceived((messageData) => {
-        console.log('message received', messageData)
-        updateStore(
-          ['sessionChannelInfo', messageData.channelId, 'messages'],
-          messageData,
-          true
-        )
-      })
-
-      // set up public channel refresh listener
-      refreshPublicChannels((channelInfo) => {
-        console.log('channel added', channelInfo)
-        updateStore(['sessionChannelInfo', channelInfo._id], {
-          name: channelInfo.name,
-          messages: [],
-        })
-      })
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authInfo.authenticated])
 

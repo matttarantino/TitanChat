@@ -7,7 +7,7 @@ import {
 import { getPublicChannelsCollection } from './config/mongoCollections'
 import { getUserById, getUserByUsername } from './users'
 
-export const createChannel = async (
+export const createPublicChannel = async (
   channel: PublicChannelRegistrationInfo
 ): Promise<PublicChannel> => {
   // error check
@@ -42,13 +42,14 @@ export const createChannel = async (
   )) as PublicChannel
 }
 
-export const getAllPublicChannels = async (): Promise<ChannelsResponse> => {
-  const publicChannels = await getPublicChannelsCollection()
-  return await publicChannels
-    .find({})
-    .map((e) => ({ label: e.name, channelId: String(e._id) }))
-    .toArray()
-}
+export const getAllPublicChannels =
+  async (): Promise<PublicChannelsResponse> => {
+    const publicChannels = await getPublicChannelsCollection()
+    return await publicChannels
+      .find({})
+      .map((e) => ({ label: e.name, channelId: String(e._id) }))
+      .toArray()
+  }
 
 export const getPublicChannelById = async (
   channelId: string
@@ -68,7 +69,7 @@ export const getPublicChannelById = async (
   return (await publicChannels.findOne({ _id: channelIdObj })) as any
 }
 
-export const addMessageToChannel = async (message: Message) => {
+export const postMessageToPublicChannel = async (message: Message) => {
   isValidMessage(message)
 
   // ensure channel exists

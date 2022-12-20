@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { httpErrors } from './utils/errors'
 import { useStore } from './services/appStore'
 import ErrorPage from './Misc/components/ErrorPage'
-import DmPage from './Views/components/DirectChannelPage'
+import DirectChannelPage from './Views/components/DirectChannelPage'
 import LandingPage from './Views/components/LandingPage'
 import SideBar from './Misc/components/SideBar'
 import RightSideBar from './Misc/components/RightSideBar'
@@ -15,6 +15,7 @@ import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
 import PublicChannelPage from './Views/components/PublicChannelPage'
 import AllChannelsLoader from './Channels/components/AllChannelsLoader'
+import { onMessageReceived, refreshPublicChannels } from './services/sockets'
 
 const APP_SPECS: Array<AppSpec> = [
   {
@@ -32,7 +33,7 @@ const APP_SPECS: Array<AppSpec> = [
   {
     name: 'Direct Messages',
     path: '/direct/:dmId',
-    element: <DmPage />,
+    element: <DirectChannelPage />,
     ensureAuthenticated: true,
   },
   {
@@ -68,7 +69,38 @@ const APP_SPECS: Array<AppSpec> = [
 ]
 
 const App = () => {
-  const { store } = useStore()
+  const { store, updateStore } = useStore()
+
+  useEffect(() => {
+    // set up message listener
+    onMessageReceived((messageData) => {
+      console.log('message received', messageData)
+      updateStore(
+        ['sessionChannelInfo', messageData.channelId, 'messages'],
+        messageData,
+        true
+      )
+    })
+
+    // set up public channel refresh listener
+    refreshPublicChannels((channelInfo) => {
+      console.log('channel added', channelInfo)
+      updateStore(['sessionChannelInfo', channelInfo._id], {
+        name: channelInfo.name,
+        messages: [],
+      })
+    })
+
+    // set up direct channel refresh listener
+    // refreshPublicChannels((channelInfo) => {
+    //   console.log('channel added', channelInfo)
+    //   updateStore(['sessionChannelInfo', channelInfo._id], {
+    //     name: channelInfo.name,
+    //     messages: [],
+    //   })
+    // })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     console.log({ store })

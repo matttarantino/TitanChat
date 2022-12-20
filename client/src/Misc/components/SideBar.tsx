@@ -18,7 +18,7 @@ const SideBar = () => {
     store: { authInfo, sessionChannelInfo },
   } = useStore()
   const navigate = useNavigate()
-  const [dms, setDms] = useState<ChannelsResponse>([])
+  const [dms, setDms] = useState<PublicChannelsResponse>([])
 
   // change initial state of loading to "true" when server is integrated
   // const [loadingChannels, setLoadingChannels] = useState(true)
