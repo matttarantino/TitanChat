@@ -2,7 +2,7 @@ import { Router } from 'express'
 import {
   addDirectChannel,
   getAllUserDirectChannels,
-  getDirectChannelById,
+  getDirectChannelByUsernameChannelId,
   postMessageToDirectChannel,
 } from '../data/directChannels'
 import { ensureAuthenticated } from '../middleware/auth'
@@ -59,18 +59,20 @@ directChannelsRouter.get('/:userId', ensureAuthenticated, async (req, res) => {
 })
 
 directChannelsRouter
-  .route('/:userId/:channelId')
+  .route('/:username/:channelId')
   .get(ensureAuthenticated, async (req, res) => {
-    const { userId, channelId } = req.params
+    const { username, channelId } = req.params
 
     try {
-      areValidStrings({ userId, channelId })
+      areValidStrings({ username, channelId })
     } catch (err) {
       return res.status(400).send(String(err))
     }
 
     try {
-      return res.status(200).json(await getDirectChannelById(userId, channelId))
+      return res
+        .status(200)
+        .json(await getDirectChannelByUsernameChannelId(username, channelId))
     } catch (err) {
       return res.status(500).send(String(err))
     }

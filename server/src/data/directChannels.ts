@@ -65,7 +65,7 @@ export const addDirectChannel = async ({
     }
   )
 
-  return await getDirectChannelById(userFromId, newChannelId)
+  return await getDirectChannelByUsernameChannelId(userFromId, newChannelId)
 }
 
 export const getAllUserDirectChannels = async (
@@ -83,7 +83,7 @@ export const getAllUserDirectChannels = async (
   }))
 }
 
-export const getDirectChannelById = async (
+export const getDirectChannelByUsernameChannelId = async (
   userFromName: string,
   channelId: string
 ): Promise<DirectChannel | null> => {
@@ -105,7 +105,7 @@ export const getDirectChannelById = async (
 
 export const postMessageToDirectChannel = async (message: Message) => {
   // ensure channel exists
-  const channel = await getDirectChannelById(
+  const channel = await getDirectChannelByUsernameChannelId(
     message.authorName,
     message.channelId
   )
@@ -150,5 +150,8 @@ export const postMessageToDirectChannel = async (message: Message) => {
 
   if (retTo.modifiedCount !== 1) throw 'Channel update failed.'
 
-  return await getDirectChannelById(message.authorName, message.channelId)
+  return await getDirectChannelByUsernameChannelId(
+    message.authorName,
+    message.channelId
+  )
 }
