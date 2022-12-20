@@ -83,7 +83,7 @@ const EditProfilePage = () => {
           <Form.Label htmlFor='username-input'>New Username</Form.Label>
           <Form.Control
             id='username-input'
-            type="username"
+            type="text"
             placeholder="Enter New Username"
             value={username}
             onChange={(event) => {
