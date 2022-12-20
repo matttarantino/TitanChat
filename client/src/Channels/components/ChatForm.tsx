@@ -20,12 +20,17 @@ const ChatForm = (props: Props) => {
   const [image, setImage] = useState<File | null>(null)
   const [sendDisabled, setSendDisabled] = useState(true)
   const formRef = useRef<HTMLFormElement>(null)
+  const textInputRef = useRef<HTMLTextAreaElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
 
   // enables sending when input is received
   useEffect(() => {
     setSendDisabled(!(message.trim().length > 0 || image))
   }, [message, image])
+
+  useEffect(() => {
+    textInputRef?.current?.focus?.();
+  }, [])
 
   // submits the form when ctrl + enter is pressed in the text input
   const onTextKeydown = (ev: React.KeyboardEvent) => {
@@ -84,6 +89,7 @@ const ChatForm = (props: Props) => {
         <Form.Control
           className="chat-input"
           as="textarea"
+          ref={textInputRef}
           onChange={(event) => setMessage(event.target.value)}
           onKeyDown={onTextKeydown}
           value={message}
