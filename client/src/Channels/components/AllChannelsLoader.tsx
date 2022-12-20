@@ -8,7 +8,11 @@ import {
   refreshPublicChannels,
 } from '../../services/sockets'
 
-const AllChannelsLoader = () => {
+type Props = {
+  ensureNotAuthenticated: boolean
+}
+
+const AllChannelsLoader = (props: Props) => {
   const {
     store: { authInfo, sessionChannelInfo },
     updateStore,
@@ -58,7 +62,7 @@ const AllChannelsLoader = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authInfo.authenticated])
 
-  return authInfo.authenticated &&
+  return authInfo.authenticated === props.ensureNotAuthenticated &&
     Object.keys(sessionChannelInfo).length === 0 ? (
     <Loading />
   ) : (

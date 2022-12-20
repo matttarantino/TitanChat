@@ -1,10 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { httpErrors } from './utils/errors'
 import { useStore } from './services/appStore'
-import { onMessageReceived } from './services/sockets'
 import ErrorPage from './Misc/components/ErrorPage'
-import DmPage from './Views/components/DmPage'
+import DmPage from './Views/components/DirectChannelPage'
 import LandingPage from './Views/components/LandingPage'
 import SideBar from './Misc/components/SideBar'
 import RightSideBar from './Misc/components/RightSideBar'
@@ -81,9 +80,16 @@ const App = () => {
               )
             )}
 
-            <Route element={<AllChannelsLoader />}>
-              {APP_SPECS.filter((e) => e.ensureAuthenticated !== null).map(
-                (e) => (
+            {APP_SPECS.filter((e) => e.ensureAuthenticated !== null).map(
+              (e) => (
+                <Route
+                  element={
+                    <AllChannelsLoader
+                      ensureNotAuthenticated={!e.ensureAuthenticated}
+                    />
+                  }
+                  key={e.path}
+                >
                   <Route
                     path={e.path}
                     element={
@@ -93,11 +99,10 @@ const App = () => {
                         {e.element}
                       </AuthWrapper>
                     }
-                    key={e.path}
                   />
-                )
-              )}
-            </Route>
+                </Route>
+              )
+            )}
 
             <Route path="*" element={<ErrorPage {...httpErrors[404]} />} />
           </Routes>

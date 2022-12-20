@@ -32,7 +32,7 @@ const RightSideBar = () => {
         <li key={user._id}>
           <Link
             className="list-group-item text-decoration-none"
-            to={`/dms/${user.username}`}
+            to={`/direct/${user.username}`}
           >
             {user.username}
           </Link>

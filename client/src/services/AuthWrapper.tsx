@@ -16,10 +16,11 @@ const AuthWrapper = (props: Props & PropsWithChildren) => {
 
   // check if user is authenticated
   useEffect(() => {
-    if (authInfo.authenticated)
+    if (authInfo.authenticated) {
       authenticateUser(authInfo.userId, authInfo.username)
         .then(({ data }) => updateStore('authInfo', data))
         .catch(() => updateStore('authInfo', logout()))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authInfo.authenticated])
 
