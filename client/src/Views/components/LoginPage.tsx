@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import { login } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
 import { reduceFormSpecs } from '../../utils/forms'
+import { useStore } from '../../services/appStore'
 
 const LOGIN_SPECS: LoginFormSpecs = {
   username: {
@@ -34,6 +35,7 @@ const DEFAULT_FORM_STATE = reduceFormSpecs(
 )
 
 const LoginPage = () => {
+  const { updateStore } = useStore()
   const [loginData, setLoginData] = useState(DEFAULT_FORM_STATE)
   const [loginError, setLoginError] = useState('')
 

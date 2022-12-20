@@ -11,20 +11,20 @@ const RightSideBar = () => {
   const [userData, setUserData] = useState<UserListResponse>([])
   const [isPublic, setPublic] = useState(true)
   let usersList = null
-  const location = useLocation()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     async function fetchData() {
       try {
         const { data } = await getAllUsers()
-        setPublic(document.location.href.indexOf('channels') != -1)
+        setPublic(pathname.includes('channels'))
         setUserData(data)
       } catch (e) {
         console.log(e)
       }
     }
     if (authInfo.authenticated) fetchData()
-  }, [authInfo.authenticated, location])
+  }, [authInfo.authenticated, pathname])
 
   usersList = userData.map((user) => {
     if (authInfo.authenticated && user.username != authInfo.username)
@@ -32,7 +32,7 @@ const RightSideBar = () => {
         <li key={user._id}>
           <Link
             className="list-group-item text-decoration-none"
-            to={`/dms/${user.username}`}
+            to={`/direct/${user.username}`}
           >
             {user.username}
           </Link>
@@ -42,7 +42,7 @@ const RightSideBar = () => {
 
   if (authInfo.authenticated && isPublic)
     return (
-      <div className="sidebar-container">
+      <div className="sidebar-container rightbar-container">
         <div className="container">
           <div className="bar-label">Members</div>
           <ul className="list-group">{usersList}</ul>

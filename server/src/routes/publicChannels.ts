@@ -1,11 +1,16 @@
 import { Router } from 'express'
 import { ObjectId } from 'mongodb'
 import {
+  addMessageToChannel,
   createChannel,
   getAllPublicChannels,
   getPublicChannelById,
 } from '../data/publicChannels'
-import { areValidStrings, isValidChannelName } from '../utils/errors'
+import {
+  areValidStrings,
+  isValidChannelName,
+  isValidMessage,
+} from '../utils/errors'
 import { ensureAuthenticated } from '../middleware/auth'
 
 const publicChannelsRouter = Router()
@@ -16,7 +21,7 @@ publicChannelsRouter
     return res.status(200).json(await getAllPublicChannels())
   })
   .post(ensureAuthenticated, async (req, res) => {
-    const { name, creatorId } = req.body
+    const { name, creatorId }: PublicChannelRegistrationInfo = req.body
 
     try {
       areValidStrings({ name, creatorId })
@@ -47,7 +52,29 @@ publicChannelsRouter.get(
 
     // send user data
     try {
-      return res.status(200).json(await getPublicChannelById(channelId))
+      const channel = await getPublicChannelById(channelId)
+      if (!channel) return res.status(404).send('Channel does not exist.')
+      else return res.status(200).json(channel)
+    } catch (err) {
+      return res.status(500).send(String(err))
+    }
+  }
+)
+
+publicChannelsRouter.post(
+  '/:channelId',
+  ensureAuthenticated,
+  async (req, res) => {
+    const message: Message = req.body
+
+    try {
+      isValidMessage(message)
+    } catch (err) {
+      return res.status(400).send(String(err))
+    }
+
+    try {
+      return res.status(200).json(await addMessageToChannel(message))
     } catch (err) {
       return res.status(500).send(String(err))
     }

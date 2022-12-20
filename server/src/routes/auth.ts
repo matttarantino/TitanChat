@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getUser, createUser, validateUser } from '../data/users'
+import { getUserById, createUser, validateUser } from '../data/users'
 import { ensureAuthenticated, ensureNotAuthenticated } from '../middleware/auth'
 import { authenticateUser } from '../utils/auth'
 import { areValidStrings, isValidUser } from '../utils/errors'
@@ -11,8 +11,10 @@ authRouter.get(
   ensureAuthenticated,
   async ({ params: { userId, username } }, res) => {
     try {
-      let data = await getUser(userId);
-      res.status(200).json(authenticateUser(userId, username, data?.profilePhotoUrl))
+      const data = await getUserById(userId)
+      res
+        .status(200)
+        .json(authenticateUser(userId, username, data?.profilePhotoUrl))
     } catch (e) {
       res.status(200).json(authenticateUser(userId, username))
     }

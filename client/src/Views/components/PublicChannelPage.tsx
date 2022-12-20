@@ -12,12 +12,11 @@ import '../styles/channelPage.scss'
 
 const PublicChannelPage = () => {
   const {
-    store: { authInfo, sessionMessages },
+    store: { authInfo, sessionChannelInfo },
+    updateStore,
   } = useStore()
-  const [channelInfo, setChannelInfo] = useState<PublicChannel | null>(null)
   const [pageError, setPageError] = useState<RouteError | null>(null)
   const { channelId } = useParams()
-  const roomMessages = sessionMessages.filter((e) => e.channelId === channelId)
 
   useEffect(() => {
     if (authInfo.authenticated && channelId) {
@@ -29,22 +28,23 @@ const PublicChannelPage = () => {
       }
 
       // request data from server
-      getPublicChannelInfo(channelId)
-        .then(({ data }) => {
-          console.log('channel data', data)
-          setChannelInfo(data)
-        })
-        .catch(({ response }) => {
-          console.error('channel error', response)
-          setPageError(response)
-        })
+      if ((sessionChannelInfo[channelId]?.messages ?? []).length === 0)
+        getPublicChannelInfo(channelId)
+          .then(({ data }: { data: PublicChannel }) => {
+            updateStore(
+              ['sessionChannelInfo', data._id, 'messages'],
+              data.messages
+            )
+          })
+          .catch(({ response }) => {
+            setPageError(response)
+          })
 
       // join socket channel
       joinChannel(authInfo.username, channelId)
 
       // cleanup
       return () => {
-        setChannelInfo(null)
         setPageError(null)
         leaveChannel(authInfo.username, channelId)
       }
@@ -54,15 +54,17 @@ const PublicChannelPage = () => {
 
   return pageError ? (
     <ErrorPage {...pageError} />
-  ) : (roomMessages.length > 0 || channelInfo) && channelId ? (
+  ) : channelId && sessionChannelInfo[channelId] ? (
     <div className="channel-container">
       <div className="message-container-wrapper">
         {/* {channelInfo && <h1> Welcome to #{channelInfo.name}!</h1>} */}
 
         {/* <div className="message-container"> */}
-        {roomMessages.map((e) => (
+
+        {(sessionChannelInfo[channelId]?.messages ?? []).map((e) => (
           <ChatMessage {...e} key={e._id} />
         ))}
+
         {/* </div> */}
       </div>
       <ChatForm channelId={channelId} />

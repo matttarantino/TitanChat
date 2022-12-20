@@ -1,16 +1,16 @@
 import axios from 'axios'
 
-export const signup = async (
+export const signup = (
   profileData: UserRegistrationInfo & { passwordConfirmation: undefined }
 ) => {
   const { username, password } = profileData
-  return await axios
+  return axios
     .post('/api/auth/signup', profileData, { headers: authHeader() })
     .then(() => login({ username, password }))
 }
 
-export const login = async (loginData: LoginSpecs) =>
-  await axios
+export const login = (loginData: LoginSpecs) =>
+  axios
     .post('/api/auth/login', loginData, { headers: authHeader() })
     .then(({ data }) => {
       if (data.access_token)

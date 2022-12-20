@@ -13,10 +13,12 @@ const EditProfilePage = () => {
     store: { authInfo },
   } = useStore()
 
-  const [username, setUsername] = useState(authInfo.authenticated ? authInfo.username : '')
+  const [username, setUsername] = useState(
+    authInfo.authenticated ? authInfo.username : ''
+  )
   const [profileImage, setProfileImage] = useState<File | null>(null)
   const [profileError, setProfileError] = useState('')
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false)
 
   const navigate = useNavigate()
 
@@ -32,12 +34,16 @@ const EditProfilePage = () => {
       setProfileError(String(err))
     }
 
-    ; (async () => {
+    ;(async () => {
       let profilePhotoUrl = null
 
       if (profileImage)
         try {
-          profilePhotoUrl = await uploadFile(profileImage, 'profile', profileImage.name)
+          profilePhotoUrl = await uploadFile(
+            profileImage,
+            'profile',
+            profileImage.name
+          )
         } catch (err) {
           formErrorPresent = true
           setProfileError('An error occurred uploading the photo. Try again!')
@@ -46,7 +52,7 @@ const EditProfilePage = () => {
       const newUserData = {
         _id: authInfo.authenticated ? authInfo.userId : '',
         username: username,
-        usernameLower: username.toLowerCase()
+        usernameLower: username.toLowerCase(),
       }
 
       if (!formErrorPresent)
@@ -86,7 +92,7 @@ const EditProfilePage = () => {
             placeholder="Enter New Username"
             value={username}
             onChange={(event) => {
-              setProfileError('');
+              setProfileError('')
               setUsername(event.target.value)
             }}
           />
@@ -99,7 +105,7 @@ const EditProfilePage = () => {
             name="img"
             accept="image/*"
             onChange={(e) => {
-              setProfileError('');
+              setProfileError('')
               setProfileImage((e.target as any).files[0])
             }}
           />
@@ -108,7 +114,8 @@ const EditProfilePage = () => {
           variant={submitButtonDisabled ? 'dark' : 'primary'}
           disabled={submitButtonDisabled}
           type="submit"
-          onClick={onFormSubmit}>
+          onClick={onFormSubmit}
+        >
           Submit
         </Button>
       </Form>
