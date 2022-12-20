@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { JWT_SECRET_STRING } from './env'
+import { JWT_EXPIRATION, JWT_SECRET_STRING } from './env'
 
 export const authenticateUser = (
   userId: string | false,
@@ -13,7 +13,7 @@ export const authenticateUser = (
         userProfilePhoto: userProfilePhoto ?? null,
         authenticated: true,
         access_token: jwt.sign({ id: userId }, JWT_SECRET_STRING, {
-          expiresIn: 3600, // sec
+          expiresIn: Number(JWT_EXPIRATION) ?? 3600, // sec
         }),
       }
     : { authenticated: false }
