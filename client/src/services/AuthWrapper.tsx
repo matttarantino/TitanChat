@@ -24,11 +24,12 @@ const AuthWrapper = (props: Props & PropsWithChildren) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authInfo.authenticated])
 
-  const [firstChannelId] = Object.keys(sessionChannelInfo)
-
   return props.ensureNotAuthenticated === authInfo.authenticated ? (
     props.ensureNotAuthenticated ? (
-      <Navigate replace to={state?.from ?? `/channels/${firstChannelId}`} />
+      <Navigate
+        replace
+        to={state?.from ?? `/channels/${process.env.REACT_APP_GENERAL_CHANNEL}`}
+      />
     ) : (
       <Navigate replace to="/login" state={{ from: pathname }} />
     )

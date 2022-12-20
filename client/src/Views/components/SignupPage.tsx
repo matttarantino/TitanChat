@@ -6,6 +6,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { reduceFormSpecs } from '../../utils/forms'
 import { signup } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
+import { useStore } from '../../services/appStore'
 
 const SIGNUP_SPECS: SignupFormSpecs = {
   username: {
@@ -43,6 +44,7 @@ const DEFAULT_FORM_STATE = reduceFormSpecs(
 const DEFAULT_ERROR_STATE = reduceFormSpecs(SIGNUP_KEYS, (c) => [c, false])
 
 const SignupPage = () => {
+  const { updateStore } = useStore()
   const [profileData, setProfileData] = useState(DEFAULT_FORM_STATE)
   const [formErrors, setFormErrors] = useState(DEFAULT_ERROR_STATE)
   const [signupError, setSignupError] = useState('')
@@ -73,8 +75,8 @@ const SignupPage = () => {
     // send signup request if there are no errors
     if (!formErrorPresent)
       signup({ ...profileData, passwordConfirmation: undefined })
-        .then(() => {
-          window.location.reload()
+        .then((data) => {
+          updateStore('authInfo', data)
         })
         .catch(({ response }) => {
           if (response.status == 409) setSignupError(response.data)
