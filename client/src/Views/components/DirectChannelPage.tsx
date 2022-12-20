@@ -6,7 +6,7 @@ import { areValidStrings, httpErrors } from '../../utils/errors'
 import '../styles/dmPage.scss'
 
 const DmPage = () => {
-  const [pageData, setPageData] = useState<DmChannel | null>(null)
+  const [pageData, setPageData] = useState<DirectChannel | null>(null)
   const [pageError, setPageError] = useState<RouteError | null>(null)
   const { dmId } = useParams()
 

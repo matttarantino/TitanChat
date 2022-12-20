@@ -33,7 +33,7 @@ const SIGNUP_SPECS: SignupFormSpecs = {
     props: { placeholder: 'Re-enter Password' },
   },
   profilePhotoUrl: {
-    label: '(Optional) Profile Picture',
+    label: 'Profile Picture (Optional)',
     type: 'file',
     defaultValue: '',
     props: {},
@@ -54,7 +54,7 @@ const SignupPage = () => {
   const [formErrors, setFormErrors] = useState(DEFAULT_ERROR_STATE)
   const [signupError, setSignupError] = useState('')
   const [profileImage, setProfileImage] = useState<File | null>(null)
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false)
 
   // update passwordConfirmation validation to use state
   SIGNUP_SPECS.passwordConfirmation.validation = () => {
@@ -80,12 +80,16 @@ const SignupPage = () => {
         formErrorPresent = true
       }
 
-    ; (async () => {
+    ;(async () => {
       let profilePhotoUrl = null
 
       if (profileImage)
         try {
-          profilePhotoUrl = await uploadFile(profileImage, 'profile', profileImage.name)
+          profilePhotoUrl = await uploadFile(
+            profileImage,
+            'profile',
+            profileImage.name
+          )
         } catch (err) {
           formErrorPresent = true
           setSignupError('An error occurred uploading the photo. Try again!')
@@ -93,7 +97,11 @@ const SignupPage = () => {
 
       if (!formErrorPresent)
         try {
-          await signup({ ...profileData, profilePhotoUrl, passwordConfirmation: undefined })
+          await signup({
+            ...profileData,
+            profilePhotoUrl,
+            passwordConfirmation: undefined,
+          })
           window.location.reload()
         } catch (err: any) {
           if (err.response.status == 409) setSignupError(err.response.data)
@@ -116,22 +124,27 @@ const SignupPage = () => {
           return (
             <Fragment key={inputId}>
               <Form.Group className="mb-4">
-                {currSpecs.type != 'file' && (<FloatingLabel label={currSpecs.label} controlId={inputId}>
-                  <Form.Control
-                    {...currSpecs.props}
-                    type={currSpecs.type}
-                    onChange={(ev) => onInputChange(currKey, ev.target.value)}
-                  />
-                </FloatingLabel>)}
-                {currSpecs.type == 'file' && (<div>
-                  <Form.Label htmlFor={inputId}>{currSpecs.label}</Form.Label>
-                  <Form.Control
-                    id={inputId}
-                    {...currSpecs.props}
-                    type={currSpecs.type}
-                    onChange={(ev) => setProfileImage((ev.target as any).files[0])}
-                  />
-                </div>
+                {currSpecs.type != 'file' && (
+                  <FloatingLabel label={currSpecs.label} controlId={inputId}>
+                    <Form.Control
+                      {...currSpecs.props}
+                      type={currSpecs.type}
+                      onChange={(ev) => onInputChange(currKey, ev.target.value)}
+                    />
+                  </FloatingLabel>
+                )}
+                {currSpecs.type == 'file' && (
+                  <div>
+                    <Form.Label htmlFor={inputId}>{currSpecs.label}</Form.Label>
+                    <Form.Control
+                      id={inputId}
+                      {...currSpecs.props}
+                      type={currSpecs.type}
+                      onChange={(ev) =>
+                        setProfileImage((ev.target as any).files[0])
+                      }
+                    />
+                  </div>
                 )}
                 {formErrors[currKey] && (
                   <span className="field-error">{formErrors[currKey]}</span>

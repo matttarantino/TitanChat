@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { getUser } from '../data/users'
+import { getUserById } from '../data/users'
 import { JWT_SECRET_STRING } from '../utils/env'
 
 /**
@@ -13,7 +13,7 @@ export const ensureAuthenticated = async (req: any, res: any, next: any) => {
   const { access_token, user_id } = req.headers
 
   // ensure token, user, and secret exist
-  if (!(access_token && (await getUser(user_id)) && JWT_SECRET_STRING))
+  if (!(access_token && (await getUserById(user_id)) && JWT_SECRET_STRING))
     return res.status(401).send('No token, valid user, or secret provided.')
 
   // validate token

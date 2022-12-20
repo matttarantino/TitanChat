@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('message', (messageData: Message) => {
-    io.sockets.emit('message', { messageData })
+    io.sockets.in(messageData.channelId).emit('message', messageData)
   })
 
   socket.on('leave_channel', (username, channel) => {
@@ -36,8 +36,8 @@ io.on('connection', (socket) => {
     socket.leave(channel)
   })
 
-  socket.on('refresh_channels', () => {
-    io.sockets.emit('refresh_channels', {})
+  socket.on('public_channel_added', (channelInfo) => {
+    io.sockets.emit('public_channel_added', channelInfo)
   })
 
   socket.on('disconnect', () => {

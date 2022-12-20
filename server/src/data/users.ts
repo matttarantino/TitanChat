@@ -33,10 +33,10 @@ export const createUser = async (
   })
   if (!retval.acknowledged)
     throw `DB Error: failed to add user ${String(user)}.`
-  return (await getUser(String(retval.insertedId))) as UserData
+  return (await getUserById(String(retval.insertedId))) as UserData
 }
 
-export const getUser = async (userId: string): Promise<UserData | null> => {
+export const getUserById = async (userId: string): Promise<UserData | null> => {
   let userIdObj
 
   // error check
@@ -50,17 +50,37 @@ export const getUser = async (userId: string): Promise<UserData | null> => {
   // find and return entry
   const usersCollection = await getUsersCollection()
   const user = (await usersCollection.findOne({
-    _id: userIdObj
+    _id: userIdObj,
   })) as any
   return user ? { ...user, _id: userId, password: undefined } : null
 }
 
-export const updateUser = async (userData: UserUpdateInfo): Promise<UserData | null> => {
+export const getUserByUsername = async (
+  username: string
+): Promise<UserData | null> => {
+  // error check
+  try {
+    areValidStrings({ username })
+  } catch (err) {
+    return null
+  }
+
+  // find and return entry
+  const usersCollection = await getUsersCollection()
+  const user = (await usersCollection.findOne({
+    username,
+  })) as any
+  return user ? { ...user, _id: String(user._id), password: undefined } : null
+}
+
+export const updateUser = async (
+  userData: UserUpdateInfo
+): Promise<UserData | null> => {
   let userIdObj
 
   // error check
   try {
-    const { profilePhotoUrl, ...requiredInfo } = userData
+    const { profilePhotoUrl: _, ...requiredInfo } = userData
     areValidStrings(requiredInfo)
     userIdObj = new ObjectId(userData._id)
   } catch (err) {
@@ -76,28 +96,36 @@ export const updateUser = async (userData: UserUpdateInfo): Promise<UserData | n
     throw 'No user exists with that ID'
   }
 
-  const { _id, ...updateData } = userData
+  const { _id: _, ...updateData } = userData
 
-  if (userData.usernameLower != user.usernameLower && await usersCollection.findOne({ usernameLower: userData.usernameLower }))
+  if (
+    userData.usernameLower != user.usernameLower &&
+    (await usersCollection.findOne({ usernameLower: userData.usernameLower }))
+  )
     throw { type: 'exists', message: 'Username is taken.' }
 
   const retval = await usersCollection.updateOne(
     { _id: userIdObj },
     {
-      $set: updateData
-    })
+      $set: updateData,
+    }
+  )
 
   if (!retval.acknowledged)
     throw `DB Error: failed to add user ${String(user)}.`
 
-  return (await getUser(String(userData._id))) as UserData
+  return (await getUserById(String(userData._id))) as UserData
 }
 
 export const getAllUsers = async (): Promise<UserListResponse> => {
   const usersCollection = await getUsersCollection()
   return await usersCollection
     .find({})
-    .map((e) => ({ _id: String(e._id), username: e.username, profilePhotoUrl: e.profilePhotoUrl }))
+    .map((e) => ({
+      _id: String(e._id),
+      username: e.username,
+      profilePhotoUrl: e.profilePhotoUrl,
+    }))
     .toArray()
 }
 

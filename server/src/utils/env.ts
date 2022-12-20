@@ -3,6 +3,4 @@ import dotenv from 'dotenv'
 
 dotenv.config({ path: path.resolve('server', '.env.local') })
 
-export const { JWT_SECRET_STRING } = process.env
-
-export const { MONGO_URI } = process.env
+export const { JWT_SECRET_STRING, MONGO_URI } = process.env

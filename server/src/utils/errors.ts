@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb'
+
 /**
  * @author rgorai
  * @description test multiple values at a time for string validity
@@ -61,4 +63,30 @@ export const isValidUser = (user: any) => {
   const { username, password }: UserRegistrationInfo = user
   isValidUserName(username)
   isValidPassword(password)
+}
+
+export const isValidMessage = (message: any) => {
+  const { _id, authorName, date, text, imageUrl } = message
+  let { channelId } = message
+
+  areValidStrings({ _id, authorName, channelId, date })
+
+  channelId = new ObjectId(channelId)
+
+  if (String(new Date(date)) === 'Invalid Date') throw 'Invalid message date.'
+
+  let textImageCheck = 0
+  try {
+    areValidStrings({ text })
+  } catch (err) {
+    textImageCheck++
+  }
+
+  try {
+    areValidStrings({ imageUrl })
+  } catch (err) {
+    textImageCheck++
+  }
+
+  if (textImageCheck > 1) throw 'Must provide a text and/or image.'
 }

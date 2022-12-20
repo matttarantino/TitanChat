@@ -58,7 +58,4 @@ type LoginSpecs = {
  * @description the data to update a user from the profile page. See
  *              {@link User} for param descriptions.
  */
-type UserUpdateInfo = Omit<
-  User,
-  'password' | 'directMessages'
->
+type UserUpdateInfo = Omit<User, 'password' | 'directMessages'>

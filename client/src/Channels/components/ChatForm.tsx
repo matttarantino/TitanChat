@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { BUCKET_URL, uploadFile } from '../../services/s3Service'
 import { useStore } from '../../services/appStore'
 import { emitMessage } from '../../services/sockets'
+import { postMessagePublicChannel } from '../../services/privateServices'
 
 type Props = {
   channelId: string
@@ -29,7 +30,7 @@ const ChatForm = (props: Props) => {
   }, [message, image])
 
   useEffect(() => {
-    textInputRef?.current?.focus?.();
+    textInputRef?.current?.focus?.()
   }, [])
 
   // submits the form when ctrl + enter is pressed in the text input
@@ -40,8 +41,9 @@ const ChatForm = (props: Props) => {
 
   const sendMessage = (newMessage: Message) => {
     emitMessage(newMessage)
-
-    // send message to server
+    postMessagePublicChannel(newMessage).catch(({ response }) => {
+      console.error('message post error', response)
+    })
   }
 
   const onSubmit = (ev: any) => {
@@ -68,7 +70,7 @@ const ChatForm = (props: Props) => {
             // reset inputs
             setMessage('')
             setImage(null)
-              ; (imageInputRef.current as HTMLInputElement).value = ''
+            ;(imageInputRef.current as HTMLInputElement).value = ''
           })
           .catch((err) => {
             console.error('aws upload error', err)

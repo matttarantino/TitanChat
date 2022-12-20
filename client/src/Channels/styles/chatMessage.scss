@@ -1,9 +1,7 @@
 .chat-message-container {
   display: flex;
   flex-direction: row;
-  // height: 5em;
   width: 100%;
-  // padding: 1em;
   padding-top: 1em;
   box-sizing: border-box;
   border-top: 1px solid #ced4da;
@@ -17,6 +15,10 @@
       width: 2.5em;
       border-radius: 100%;
     }
+  }
+
+  .message-content {
+    flex-grow: 1;
   }
 
   .author-container {
@@ -35,8 +37,6 @@
       font-size: 0.7em;
       color: #767676;
       margin-bottom: 0.175em;
-      // line-height: 100%;
-      // vertical-align: bottom;
     }
   }
 
@@ -52,7 +52,7 @@
     margin-top: 0.5em;
   }
 
-  .message-text+.message-image {
+  .message-text + .message-image {
     margin-top: 1em;
   }
 }
