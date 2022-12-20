@@ -87,7 +87,6 @@ const ChatForm = (props: Props) => {
         controlId="message-input"
       >
         <Form.Control
-          id="message-input"
           className="chat-input"
           as="textarea"
           ref={textInputRef}
