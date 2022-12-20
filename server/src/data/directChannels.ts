@@ -104,6 +104,8 @@ export const getDirectChannelByUsernameChannelId = async (
 }
 
 export const postMessageToDirectChannel = async (message: Message) => {
+  isValidMessage(message)
+
   // ensure channel exists
   const channel = await getDirectChannelByUsernameChannelId(
     message.authorName,
