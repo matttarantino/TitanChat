@@ -13,7 +13,7 @@ export const authenticateUser = (
         userProfilePhoto: userProfilePhoto ?? null,
         authenticated: true,
         access_token: jwt.sign({ id: userId }, JWT_SECRET_STRING, {
-          expiresIn: 30, // sec
+          expiresIn: 3600, // sec
         }),
       }
     : { authenticated: false }

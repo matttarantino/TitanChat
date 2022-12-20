@@ -10,14 +10,10 @@ authRouter.get(
   '/isAuthenticated/:userId/:username',
   ensureAuthenticated,
   async ({ params: { userId, username } }, res) => {
-    try {
-      const data = await getUserById(userId)
-      res
-        .status(200)
-        .json(authenticateUser(userId, username, data?.profilePhotoUrl))
-    } catch (e) {
-      res.status(200).json(authenticateUser(userId, username))
-    }
+    const user = (await getUserById(userId)) as UserData
+    res
+      .status(200)
+      .json(authenticateUser(userId, username, user.profilePhotoUrl))
   }
 )
 
