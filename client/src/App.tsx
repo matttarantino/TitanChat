@@ -9,6 +9,7 @@ import SideBar from './Misc/components/SideBar'
 import RightSideBar from './Misc/components/RightSideBar'
 import LoginPage from './Views/components/LoginPage'
 import SignupPage from './Views/components/SignupPage'
+import Welcome from './Views/components/Welcome'
 import EditProfilePage from './Views/components/EditProfilePage'
 import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
@@ -32,6 +33,12 @@ const APP_SPECS: Array<AppSpec> = [
     name: 'Direct Messages',
     path: '/direct/:dmId',
     element: <DmPage />,
+    ensureAuthenticated: true,
+  },
+  {
+    name: 'Welcome',
+    path: '/welcome',
+    element: <Welcome />,
     ensureAuthenticated: true,
   },
   {

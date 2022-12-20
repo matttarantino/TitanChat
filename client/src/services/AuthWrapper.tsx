@@ -28,7 +28,7 @@ const AuthWrapper = (props: Props & PropsWithChildren) => {
     props.ensureNotAuthenticated ? (
       <Navigate
         replace
-        to={state?.from ?? `/channels/${process.env.REACT_APP_GENERAL_CHANNEL}`}
+        to={state?.from ?? `/welcome`}
       />
     ) : (
       <Navigate replace to="/login" state={{ from: pathname }} />
