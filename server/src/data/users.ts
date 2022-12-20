@@ -50,7 +50,7 @@ export const getUser = async (userId: string): Promise<UserData | null> => {
   // find and return entry
   const usersCollection = await getUsersCollection()
   const user = (await usersCollection.findOne({
-    _id: userIdObj,
+    _id: userIdObj
   })) as any
   return user ? { ...user, _id: userId, password: undefined } : null
 }
@@ -114,5 +114,5 @@ export const validateUser = async (
   if (!user || !bcrypt.compareSync(password, user.password))
     return authenticateUser(false)
 
-  return authenticateUser(String(user._id), user.username)
+  return authenticateUser(String(user._id), user.username, user.profilePhotoUrl)
 }

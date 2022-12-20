@@ -54,8 +54,10 @@ const EditProfilePage = () => {
           await updateUserProfile({ ...newUserData, profilePhotoUrl })
           setProfileImage(null)
           setUsername('')
-          if (authInfo.authenticated)
+          if (authInfo.authenticated) {
             authInfo.username = newUserData.username
+            authInfo.userProfilePhoto = profilePhotoUrl
+          }
           navigate(-1)
         } catch (err: any) {
           if (err.response.status == 409) setProfileError(err.response.data)

@@ -48,7 +48,7 @@ const ChatForm = (props: Props) => {
       const newMessage: Message = {
         _id: uuidv4(),
         authorName: authInfo.username,
-        authorProfilePhoto: authInfo.profilePhotoUrl,
+        authorProfilePhoto: authInfo.userProfilePhoto,
         channelId: props.channelId,
         date: String(new Date()),
         text: message.trim().length > 0 ? message.trim() : null,
