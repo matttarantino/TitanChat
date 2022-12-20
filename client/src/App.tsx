@@ -67,6 +67,18 @@ const App = () => {
     console.log({ store })
   }, [store])
 
+  const getAuthRoute = (spec: AppSpec) => (
+    <Route
+      path={spec.path}
+      element={
+        <AuthWrapper ensureNotAuthenticated={!spec.ensureAuthenticated}>
+          {spec.element}
+        </AuthWrapper>
+      }
+      key={spec.path}
+    />
+  )
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -80,29 +92,15 @@ const App = () => {
               )
             )}
 
-            {APP_SPECS.filter((e) => e.ensureAuthenticated !== null).map(
-              (e) => (
-                <Route
-                  element={
-                    <AllChannelsLoader
-                      ensureNotAuthenticated={!e.ensureAuthenticated}
-                    />
-                  }
-                  key={e.path}
-                >
-                  <Route
-                    path={e.path}
-                    element={
-                      <AuthWrapper
-                        ensureNotAuthenticated={!e.ensureAuthenticated}
-                      >
-                        {e.element}
-                      </AuthWrapper>
-                    }
-                  />
-                </Route>
-              )
+            {APP_SPECS.filter((e) => e.ensureAuthenticated === false).map((e) =>
+              getAuthRoute(e)
             )}
+
+            <Route element={<AllChannelsLoader />}>
+              {APP_SPECS.filter((e) => e.ensureAuthenticated === true).map(
+                (e) => getAuthRoute(e)
+              )}
+            </Route>
 
             <Route path="*" element={<ErrorPage {...httpErrors[404]} />} />
           </Routes>

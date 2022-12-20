@@ -10,11 +10,12 @@ export const signup = async (
 }
 
 export const login = async (loginData: LoginSpecs) =>
-  await axios
+  axios
     .post('/api/auth/login', loginData, { headers: authHeader() })
     .then(({ data }) => {
       if (data.access_token)
         localStorage.setItem('authInfo', JSON.stringify(data))
+      return data
     })
 
 export const logout = (): AuthResponse => {

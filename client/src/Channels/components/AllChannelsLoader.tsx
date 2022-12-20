@@ -8,11 +8,7 @@ import {
   refreshPublicChannels,
 } from '../../services/sockets'
 
-type Props = {
-  ensureNotAuthenticated: boolean
-}
-
-const AllChannelsLoader = (props: Props) => {
+const AllChannelsLoader = () => {
   const {
     store: { authInfo, sessionChannelInfo },
     updateStore,
@@ -20,8 +16,10 @@ const AllChannelsLoader = (props: Props) => {
 
   useEffect(() => {
     if (authInfo.authenticated) {
+      console.log('AUTHENTICATED')
       getPublicChannels()
         .then(({ data }: { data: ChannelsResponse }) => {
+          console.log('got channels data', data)
           updateStore(
             'sessionChannelInfo',
             data.reduce(
@@ -62,11 +60,12 @@ const AllChannelsLoader = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authInfo.authenticated])
 
-  return authInfo.authenticated === props.ensureNotAuthenticated &&
-    Object.keys(sessionChannelInfo).length === 0 ? (
-    <Loading />
-  ) : (
+  return (authInfo.authenticated &&
+    Object.keys(sessionChannelInfo).length > 0) ||
+    !authInfo.authenticated ? (
     <Outlet />
+  ) : (
+    <Loading />
   )
 }
 
