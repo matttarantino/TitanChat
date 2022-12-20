@@ -37,7 +37,14 @@ const ChatMessage = (props: Message) => {
   return (
     <div className="chat-message-container">
       <div className="profile-pic-container">
-        <img alt="ProfilePicture" src={process.env.PUBLIC_URL + '/anon.png'} />
+        <img
+          alt="ProfilePicture"
+          src={
+            props.authorProfilePhoto
+              ? props.authorProfilePhoto
+              : process.env.PUBLIC_URL + '/anon.png'
+          }
+        />
       </div>
       <div className="message-content">
         <div className="author-container">

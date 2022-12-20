@@ -9,7 +9,7 @@ import SideBar from './Misc/components/SideBar'
 import RightSideBar from './Misc/components/RightSideBar'
 import LoginPage from './Views/components/LoginPage'
 import SignupPage from './Views/components/SignupPage'
-import ProfilePage from './Views/components/ProfilePage'
+import EditProfilePage from './Views/components/EditProfilePage'
 import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
 import PublicChannelPage from './Views/components/PublicChannelPage'
@@ -49,7 +49,7 @@ const APP_SPECS: Array<AppSpec> = [
   {
     name: 'Profile',
     path: '/profile',
-    element: <ProfilePage />,
+    element: <EditProfilePage />,
     ensureAuthenticated: true,
   },
   {

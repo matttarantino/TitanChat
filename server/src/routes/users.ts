@@ -1,6 +1,5 @@
 import { Router } from 'express'
-import { getAllUsers, getUserById } from '../data/users'
-import { areValidStrings } from '../utils/errors'
+import { getAllUsers } from '../data/users'
 import { ensureAuthenticated } from '../middleware/auth'
 
 const userRouter = Router()

@@ -44,7 +44,7 @@ export const getUserById = async (userId: string): Promise<UserData | null> => {
     areValidStrings({ userId })
     userIdObj = new ObjectId(userId)
   } catch (err) {
-    return null
+    throw `DB Error: ${String(err)}`
   }
 
   // find and return entry
@@ -73,11 +73,59 @@ export const getUserByUsername = async (
   return user ? { ...user, _id: String(user._id), password: undefined } : null
 }
 
+export const updateUser = async (
+  userData: UserUpdateInfo
+): Promise<UserData | null> => {
+  let userIdObj
+
+  // error check
+  try {
+    const { profilePhotoUrl: _, ...requiredInfo } = userData
+    areValidStrings(requiredInfo)
+    userIdObj = new ObjectId(userData._id)
+  } catch (err) {
+    throw `DB Error: ${String(err)}`
+  }
+
+  const usersCollection = await getUsersCollection()
+  const user = (await usersCollection.findOne({
+    _id: userIdObj,
+  })) as any
+
+  if (!user) {
+    throw 'No user exists with that ID'
+  }
+
+  const { _id: _, ...updateData } = userData
+
+  if (
+    userData.usernameLower != user.usernameLower &&
+    (await usersCollection.findOne({ usernameLower: userData.usernameLower }))
+  )
+    throw { type: 'exists', message: 'Username is taken.' }
+
+  const retval = await usersCollection.updateOne(
+    { _id: userIdObj },
+    {
+      $set: updateData,
+    }
+  )
+
+  if (!retval.acknowledged)
+    throw `DB Error: failed to add user ${String(user)}.`
+
+  return (await getUserById(String(userData._id))) as UserData
+}
+
 export const getAllUsers = async (): Promise<UserListResponse> => {
   const usersCollection = await getUsersCollection()
   return await usersCollection
     .find({})
-    .map((e) => ({ _id: String(e._id), username: e.username }))
+    .map((e) => ({
+      _id: String(e._id),
+      username: e.username,
+      profilePhotoUrl: e.profilePhotoUrl,
+    }))
     .toArray()
 }
 
@@ -94,5 +142,5 @@ export const validateUser = async (
   if (!user || !bcrypt.compareSync(password, user.password))
     return authenticateUser(false)
 
-  return authenticateUser(String(user._id), user.username)
+  return authenticateUser(String(user._id), user.username, user.profilePhotoUrl)
 }
