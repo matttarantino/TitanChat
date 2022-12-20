@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { httpErrors } from './utils/errors'
 import { useStore } from './services/appStore'
 import ErrorPage from './Misc/components/ErrorPage'
-import DmPage from './Views/components/DirectChannelPage'
 import LandingPage from './Views/components/LandingPage'
 import SideBar from './Misc/components/SideBar'
 import RightSideBar from './Misc/components/RightSideBar'
@@ -13,8 +12,13 @@ import Welcome from './Views/components/Welcome'
 import EditProfilePage from './Views/components/EditProfilePage'
 import Logout from './Misc/components/Logout'
 import AuthWrapper from './services/AuthWrapper'
-import PublicChannelPage from './Views/components/PublicChannelPage'
 import AllChannelsLoader from './Channels/components/AllChannelsLoader'
+import {
+  onMessageReceived,
+  refreshDirectChannels,
+  refreshPublicChannels,
+} from './services/sockets'
+import ChannelPage from './Views/components/ChannelPage'
 
 const APP_SPECS: Array<AppSpec> = [
   {
@@ -25,14 +29,14 @@ const APP_SPECS: Array<AppSpec> = [
   },
   {
     name: 'Public Channels',
-    path: '/channels/:channelId',
-    element: <PublicChannelPage />,
+    path: '/public/:publicChannelId',
+    element: <ChannelPage channelType="public" paramName="publicChannelId" />,
     ensureAuthenticated: true,
   },
   {
     name: 'Direct Messages',
-    path: '/direct/:dmId',
-    element: <DmPage />,
+    path: '/direct/:directChannelId',
+    element: <ChannelPage channelType="direct" paramName="directChannelId" />,
     ensureAuthenticated: true,
   },
   {
@@ -68,7 +72,53 @@ const APP_SPECS: Array<AppSpec> = [
 ]
 
 const App = () => {
+  const {
+    store: { authInfo },
+    updateStore,
+  } = useStore()
   const { store } = useStore()
+
+  useEffect(() => {
+    if (authInfo.authenticated) {
+      // set up message listener
+      onMessageReceived((messageData) => {
+        console.log('message received', messageData)
+        updateStore(
+          [
+            'sessionChannelInfo',
+            messageData.channelType,
+            messageData.channelId,
+            'messages',
+          ],
+          messageData,
+          true
+        )
+      })
+
+      // set up public channel refresh listener
+      refreshPublicChannels((channelInfo) => {
+        console.log('channel added', channelInfo)
+        updateStore(['sessionChannelInfo', 'public', channelInfo._id], {
+          name: channelInfo.name,
+          messages: [],
+        })
+      })
+
+      // set up direct channel refresh listener
+      refreshDirectChannels((channelInfo) => {
+        console.log('direct channel added', channelInfo)
+        if (
+          authInfo.username === channelInfo.userFromName ||
+          authInfo.username === channelInfo.userToName
+        )
+          updateStore(['sessionChannelInfo', 'direct', channelInfo._id], {
+            name: channelInfo.userToName,
+            messages: [],
+          })
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     console.log({ store })

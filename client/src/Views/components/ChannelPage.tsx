@@ -1,22 +1,30 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ChatForm from '../../Channels/components/ChatForm'
-import ChatMessage from '../../Channels/components/ChatMessage'
+import ChatList from '../../Channels/components/ChatList'
 import ErrorPage from '../../Misc/components/ErrorPage'
 import Loading from '../../Misc/components/Loading'
 import { useStore } from '../../services/appStore'
-import { getPublicChannelInfo } from '../../services/privateServices'
+import {
+  getDirectChannelInfo,
+  getPublicChannelInfo,
+} from '../../services/privateServices'
 import { joinChannel, leaveChannel } from '../../services/sockets'
 import { areValidStrings, httpErrors } from '../../utils/errors'
 import '../styles/channelPage.scss'
 
-const PublicChannelPage = () => {
+type Props = {
+  channelType: 'public' | 'direct'
+  paramName: string
+}
+
+const ChannelPage = (props: Props) => {
   const {
     store: { authInfo, sessionChannelInfo },
     updateStore,
   } = useStore()
   const [pageError, setPageError] = useState<RouteError | null>(null)
-  const { channelId } = useParams()
+  const { [props.paramName]: channelId } = useParams()
 
   useEffect(() => {
     if (authInfo.authenticated && channelId) {
@@ -28,11 +36,18 @@ const PublicChannelPage = () => {
       }
 
       // request data from server
-      if ((sessionChannelInfo[channelId]?.messages ?? []).length === 0)
-        getPublicChannelInfo(channelId)
-          .then(({ data }: { data: PublicChannel }) => {
+      if (
+        (sessionChannelInfo[props.channelType][channelId]?.messages ?? [])
+          .length === 0
+      )
+        (props.channelType === 'public'
+          ? getPublicChannelInfo(channelId)
+          : getDirectChannelInfo(authInfo.username, channelId)
+        )
+          .then(({ data }) => {
+            console.log(props.channelType, 'channel data', data)
             updateStore(
-              ['sessionChannelInfo', data._id, 'messages'],
+              ['sessionChannelInfo', props.channelType, data._id, 'messages'],
               data.messages
             )
           })
@@ -54,24 +69,14 @@ const PublicChannelPage = () => {
 
   return pageError ? (
     <ErrorPage {...pageError} />
-  ) : channelId && sessionChannelInfo[channelId] ? (
+  ) : channelId && sessionChannelInfo[props.channelType][channelId] ? (
     <div className="channel-container">
-      <div className="message-container-wrapper">
-        {/* {channelInfo && <h1> Welcome to #{channelInfo.name}!</h1>} */}
-
-        {/* <div className="message-container"> */}
-
-        {(sessionChannelInfo[channelId]?.messages ?? []).map((e) => (
-          <ChatMessage {...e} key={e._id} />
-        ))}
-
-        {/* </div> */}
-      </div>
-      <ChatForm channelId={channelId} />
+      <ChatList {...sessionChannelInfo[props.channelType][channelId]} />
+      <ChatForm channelId={channelId} channelType={props.channelType} />
     </div>
   ) : (
     <Loading />
   )
 }
 
-export default PublicChannelPage
+export default ChannelPage

@@ -26,10 +26,7 @@ const AuthWrapper = (props: Props & PropsWithChildren) => {
 
   return props.ensureNotAuthenticated === authInfo.authenticated ? (
     props.ensureNotAuthenticated ? (
-      <Navigate
-        replace
-        to={state?.from ?? `/welcome`}
-      />
+      <Navigate replace to={state?.from ?? `/welcome`} />
     ) : (
       <Navigate replace to="/login" state={{ from: pathname }} />
     )
