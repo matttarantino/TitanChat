@@ -86,9 +86,10 @@ const EditProfilePage = () => {
 
       <Form onSubmit={onFormSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>New Username</Form.Label>
+          <Form.Label htmlFor='username-input'>New Username</Form.Label>
           <Form.Control
-            type="username"
+            id='username-input'
+            type="text"
             placeholder="Enter New Username"
             value={username}
             onChange={(event) => {
@@ -97,7 +98,7 @@ const EditProfilePage = () => {
             }}
           />
           <br />
-          <Form.Label>Update Profile Picture:</Form.Label>
+          <Form.Label htmlFor='img'>Update Profile Picture:</Form.Label>
           <Form.Control
             className="file-input"
             type="file"

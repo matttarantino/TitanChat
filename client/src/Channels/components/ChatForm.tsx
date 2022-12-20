@@ -100,7 +100,9 @@ const ChatForm = (props: Props) => {
       </FloatingLabel>
 
       <div className="chat-button-bar">
+        <Form.Label hidden htmlFor="file-input">New Image Upload</Form.Label>
         <Form.Control
+          id="file-input"
           className="file-input"
           type="file"
           accept="image/*"

@@ -36,8 +36,8 @@ const SIGNUP_SPECS: SignupFormSpecs = {
     label: 'Profile Picture (Optional)',
     type: 'file',
     defaultValue: '',
-    props: { placeholder: 'Choose Profile Photo' },
-  },
+    props: {},
+  }
 }
 
 const SIGNUP_KEYS = Object.keys(SIGNUP_SPECS) as Array<keyof SignupFormSpecs>
