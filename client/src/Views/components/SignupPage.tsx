@@ -36,7 +36,7 @@ const SIGNUP_SPECS: SignupFormSpecs = {
     label: '(Optional) Profile Picture',
     type: 'file',
     defaultValue: '',
-    props: { placeholder: 'Choose Profile Photo' },
+    props: {},
   }
 }
 
