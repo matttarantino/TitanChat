@@ -9,7 +9,7 @@ type Props = {
 
 const AuthWrapper = (props: Props & PropsWithChildren) => {
   const {
-    store: { authInfo, sessionChannelInfo },
+    store: { authInfo },
     updateStore,
   } = useStore()
   const { pathname, state } = useLocation()

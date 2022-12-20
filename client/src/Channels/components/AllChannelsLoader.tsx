@@ -16,10 +16,8 @@ const AllChannelsLoader = () => {
 
   useEffect(() => {
     if (authInfo.authenticated) {
-      console.log('AUTHENTICATED')
       getPublicChannels()
         .then(({ data }: { data: ChannelsResponse }) => {
-          console.log('got channels data', data)
           updateStore(
             'sessionChannelInfo',
             data.reduce(
