@@ -10,6 +10,7 @@
 type Message = {
   _id: string
   authorName: string
+  authorProfilePhoto: string | null
   channelId: string
   date: string
   text: string | null

@@ -27,9 +27,8 @@ const ChatMessage = (props: Message) => {
       minutes = '0' + minutes
     }
 
-    const timeString = `${
-      Number(hours) !== 0 ? Number(hours) % 12 : 12
-    }:${minutes} ${Number(hours) < 12 ? 'AM' : 'PM'}`
+    const timeString = `${Number(hours) !== 0 ? Number(hours) % 12 : 12
+      }:${minutes} ${Number(hours) < 12 ? 'AM' : 'PM'}`
 
     return `${month}/${day}/${year} at ${timeString}`
   }
@@ -37,7 +36,7 @@ const ChatMessage = (props: Message) => {
   return (
     <div className="chat-message-container">
       <div className="profile-pic-container">
-        <img alt="ProfilePicture" src={process.env.PUBLIC_URL + '/anon.png'} />
+        <img alt="ProfilePicture" src={props.authorProfilePhoto ? props.authorProfilePhoto : process.env.PUBLIC_URL + '/anon.png'} />
       </div>
       <div>
         <div className="author-container">
