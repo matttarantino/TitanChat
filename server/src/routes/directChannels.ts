@@ -10,6 +10,7 @@ import { areValidStrings, isValidMessage } from '../utils/errors'
 
 const directChannelsRouter = Router()
 
+// add direct channel to users
 directChannelsRouter.post('/', ensureAuthenticated, async (req, res) => {
   const {
     userFromId,
@@ -42,6 +43,7 @@ directChannelsRouter.post('/', ensureAuthenticated, async (req, res) => {
   }
 })
 
+// get all direct channels of user
 directChannelsRouter.get('/:userId', ensureAuthenticated, async (req, res) => {
   const { userId } = req.params
 
@@ -58,9 +60,11 @@ directChannelsRouter.get('/:userId', ensureAuthenticated, async (req, res) => {
   }
 })
 
-directChannelsRouter
-  .route('/:username/:channelId')
-  .get(ensureAuthenticated, async (req, res) => {
+// get direct channel info from From user
+directChannelsRouter.get(
+  '/:username/:channelId',
+  ensureAuthenticated,
+  async (req, res) => {
     const { username, channelId } = req.params
 
     try {
@@ -76,21 +80,23 @@ directChannelsRouter
     } catch (err) {
       return res.status(500).send(String(err))
     }
-  })
-  .post(ensureAuthenticated, async (req, res) => {
-    const message: Message = req.body
+  }
+)
 
-    try {
-      isValidMessage(message)
-    } catch (err) {
-      return res.status(400).send(String(err))
-    }
+directChannelsRouter.post('/message', ensureAuthenticated, async (req, res) => {
+  const message: Message = req.body
 
-    try {
-      return res.status(200).json(await postMessageToDirectChannel(message))
-    } catch (err) {
-      return res.status(500).send(String(err))
-    }
-  })
+  try {
+    isValidMessage(message)
+  } catch (err) {
+    return res.status(400).send(String(err))
+  }
+
+  try {
+    return res.status(200).json(await postMessageToDirectChannel(message))
+  } catch (err) {
+    return res.status(500).send(String(err))
+  }
+})
 
 export default directChannelsRouter

@@ -40,9 +40,10 @@ publicChannelsRouter
     }
   })
 
-publicChannelsRouter
-  .route('/:channelId')
-  .get(ensureAuthenticated, async ({ params: { channelId } }, res) => {
+publicChannelsRouter.get(
+  '/:channelId',
+  ensureAuthenticated,
+  async ({ params: { channelId } }, res) => {
     // error check
     try {
       areValidStrings({ channelId })
@@ -59,21 +60,23 @@ publicChannelsRouter
     } catch (err) {
       return res.status(500).send(String(err))
     }
-  })
-  .post(ensureAuthenticated, async (req, res) => {
-    const message: Message = req.body
+  }
+)
 
-    try {
-      isValidMessage(message)
-    } catch (err) {
-      return res.status(400).send(String(err))
-    }
+publicChannelsRouter.post('/message', ensureAuthenticated, async (req, res) => {
+  const message: Message = req.body
 
-    try {
-      return res.status(200).json(await postMessageToPublicChannel(message))
-    } catch (err) {
-      return res.status(500).send(String(err))
-    }
-  })
+  try {
+    isValidMessage(message)
+  } catch (err) {
+    return res.status(400).send(String(err))
+  }
+
+  try {
+    return res.status(200).json(await postMessageToPublicChannel(message))
+  } catch (err) {
+    return res.status(500).send(String(err))
+  }
+})
 
 export default publicChannelsRouter
