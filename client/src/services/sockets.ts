@@ -21,9 +21,16 @@ export const emitMessage = (newMessage: Message) =>
 
 export const disconnectSocket = () => socket.disconnect()
 
-export const emitRefreshPubliChannels = (channelInfo: PublicChannel) =>
+export const emitRefreshPublicChannels = (channelInfo: PublicChannel) =>
   socket.emit('public_channel_added', channelInfo)
 
 export const refreshPublicChannels = (
   callback: (channelInfo: PublicChannel) => void
 ) => socket.on('public_channel_added', (channelInfo) => callback(channelInfo))
+
+export const emitRefreshDirectChannels = (channelInfo: DirectChannel) =>
+  socket.emit('direct_channel_added', channelInfo)
+
+export const refreshDirectChannels = (
+  callback: (channelInfo: DirectChannel) => void
+) => socket.on('direct_channel_added', (channelInfo) => callback(channelInfo))

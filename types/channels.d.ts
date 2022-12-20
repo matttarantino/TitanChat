@@ -41,20 +41,27 @@ type PublicChannelRegistrationInfo = Omit<PublicChannel, '_id' | 'messages'>
 /**
  * @author rgorai
  * @description schema for a direct message channel between two users
- * @param userAId id of the first user
- * @param userAName username of the first user
- * @param userBId id of the second user
- * @param userBName username of the second user
+ * @param userFromId id of the first user
+ * @param userFromName username of the first user
+ * @param userToId id of the second user
+ * @param userToName username of the second user
  * @param messages array of {@link Message}s that are part of this channel
  */
-type DmChannel = {
+type DirectChannel = {
   _id: string
-  userAId: string
-  userAName: string
-  userBId: string
-  userBName: string
+  userFromId: string
+  userFromName: string
+  userToId: string
+  userToName: string
   messages: Array<Message>
 }
+
+/**
+ * @author rgorai
+ * @description the data to create a direct channel. See
+ *              {@link DirectChannel} for param descriptions.
+ */
+type DirectChannelRegistrationInfo = Omit<DirectChannel, '_id' | 'messages'>
 
 /**
  * @author rgorai

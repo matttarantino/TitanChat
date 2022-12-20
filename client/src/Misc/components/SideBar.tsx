@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form'
 import Loading from '../../Misc/components/Loading'
 import { addPublicChannel } from '../../services/privateServices'
 import { useStore } from '../../services/appStore'
-import { emitRefreshPubliChannels } from '../../services/sockets'
+import { emitRefreshPublicChannels } from '../../services/sockets'
 
 const SideBar = () => {
   const {
@@ -44,7 +44,7 @@ const SideBar = () => {
     if (authInfo.authenticated)
       addPublicChannel({ name: newChannelName, creatorId: authInfo.userId })
         .then(({ data }: { data: PublicChannel }) => {
-          emitRefreshPubliChannels(data)
+          emitRefreshPublicChannels(data)
           handleClose()
           setNewChannelError('')
           navigate(`/channels/${data._id}`)

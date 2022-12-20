@@ -15,7 +15,7 @@ export const createChannel = async (
     areValidStrings(channel)
     isValidChannelName(channel.name)
   } catch (err) {
-    throw `${String(err)}`
+    throw String(err)
   }
 
   // check if channel name exists
