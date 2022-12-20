@@ -8,13 +8,13 @@ export const authenticateUser = (
 ): AuthResponse => {
   return userId && username && JWT_SECRET_STRING
     ? {
-        userId,
-        username,
-        userProfilePhoto: userProfilePhoto ?? null,
-        authenticated: true,
-        access_token: jwt.sign({ id: userId }, JWT_SECRET_STRING, {
-          expiresIn: Number(JWT_EXPIRATION) ?? 3600, // sec
-        }),
-      }
+      userId,
+      username,
+      userProfilePhoto: userProfilePhoto ?? null,
+      authenticated: true,
+      access_token: jwt.sign({ id: userId }, JWT_SECRET_STRING, {
+        expiresIn: JWT_EXPIRATION ? Number(JWT_EXPIRATION) : 3600, // sec
+      }),
+    }
     : { authenticated: false }
 }
