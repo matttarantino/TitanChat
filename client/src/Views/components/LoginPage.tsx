@@ -57,8 +57,8 @@ const LoginPage = () => {
       }
 
     login(loginData)
-      .then((data) => {
-        updateStore('authInfo', data)
+      .then(() => {
+        window.location.reload()
       })
       .catch(({ response }) => {
         if (response.status === 401)

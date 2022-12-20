@@ -75,8 +75,8 @@ const SignupPage = () => {
     // send signup request if there are no errors
     if (!formErrorPresent)
       signup({ ...profileData, passwordConfirmation: undefined })
-        .then((data) => {
-          updateStore('authInfo', data)
+        .then(() => {
+          window.location.reload()
         })
         .catch(({ response }) => {
           if (response.status == 409) setSignupError(response.data)
