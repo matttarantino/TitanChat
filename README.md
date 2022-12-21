@@ -3,7 +3,7 @@
 ## Please ensure you have MongoDB running.
 
 ## Install yarn on your local machine 
-### `npm install -g yarn`
+### `npm i -g yarn`
 
 ## From the root directory, run the following commands
 
@@ -18,3 +18,7 @@ Install the client's dependencies.
 ### `yarn dev`
 
 Start the client and servers in development mode.
+
+### `yarn seed`
+
+Seed the local database if desired.
