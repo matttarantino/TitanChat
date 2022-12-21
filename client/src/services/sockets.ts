@@ -34,9 +34,7 @@ export const refreshDirectChannels = (
   callback: (channelInfo: DirectChannel) => void
 ) => socket.on('direct_channel_added', (channelInfo) => callback(channelInfo))
 
-export const emitRefreshUsers = () =>
-  socket.emit('refresh_users')
+export const emitRefreshUsers = () => socket.emit('refresh_users')
 
-export const refreshUsers = (
-  callback: () => void
-) => socket.on('refresh_users', () => callback())
+export const refreshUsers = (callback: () => void) =>
+  socket.on('refresh_users', () => callback())

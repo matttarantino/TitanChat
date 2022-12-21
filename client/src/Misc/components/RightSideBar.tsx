@@ -18,20 +18,6 @@ const RightSideBar = () => {
     async function fetchData() {
       try {
         const { data } = await getAllUsers()
-        setIsPublic(pathname.includes('public'))
-        setUserData(data)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    if (authInfo.authenticated) fetchData()
-  }, [authInfo.authenticated, pathname])
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const { data } = await getAllUsers()
-        setIsPublic(pathname.includes('public'))
         setUserData(data)
       } catch (e) {
         console.log(e)
@@ -43,6 +29,19 @@ const RightSideBar = () => {
       fetchData()
     })
   }, [])
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await getAllUsers()
+        setIsPublic(pathname.includes('public'))
+        setUserData(data)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    if (authInfo.authenticated) fetchData()
+  }, [authInfo.authenticated, pathname])
 
   const onUserClick = (toUser: UserListResponse[number]) => {
     if (authInfo.authenticated)
@@ -60,9 +59,8 @@ const RightSideBar = () => {
           navigate(`/direct/${data._id}`)
         })
         .catch(({ response }: any) => {
-          console.log('add direct error', response)
           if (response.status == 409) navigate(`/direct/${response.data}`)
-          else console.log('add direct channel error', response)
+          else console.error('add direct channel error', response)
         })
   }
 

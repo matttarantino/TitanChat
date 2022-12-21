@@ -15,8 +15,8 @@ const DEFAULT_STATE: AppState = {
     authenticated: false,
   },
   sessionChannelInfo: {
-    public: {},
-    direct: {},
+    public: null,
+    direct: null,
   },
 }
 

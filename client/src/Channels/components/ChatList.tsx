@@ -1,4 +1,5 @@
 import ChatMessage from './ChatMessage'
+import '../styles/chatList.scss'
 
 const ChatList = (props: SessionChannelInfo[string]) => (
   <div className="message-container-wrapper">
