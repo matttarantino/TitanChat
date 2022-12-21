@@ -17,6 +17,7 @@ const AllChannelsLoader = () => {
     if (authInfo.authenticated) {
       getPublicChannels()
         .then(({ data }: { data: PublicChannelsResponse }) => {
+          console.log('got public messages', data)
           updateStore(
             ['sessionChannelInfo', 'public'],
             data.reduce(
@@ -58,11 +59,9 @@ const AllChannelsLoader = () => {
         })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authInfo.authenticated])
+  }, [])
 
   return (authInfo.authenticated &&
-    // (Object.keys(sessionChannelInfo.public).length > 0 ||
-    //   Object.keys(sessionChannelInfo.direct).length > 0)) ||
     sessionChannelInfo.public &&
     sessionChannelInfo.direct) ||
     !authInfo.authenticated ? (

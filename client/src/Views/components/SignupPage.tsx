@@ -80,7 +80,7 @@ const SignupPage = () => {
         formErrorPresent = true
       }
 
-    ; (async () => {
+    ;(async () => {
       let profilePhotoUrl = null
 
       if (profileImage)

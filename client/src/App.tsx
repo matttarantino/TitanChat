@@ -125,8 +125,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    console.log({ store })
-  }, [store])
+    console.log('STORE', store.sessionChannelInfo.public)
+  }, [store.sessionChannelInfo.public])
 
   return (
     <div className="App">

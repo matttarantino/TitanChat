@@ -45,8 +45,6 @@ const SideBar = () => {
 
   if (
     authInfo.authenticated &&
-    // (Object.keys(sessionChannelInfo.public).length > 0 ||
-    //   Object.keys(sessionChannelInfo.direct).length > 0)
     sessionChannelInfo.public &&
     sessionChannelInfo.direct
   ) {
@@ -147,7 +145,7 @@ const SideBar = () => {
               </Modal.Body>
 
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="outline-secondary" onClick={handleClose}>
                   Close
                 </Button>
                 <Button type="submit" variant="primary" onClick={addNewChannel}>
