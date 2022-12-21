@@ -7,6 +7,7 @@ import { updateUserProfile } from '../../services/privateServices'
 import { uploadFile } from '../../services/s3Service'
 import { useNavigate } from 'react-router-dom'
 import { isValidUserName } from '../../utils/errors'
+import { emitRefreshUsers, emitRefreshDirectChannels } from '../../services/sockets'
 
 const EditProfilePage = () => {
   const {
@@ -34,7 +35,7 @@ const EditProfilePage = () => {
       setProfileError(String(err))
     }
 
-    ;(async () => {
+    ; (async () => {
       let profilePhotoUrl = null
 
       if (profileImage)
@@ -64,6 +65,8 @@ const EditProfilePage = () => {
             authInfo.username = newUserData.username
             authInfo.userProfilePhoto = profilePhotoUrl
           }
+          emitRefreshUsers()
+          emitRefreshDirectChannels()
           navigate(-1)
         } catch (err: any) {
           if (err.response.status == 409) setProfileError(err.response.data)
