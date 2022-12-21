@@ -80,7 +80,19 @@ const EditProfilePage = () => {
   return (
     <div className="form-container">
       {authInfo.authenticated && (
-        <h1 className="profileName">Editing: {authInfo.username}</h1>
+        <div>
+          {authInfo.userProfilePhoto ? (
+            <img alt="CurrentProfileImage" src={authInfo.userProfilePhoto} />
+          ) : (
+            <img
+              alt="CurrentProfileImage"
+              src={process.env.PUBLIC_URL + '/anon.png'}
+            />
+          )}
+          <br />
+          <br />
+          <h1 className="profileName">{authInfo.username}</h1>
+        </div>
       )}
 
       {profileError && (
@@ -100,6 +112,7 @@ const EditProfilePage = () => {
               setUsername(event.target.value)
             }}
           />
+
           <br />
           <Form.Label htmlFor="img">Update Profile Picture:</Form.Label>
           <Form.Control
