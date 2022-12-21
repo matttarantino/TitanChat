@@ -7,10 +7,7 @@ import { updateUserProfile } from '../../services/privateServices'
 import { uploadFile } from '../../services/s3Service'
 import { useNavigate } from 'react-router-dom'
 import { isValidUserName } from '../../utils/errors'
-import {
-  emitRefreshUsers,
-  emitRefreshDirectChannels,
-} from '../../services/sockets'
+import { emitRefreshUsers } from '../../services/sockets'
 
 const EditProfilePage = () => {
   const {
