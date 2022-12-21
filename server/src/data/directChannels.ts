@@ -15,9 +15,7 @@ export const addDirectChannel = async ({
   areValidStrings({ userFromId, userFromName, userToId, userToName })
 
   // check if From user exists
-  console.log('HERE NOW', userFromId)
   const fromUser = await getUserById(userFromId)
-  console.log('ret', !fromUser)
   if (!fromUser) throw 'From user does not exist.'
 
   // check if To user exists
@@ -37,7 +35,7 @@ export const addDirectChannel = async ({
   // add direct channel to From user
   const users = await getUsersCollection()
   const newChannelId = String(new ObjectId())
-  users.updateOne(
+  const retFrom = await users.updateOne(
     { _id: new ObjectId(userFromId) },
     {
       $push: {
@@ -55,8 +53,10 @@ export const addDirectChannel = async ({
     }
   )
 
+  if (retFrom.modifiedCount !== 1) throw 'Channel creation failed.'
+
   // add direct channel to To user
-  users.updateOne(
+  const retTo = await users.updateOne(
     { _id: new ObjectId(userToId) },
     {
       $push: {
@@ -74,10 +74,7 @@ export const addDirectChannel = async ({
     }
   )
 
-  console.log(
-    'RET HERE',
-    await getDirectChannelByUsernameChannelId(userFromName, newChannelId)
-  )
+  if (retTo.modifiedCount !== 1) throw 'Channel creation failed.'
 
   return await getDirectChannelByUsernameChannelId(userFromName, newChannelId)
 }
