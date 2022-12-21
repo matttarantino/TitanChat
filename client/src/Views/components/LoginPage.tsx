@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/Button'
 import { login } from '../../services/authService'
 import { isValidPassword, isValidUserName } from '../../utils/errors'
 import { reduceFormSpecs } from '../../utils/forms'
-import { useStore } from '../../services/appStore'
 
 const LOGIN_SPECS: LoginFormSpecs = {
   username: {
@@ -35,7 +34,6 @@ const DEFAULT_FORM_STATE = reduceFormSpecs(
 )
 
 const LoginPage = () => {
-  const { updateStore } = useStore()
   const [loginData, setLoginData] = useState(DEFAULT_FORM_STATE)
   const [loginError, setLoginError] = useState('')
 
@@ -69,14 +67,13 @@ const LoginPage = () => {
 
   return (
     <div className="form-container">
-      <div className="text-center my-3">
+      <div className="text-center mb-3">
         <img
           src={process.env.PUBLIC_URL + '/TitanLogo.png'}
-          className=""
           width="150"
           height="150"
           alt="Responsive image"
-        ></img>
+        />
       </div>
       <h1>Login</h1>
 

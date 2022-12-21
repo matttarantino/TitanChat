@@ -7,7 +7,7 @@ import { updateUserProfile } from '../../services/privateServices'
 import { uploadFile } from '../../services/s3Service'
 import { useNavigate } from 'react-router-dom'
 import { isValidUserName } from '../../utils/errors'
-import { emitRefreshUsers, emitRefreshDirectChannels } from '../../services/sockets'
+import { emitRefreshUsers } from '../../services/sockets'
 
 const EditProfilePage = () => {
   const {
@@ -35,7 +35,7 @@ const EditProfilePage = () => {
       setProfileError(String(err))
     }
 
-    ; (async () => {
+    ;(async () => {
       let profilePhotoUrl = null
 
       if (profileImage)
@@ -66,7 +66,6 @@ const EditProfilePage = () => {
             authInfo.userProfilePhoto = profilePhotoUrl
           }
           emitRefreshUsers()
-          emitRefreshDirectChannels()
           navigate(-1)
         } catch (err: any) {
           if (err.response.status == 409) setProfileError(err.response.data)
@@ -77,23 +76,21 @@ const EditProfilePage = () => {
     })()
   }
 
-  return (
-    <div className="form-container">
-      {authInfo.authenticated && (
-        <div>
-          {authInfo.userProfilePhoto ? (
-            <img alt="CurrentProfileImage" src={authInfo.userProfilePhoto} />
-          ) : (
-            <img
-              alt="CurrentProfileImage"
-              src={process.env.PUBLIC_URL + '/anon.png'}
-            />
-          )}
-          <br />
-          <br />
-          <h1 className="profileName">{authInfo.username}</h1>
-        </div>
-      )}
+  return authInfo.authenticated ? (
+    <div className="form-container profile-container">
+      <div className="text-center">
+        <img
+          alt="CurrentProfileImage"
+          src={
+            authInfo.userProfilePhoto
+              ? authInfo.userProfilePhoto
+              : process.env.PUBLIC_URL + '/anon.png'
+          }
+        />
+      </div>
+
+      <br />
+      <h1 className="profileName">{authInfo.username}</h1>
 
       {profileError && (
         <Form.Group className="mb-3 form-error">{profileError}</Form.Group>
@@ -137,6 +134,8 @@ const EditProfilePage = () => {
         </Button>
       </Form>
     </div>
+  ) : (
+    <></>
   )
 }
 

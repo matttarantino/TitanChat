@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom'
 
 const LandingPage = () => {
   return (
-    <div className="div">
-      <div className="text-center mt-5">
+    <div className="form-container landing-container">
+      <div className="text-center">
         <img
           src={process.env.PUBLIC_URL + '/TitanLogo.png'}
-          className=""
           width="200"
           height="200"
           alt="Responsive image"
-        ></img>
+        />
       </div>
       <h1 className="header">{process.env.REACT_APP_NAME}</h1>
       <p className="paragraph">
@@ -22,12 +21,11 @@ const LandingPage = () => {
         walks of life and is free to use.
       </p>
       <div className="test">
-        <Link className="btn btn-primary home-link" to="/login">
-          Login
-        </Link>
-        <br />
-        <Link className="btn btn-primary home-link" to="/signup">
+        <Link className="btn btn-outline-primary" to="/signup">
           Sign-up
+        </Link>
+        <Link className="btn btn-primary" to="/login">
+          Login
         </Link>
         <br />
       </div>

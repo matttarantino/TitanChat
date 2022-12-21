@@ -1,10 +1,13 @@
-img {
-  height: 20em;
-  width: 20em;
-  border-radius: 100%;
-  margin: auto;
-}
+.profile-container {
+  img {
+    height: 15em;
+    width: 15em;
+    border-radius: 100%;
+    margin: 0 auto;
+    object-fit: cover;
+  }
 
-h1 {
-  text-align: center;
+  h1 {
+    text-align: center;
+  }
 }
