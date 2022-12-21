@@ -12,6 +12,7 @@ import { emitRefreshUsers } from '../../services/sockets'
 const EditProfilePage = () => {
   const {
     store: { authInfo },
+    updateStore,
   } = useStore()
 
   const [username, setUsername] = useState(
@@ -35,45 +36,48 @@ const EditProfilePage = () => {
       setProfileError(String(err))
     }
 
-    ;(async () => {
-      let profilePhotoUrl = null
+    if (authInfo.authenticated) {
+      ;(async () => {
+        let profilePhotoUrl = null
 
-      if (profileImage)
-        try {
-          profilePhotoUrl = await uploadFile(
-            profileImage,
-            'profile',
-            profileImage.name
-          )
-        } catch (err) {
-          formErrorPresent = true
-          setProfileError('An error occurred uploading the photo. Try again!')
-        }
-
-      const newUserData = {
-        _id: authInfo.authenticated ? authInfo.userId : '',
-        username: username,
-        usernameLower: username.toLowerCase(),
-      }
-
-      if (!formErrorPresent)
-        try {
-          await updateUserProfile({ ...newUserData, profilePhotoUrl })
-          setProfileImage(null)
-          setUsername('')
-          if (authInfo.authenticated) {
-            authInfo.username = newUserData.username
-            authInfo.userProfilePhoto = profilePhotoUrl
+        if (profileImage)
+          try {
+            profilePhotoUrl = await uploadFile(
+              profileImage,
+              'profile',
+              profileImage.name
+            )
+          } catch (err) {
+            formErrorPresent = true
+            setProfileError('An error occurred uploading the photo. Try again!')
           }
-          emitRefreshUsers()
-          navigate(-1)
-        } catch (err: any) {
-          if (err.response.status == 409) setProfileError(err.response.data)
-          else console.error('profile error', err.response)
+
+        const newProfilePic =
+          profilePhotoUrl ?? authInfo.userProfilePhoto ?? null
+        const newUserData = {
+          _id: authInfo.authenticated ? authInfo.userId : '',
+          username: username,
+          usernameLower: username.toLowerCase(),
+          profilePhotoUrl: newProfilePic,
         }
 
-      setSubmitButtonDisabled(false)
-    })()
+        if (!formErrorPresent)
+          try {
+            await updateUserProfile({ ...newUserData })
+            setProfileImage(null)
+            setUsername('')
+            updateStore(['authInfo', 'username'], newUserData.username)
+            updateStore(['authInfo', 'userProfilePhoto'], newProfilePic)
+            emitRefreshUsers()
+            navigate(-1)
+          } catch (err: any) {
+            if (err.response.status == 409) setProfileError(err.response.data)
+            else console.error('profile error', err.response)
+          }
+
+        setSubmitButtonDisabled(false)
+      })()
+    }
   }
 
   return authInfo.authenticated ? (
