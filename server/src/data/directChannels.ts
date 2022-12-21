@@ -74,6 +74,11 @@ export const addDirectChannel = async ({
     }
   )
 
+  console.log(
+    'RET HERE',
+    getDirectChannelByUsernameChannelId(userFromName, newChannelId)
+  )
+
   return await getDirectChannelByUsernameChannelId(userFromName, newChannelId)
 }
 
