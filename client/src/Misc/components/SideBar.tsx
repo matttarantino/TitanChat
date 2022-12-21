@@ -169,21 +169,23 @@ const SideBar = () => {
           </ul>
         </div>
 
-        <div className="container d-grid gap-2 pt-3 button-container">
-          <Link className="btn btn-outline-dark" to="/profile">
-            Edit Profile
-          </Link>
-          <Link className="btn btn-danger" to="/logout">
-            Logout
-          </Link>
-          <div className="text-center my-3">
+        <div className="container gap-2 pt-3 bottom-bar">
+          <div className="d-grid gap-2 button-container">
+            <Link className="btn btn-outline-dark" to="/profile">
+              Edit Profile
+            </Link>
+            <Link className="btn btn-danger" to="/logout">
+              Logout
+            </Link>
+          </div>
+
+          <div className="mx-3">
             <img
               src={process.env.PUBLIC_URL + '/TitanLogo.png'}
-              className=""
-              width="50"
-              height="50"
+              width="65"
+              height="65"
               alt="Responsive image"
-            ></img>
+            />
           </div>
         </div>
       </div>

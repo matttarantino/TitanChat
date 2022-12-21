@@ -10,11 +10,10 @@ const Welcome = () => {
       <div className="text-center my-5">
         <img
           src={process.env.PUBLIC_URL + '/TitanLogo.png'}
-          className=""
           width="150"
           height="150"
           alt="Responsive image"
-        ></img>
+        />
       </div>
     </div>
   )

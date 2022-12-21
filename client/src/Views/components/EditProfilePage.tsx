@@ -76,23 +76,21 @@ const EditProfilePage = () => {
     })()
   }
 
-  return (
-    <div className="form-container">
-      {authInfo.authenticated && (
-        <div>
-          {authInfo.userProfilePhoto ? (
-            <img alt="CurrentProfileImage" src={authInfo.userProfilePhoto} />
-          ) : (
-            <img
-              alt="CurrentProfileImage"
-              src={process.env.PUBLIC_URL + '/anon.png'}
-            />
-          )}
-          <br />
-          <br />
-          <h1 className="profileName">{authInfo.username}</h1>
-        </div>
-      )}
+  return authInfo.authenticated ? (
+    <div className="form-container profile-container">
+      <div className="text-center">
+        <img
+          alt="CurrentProfileImage"
+          src={
+            authInfo.userProfilePhoto
+              ? authInfo.userProfilePhoto
+              : process.env.PUBLIC_URL + '/anon.png'
+          }
+        />
+      </div>
+
+      <br />
+      <h1 className="profileName">{authInfo.username}</h1>
 
       {profileError && (
         <Form.Group className="mb-3 form-error">{profileError}</Form.Group>
@@ -136,6 +134,8 @@ const EditProfilePage = () => {
         </Button>
       </Form>
     </div>
+  ) : (
+    <></>
   )
 }
 

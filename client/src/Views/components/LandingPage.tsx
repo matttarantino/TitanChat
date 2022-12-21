@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom'
 const LandingPage = () => {
   return (
     <div className="form-container landing-container">
-      <div className="text-center mt-5">
+      <div className="text-center">
         <img
           src={process.env.PUBLIC_URL + '/TitanLogo.png'}
-          className=""
           width="200"
           height="200"
           alt="Responsive image"
-        ></img>
+        />
       </div>
       <h1 className="header">{process.env.REACT_APP_NAME}</h1>
       <p className="paragraph">

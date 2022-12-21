@@ -67,14 +67,13 @@ const LoginPage = () => {
 
   return (
     <div className="form-container">
-      <div className="text-center my-3">
+      <div className="text-center mb-3">
         <img
           src={process.env.PUBLIC_URL + '/TitanLogo.png'}
-          className=""
           width="150"
           height="150"
           alt="Responsive image"
-        ></img>
+        />
       </div>
       <h1>Login</h1>
 
