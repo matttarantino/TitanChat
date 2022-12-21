@@ -80,7 +80,7 @@ const SignupPage = () => {
         formErrorPresent = true
       }
 
-    ; (async () => {
+    ;(async () => {
       let profilePhotoUrl = null
 
       if (profileImage)
@@ -115,6 +115,15 @@ const SignupPage = () => {
 
   return (
     <div className="form-container">
+      <div className="text-center my-3">
+        <img
+          src={process.env.PUBLIC_URL + '/TitanLogo.png'}
+          className=""
+          width="150"
+          height="150"
+          alt="Responsive image"
+        ></img>
+      </div>
       <h1>Sign Up</h1>
 
       <Form id="signup-form" onSubmit={onFormSubmit}>

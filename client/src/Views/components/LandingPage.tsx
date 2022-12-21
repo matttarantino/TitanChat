@@ -4,6 +4,15 @@ import { Link } from 'react-router-dom'
 const LandingPage = () => {
   return (
     <div className="div">
+      <div className="text-center mt-5">
+        <img
+          src={process.env.PUBLIC_URL + '/TitanLogo.png'}
+          className=""
+          width="200"
+          height="200"
+          alt="Responsive image"
+        ></img>
+      </div>
       <h1 className="header">{process.env.REACT_APP_NAME}</h1>
       <p className="paragraph">
         {process.env.REACT_APP_NAME} is a website that allows users to

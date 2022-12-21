@@ -178,6 +178,15 @@ const SideBar = () => {
           <Link className="btn btn-danger" to="/logout">
             Logout
           </Link>
+          <div className="text-center my-3">
+            <img
+              src={process.env.PUBLIC_URL + '/TitanLogo.png'}
+              className=""
+              width="50"
+              height="50"
+              alt="Responsive image"
+            ></img>
+          </div>
         </div>
       </div>
     )
