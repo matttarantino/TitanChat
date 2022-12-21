@@ -1,5 +1,6 @@
 import { createPublicChannel } from '../src/data/publicChannels'
 import { createUser } from '../src/data/users'
+import { closeConnection } from '../src/data/config/mongoConnection'
 ;(async () => {
   const UserRegistrationInfo = {
     username: 'system',
@@ -32,6 +33,7 @@ import { createUser } from '../src/data/users'
   await createPublicChannel(PublicChannelRegistrationInfo4)
 
   console.log('Done seeding.')
+  closeConnection()
 })().catch((err) => {
   console.log('seed error', err)
 })
