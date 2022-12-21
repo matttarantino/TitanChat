@@ -58,9 +58,8 @@ const SideBar = () => {
       return (
         <li key={path}>
           <Link
-            className={`list-group-item ${active ? 'active' : ''} ${
-              active ? 'text-white' : ''
-            } sidebar-link`}
+            className={`list-group-item ${active ? 'active' : ''} ${active ? 'text-white' : ''
+              } sidebar-link`}
             to={path}
           >
             {channelIcon}
@@ -98,7 +97,7 @@ const SideBar = () => {
             {channelList.length > 0 ? (
               channelList
             ) : (
-              <div className="empty-notice">Create a new channel below!</div>
+              <li className="empty-notice">Create a new channel below!</li>
             )}
           </ul>
 
@@ -162,9 +161,9 @@ const SideBar = () => {
             {dmsList.length > 0 ? (
               dmsList
             ) : (
-              <div className="empty-notice">
+              <li className="empty-notice">
                 Start a direct message from any channel!
-              </div>
+              </li>
             )}
           </ul>
         </div>
